@@ -23,7 +23,7 @@ public class Swiat {
 		try {
 			image = ImageIO.read(new File("src/mapa.png"));
 		} catch (IOException ex) { 
-			System.out.println("Nie można wczytać pliku mapy!");
+			System.out.println("Nie można wczytać pliku mapy");
 			System.exit(2);
 		}    
 	}
