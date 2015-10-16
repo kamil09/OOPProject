@@ -9,11 +9,26 @@ import javax.swing.UIManager;
 
 public class MapPanel extends JPanel implements Runnable {
 	
-	private int width=720;
-	private int height=700;
+	//Rozmiar mapy
+	private final int maxMapX=4000;
+	private final int maxMapY=4000;
+	
+	//Lewy górny róg mapy rzeczywistej(dużej, nie przeskalowanej) od którego rysujemy.
+	private int mapStartX=0;
+	private int mapStartY=0;
+	
+	//Wysokosc i szerokość obszaru dużej (nieprzeskalowanej) mapy ktory wyświetlamy na ekranie
+	private static int displayMapWidth=0;
+	private static int displayMapHeight=4000;
+	
+	//Punkt kliknięcia na mapie - używanie przy określaniu odległości przeciągnięcia.
 	private int mouseClickX=0;
 	private int mouseClickY=0;
-	private float mapZOOM=5;
+	
+	//ZOOM
+	private double mapZOOM=5.6;
+	private double maxZOOM=5.6;
+	private double minZOOM=1;
 	/**
 	 * 
 	 */
@@ -27,11 +42,9 @@ public class MapPanel extends JPanel implements Runnable {
 		addMouseWheelListener(new MouseAdapter() {
 			public void mouseWheelMoved(MouseWheelEvent e) {
 		        float steps = e.getWheelRotation();
-		        float zoom=mapZOOM;
-		        zoom+=steps/20;
-		        if(zoom>5) zoom=5;
-		        if(zoom<1) zoom=1;
-		        mapZOOM=zoom;
+		        mapZOOM+=steps/10;
+		        if(mapZOOM>maxZOOM) mapZOOM=maxZOOM;
+		        if(mapZOOM<minZOOM) mapZOOM=minZOOM;
 		      }
 		});
 		addMouseListener(new MouseAdapter(){
@@ -51,27 +64,19 @@ public class MapPanel extends JPanel implements Runnable {
 				int przesuniecieX=e.getX()-mouseClickX;
 				int przesuniecieY=e.getY()-mouseClickY;
 				
-				int startX=Swiat.getMapStartX();
-				int startY=Swiat.getMapStartY();
-				startX-=(przesuniecieX/15*mapZOOM);
-				startY-=(przesuniecieY/15*mapZOOM);
+				mapStartX-=(przesuniecieX/30*mapZOOM);
+				mapStartY-=(przesuniecieY/30*mapZOOM);
 				
-				if(startX<0) startX=0;
-				if(startY<0) startY=0;
-				if(startX+Swiat.getDisplayMapWidth()>4000){
-					startX=4000-Swiat.getDisplayMapWidth();
+				if(mapStartX<0) mapStartX=0;
+				if(mapStartY<0) mapStartY=0;
+				if(mapStartX+displayMapWidth>maxMapX){
+					mapStartX=maxMapX-displayMapWidth;
 				}
-				if(startY+Swiat.getDisplayMapHeight()>4000){
-					startY=4000-Swiat.getDisplayMapHeight();
+				if(mapStartY+displayMapHeight>maxMapY){
+					mapStartY=maxMapY-displayMapHeight;
 				}
-				
-				Swiat.setMapStartX(startX);
-				Swiat.setMapStartY(startY);
 			}
-			
-			
 		});
-		
 	}
 
 	public void paintComponent(Graphics g) {
@@ -80,38 +85,30 @@ public class MapPanel extends JPanel implements Runnable {
         int x=this.getWidth();
         int y=this.getHeight();
           
-        float zoom=mapZOOM;
-        int width=(int)(x*zoom);
-        int height=(int)(y*zoom);
+        int width=(int)(x*mapZOOM);
+        int height=(int)(y*mapZOOM);
         
-        int startX=Swiat.getMapStartX();
-        int startY=Swiat.getMapStartY();
-        
-        if(width+startX > 4000 ){
-        	startX=4000-width;
+        if(width+mapStartX > maxMapX ){
+        	mapStartX=maxMapX-width;
         }
-        if(height+startY >4000 ){
-        	startY=4000-height;
+        if(height+mapStartY >maxMapY ){
+        	mapStartY=maxMapY-height;
         }
-        if(startX<0) startX=0;
-		if(startY<0) startY=0;
-        if(width+startX > 4000 ){
-        	zoom=4000/(float)x;
+        if(mapStartX<0) mapStartX=0;
+		if(mapStartY<0) mapStartY=0;
+        if(width+mapStartX > maxMapX ){
+        	mapZOOM=maxMapX/(float)x;
         }
-        if(height+startY >4000 ){
-        	zoom=4000/(float)y;
+        if(height+mapStartY >maxMapY ){
+        	mapZOOM=maxMapY/(float)y;
         }
     
-        mapZOOM=zoom;
-        Swiat.setDisplayMapHeight((int)(y*zoom));
-        Swiat.setDisplayMapWidth((int)(x*zoom));   
-        Swiat.setMapStartX(startX);
-        Swiat.setMapStartY(startY);
+        displayMapHeight=(int)(y*mapZOOM);
+        displayMapWidth=(int)(x*mapZOOM);   
         
-                
         g.drawImage(Swiat.getBufferImage(),
         	       0, 0, x, y,
-        	       Swiat.getMapStartX(), Swiat.getMapStartY(), Swiat.getDisplayMapWidth()+Swiat.getMapStartX(), Swiat.getDisplayMapHeight()+Swiat.getMapStartY(),
+        	       mapStartX, mapStartY, displayMapWidth+mapStartX, displayMapHeight+mapStartY,
         	       null);
 	}
 	

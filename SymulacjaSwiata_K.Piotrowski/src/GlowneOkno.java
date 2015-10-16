@@ -66,10 +66,7 @@ public class GlowneOkno {
 		frmSymulacjaSwiataSamolotow.getContentPane().add(usersPanel, BorderLayout.WEST);
 		frmSymulacjaSwiataSamolotow.getContentPane().add(infoPanel, BorderLayout.EAST);
 		frmSymulacjaSwiataSamolotow.getContentPane().add(mapPanel, BorderLayout.CENTER);
-		
-		
-		
-		
+
 		frmSymulacjaSwiataSamolotow.setVisible(true);
 		
 	}

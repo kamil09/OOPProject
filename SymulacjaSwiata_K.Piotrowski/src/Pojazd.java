@@ -1,10 +1,4 @@
-import java.rmi.server.UID;
-
-public class Pojazd {
+public class Pojazd extends PunktMapy{
 	
-	private UID Id;
 
-	public UID getId() {
-		return Id;
-	}
 }

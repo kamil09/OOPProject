@@ -1,3 +1,4 @@
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -10,17 +11,8 @@ import javax.imageio.ImageIO;
 
 public class Swiat {
 	
-	/*
-	 * Tutaj bedą przechowywane wszystkie najważniejsze informacje.
-	 */
-	
-	private static int maxMapX=4000;
-	private static int maxMapY=4000;
-	private static int displayMapWidth=0;
-	private static int displayMapHeight=4000;
-	private static int mapStartX=0;
-	private static int mapStartY=0;
 	private static BufferedImage bufferImage;
+	private static Graphics imageGraphics;
 	
 	private static List<Pasazer> listaPasazerow = new ArrayList<Pasazer>();
 	private static List<Pojazd> listaPojazdow = new ArrayList<Pojazd>();
@@ -29,6 +21,7 @@ public class Swiat {
 	public Swiat(){
 		try {
 			bufferImage = ImageIO.read(new File("src/mapa.png"));
+			setImageGraphics(bufferImage.getGraphics());
 		} catch (IOException ex) { 
 			System.out.println("Nie można wczytać pliku mapy");
 			System.exit(2);
@@ -67,41 +60,11 @@ public class Swiat {
 	public static List<Pojazd> getListaPojazdow(){
 		return listaPojazdow;
 	}
-	public static int getMaxMapX() {
-		return maxMapX;
+	public static Graphics getImageGraphics() {
+		return imageGraphics;
 	}
-	public static void setMaxMapX(int maxMapX) {
-		Swiat.maxMapX = maxMapX;
-	}
-	public static int getMaxMapY() {
-		return maxMapY;
-	}
-	public static void setMaxMapY(int maxMapY) {
-		Swiat.maxMapY = maxMapY;
-	}
-	public static int getMapStartX() {
-		return mapStartX;
-	}
-	public static void setMapStartX(int mapStartX) {
-		Swiat.mapStartX = mapStartX;
-	}
-	public static int getMapStartY() {
-		return mapStartY;
-	}
-	public static void setMapStartY(int mapStartY) {
-		Swiat.mapStartY = mapStartY;
-	}
-	public static int getDisplayMapWidth() {
-		return displayMapWidth;
-	}
-	public static void setDisplayMapWidth(int displayMapWidth) {
-		Swiat.displayMapWidth = displayMapWidth;
-	}
-	public static int getDisplayMapHeight() {
-		return displayMapHeight;
-	}
-	public static void setDisplayMapHeight(int displayMapHeight) {
-		Swiat.displayMapHeight = displayMapHeight;
+	public static void setImageGraphics(Graphics imageGraphics) {
+		Swiat.imageGraphics = imageGraphics;
 	}
 	
 }
