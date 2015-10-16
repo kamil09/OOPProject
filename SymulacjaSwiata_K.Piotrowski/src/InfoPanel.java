@@ -188,6 +188,8 @@ public class InfoPanel extends JPanel implements Runnable{
 			panelInfo.removeAll();
 			samolot=samolot2;
 			
+			
+			
 			panelInfo.revalidate();
 			panelInfo.repaint();
 		}
@@ -211,6 +213,28 @@ public class InfoPanel extends JPanel implements Runnable{
 		
 			panelInfo.removeAll();
 			punkt=punkt2;
+			
+			JLabel label;
+			JLabel label2;
+			if(punkt.getClass() == Lotnisko.class ) {
+				label = new InfoLabel( "Nazwa: "+punkt.getName());
+				label2 = new InfoLabel( "Typ : Lotnisko"); 
+			}	
+			else {
+				label = new InfoLabel( "Firma: "+punkt.getName());
+				label2 = new InfoLabel( "Typ: Port"); 
+			}
+			JLabel label3 = new InfoLabel( "Wspólrzędna X: "+punkt.getKoorX() );
+			JLabel label4 = new InfoLabel( "Współrzędna Y: "+punkt.getKoorY() );	
+			
+			panelInfo.add(label);
+			panelInfo.add(Box.createVerticalStrut(10));
+			panelInfo.add(label2);
+			panelInfo.add(Box.createVerticalStrut(10));
+			panelInfo.add(label3);
+			panelInfo.add(Box.createVerticalStrut(10));
+			panelInfo.add(label4);
+			panelInfo.add(Box.createVerticalStrut(10));
 			
 			panelInfo.revalidate();
 			panelInfo.repaint();

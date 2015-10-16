@@ -4,6 +4,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
@@ -29,6 +30,11 @@ public class MapPanel extends JPanel implements Runnable {
 	private double mapZOOM=5.6;
 	private double maxZOOM=5.6;
 	private double minZOOM=1;
+	
+	//Przyciski mapy
+	private int cityButtonSize=200;
+	
+	private boolean cityRedrow=true;
 	/**
 	 * 
 	 */
@@ -41,6 +47,8 @@ public class MapPanel extends JPanel implements Runnable {
 		
 		addMouseWheelListener(new MouseAdapter() {
 			public void mouseWheelMoved(MouseWheelEvent e) {
+				cityRedrow=true;
+				
 		        float steps = e.getWheelRotation();
 		        mapZOOM+=steps/10;
 		        if(mapZOOM>maxZOOM) mapZOOM=maxZOOM;
@@ -49,17 +57,22 @@ public class MapPanel extends JPanel implements Runnable {
 		});
 		addMouseListener(new MouseAdapter(){
 			public void mousePressed(MouseEvent e) {
-			    mouseClickX=e.getX();
+				cityRedrow=true;
+				
+				mouseClickX=e.getX();
 			    mouseClickY=e.getY();
 			    setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 			  }
 			public void mouseReleased(MouseEvent e) {
+				cityRedrow=true;
+				
 				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			  }
 			
 		});
 		addMouseMotionListener(new MouseAdapter() {
 			public void mouseDragged(MouseEvent e){
+				cityRedrow=true;
 				
 				int przesuniecieX=e.getX()-mouseClickX;
 				int przesuniecieY=e.getY()-mouseClickY;
@@ -77,6 +90,8 @@ public class MapPanel extends JPanel implements Runnable {
 				}
 			}
 		});
+		
+		drowAll();
 	}
 
 	public void paintComponent(Graphics g) {
@@ -115,11 +130,47 @@ public class MapPanel extends JPanel implements Runnable {
 	public void run() {
 		while(true) {
             try {
-            	repaint();
+            	if(this.cityRedrow==true){
+            		drowAll();
+            	}
                 Thread.sleep(15);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+	}
+	
+	public void drowAll(){
+		this.removeAll();
+		
+		drowCities();
+		
+		this.revalidate();
+		this.repaint();
+	}
+	
+	public void drowCities(){
+		int size=this.cityButtonSize;
+		size/=this.mapZOOM;
+		
+		int koorX;
+		int koorY;
+		
+		for(PunktMapy city : Swiat.getCityList()){
+			koorX=(int)((city.getKoorX()-this.mapStartX)/this.mapZOOM);
+			koorY=(int)((city.getKoorY()-this.mapStartY)/this.mapZOOM);
+			
+			
+			//Wyświetlamy tylko to co widać :)
+			if(koorX>-size/2 && koorY>-size/2 && koorX < this.getWidth()+size/2 && koorY < this.getHeight()+size/2){
+				koorX-=size/2;
+				koorY-=size/2;
+				
+				JButton punkt = new MapClickButton(koorX,koorY,size,size,city);
+				add(punkt);
+				if(this.cityRedrow==true) this.cityRedrow=false;
+			}
+		}
+		
 	}
 }
