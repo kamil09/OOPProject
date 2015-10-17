@@ -3,7 +3,7 @@
   realizations="true" associations="false" dependencies="false" nesting-relationships="true">  
   <class id="1" language="java" name="GlowneOkno" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/GlowneOkno.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1005" y="-117"/>    
+    <position height="-1" width="-1" x="1132" y="-117"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
@@ -21,7 +21,7 @@
   </class>  
   <class id="3" language="java" name="Swiat" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/Swiat.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="45" y="15"/>    
+    <position height="-1" width="-1" x="60" y="22"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
@@ -48,7 +48,7 @@
   </class>  
   <class id="6" language="java" name="Lotnisko" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/Lotnisko.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="607" y="111"/>    
+    <position height="-1" width="-1" x="619" y="236"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
@@ -57,7 +57,7 @@
   </class>  
   <class id="7" language="java" name="TrasaPowietrzna" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/TrasaPowietrzna.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="808" y="-70"/>    
+    <position height="-1" width="-1" x="927" y="-79"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
@@ -66,7 +66,7 @@
   </class>  
   <class id="8" language="java" name="TrasaMorska" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/TrasaMorska.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="811" y="-163"/>    
+    <position height="-1" width="-1" x="938" y="-184"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
@@ -93,7 +93,7 @@
   </enumeration>  
   <class id="11" language="java" name="Aplikacja" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/Aplikacja.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="471" y="-173"/>    
+    <position height="-1" width="-1" x="445" y="-174"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
@@ -111,7 +111,7 @@
   </class>  
   <class id="13" language="java" name="SamolotWojskowy" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/SamolotWojskowy.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="915" y="579"/>    
+    <position height="-1" width="-1" x="904" y="657"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
@@ -129,7 +129,7 @@
   </class>  
   <class id="15" language="java" name="UserLabel" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/UserLabel.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1048" y="331"/>    
+    <position height="-1" width="-1" x="1142" y="353"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
@@ -156,7 +156,7 @@
   </class>  
   <class id="18" language="java" name="Droga" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/Droga.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="690" y="-165"/>    
+    <position height="-1" width="-1" x="808" y="-147"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
@@ -165,7 +165,7 @@
   </class>  
   <class id="19" language="java" name="Port" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/Port.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="595" y="26"/>    
+    <position height="-1" width="-1" x="608" y="158"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
@@ -183,7 +183,7 @@
   </class>  
   <class id="21" language="java" name="UsersPanel" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/UsersPanel.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1024" y="128"/>    
+    <position height="-1" width="-1" x="1182" y="141"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
@@ -192,7 +192,7 @@
   </class>  
   <class id="22" language="java" name="InfoLabel" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/InfoLabel.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1063" y="432"/>    
+    <position height="-1" width="-1" x="1161" y="458"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
@@ -210,7 +210,7 @@
   </class>  
   <class id="24" language="java" name="MapPanel" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/MapPanel.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="831" y="322"/>    
+    <position height="-1" width="-1" x="953" y="384"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
@@ -219,7 +219,7 @@
   </class>  
   <class id="25" language="java" name="InfoPanel" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/InfoPanel.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="826" y="81"/>    
+    <position height="-1" width="-1" x="983" y="66"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
@@ -228,8 +228,8 @@
   </class>  
   <class id="26" language="java" name="Skrzyzowanie" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/Skrzyzowanie.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="605" y="-64"/>    
-    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+    <position height="282" width="204" x="548" y="-194"/>    
+    <display autosize="false" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
       <operations public="true" package="false" protected="true" private="true" static="true"/>    
@@ -245,52 +245,52 @@
     </display>  
   </enumeration>  
   <generalization id="28">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="18"/>  
-  </generalization>  
-  <generalization id="29">    
-    <end type="SOURCE" refId="19"/>    
-    <end type="TARGET" refId="20"/>  
-  </generalization>  
-  <generalization id="30">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="17"/>  
-  </generalization>  
-  <generalization id="31">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="23"/>  
-  </generalization>  
-  <generalization id="32">    
     <end type="SOURCE" refId="14"/>    
     <end type="TARGET" refId="20"/>  
   </generalization>  
-  <generalization id="33">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="18"/>  
-  </generalization>  
-  <generalization id="34">    
-    <end type="SOURCE" refId="26"/>    
-    <end type="TARGET" refId="20"/>  
-  </generalization>  
-  <generalization id="35">    
-    <end type="SOURCE" refId="13"/>    
-    <end type="TARGET" refId="23"/>  
-  </generalization>  
-  <generalization id="36">    
+  <generalization id="29">    
     <end type="SOURCE" refId="17"/>    
     <end type="TARGET" refId="14"/>  
   </generalization>  
-  <generalization id="37">    
+  <generalization id="30">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="18"/>  
+  </generalization>  
+  <generalization id="31">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="17"/>  
+  </generalization>  
+  <generalization id="32">    
     <end type="SOURCE" refId="23"/>    
     <end type="TARGET" refId="14"/>  
   </generalization>  
-  <generalization id="38">    
+  <generalization id="33">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="17"/>  
+  </generalization>  
+  <generalization id="34">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="23"/>  
+  </generalization>  
+  <generalization id="35">    
+    <end type="SOURCE" refId="26"/>    
+    <end type="TARGET" refId="20"/>  
+  </generalization>  
+  <generalization id="36">    
     <end type="SOURCE" refId="6"/>    
     <end type="TARGET" refId="20"/>  
   </generalization>  
+  <generalization id="37">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="18"/>  
+  </generalization>  
+  <generalization id="38">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="23"/>  
+  </generalization>  
   <generalization id="39">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="17"/>  
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="20"/>  
   </generalization>  
   <classifier-display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    

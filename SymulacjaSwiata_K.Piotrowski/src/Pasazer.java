@@ -1,7 +1,7 @@
 import java.rmi.server.UID;
 import java.util.Random;
 
-public class Pasazer {
+public class Pasazer implements Runnable{
 	
 	//Dane personalne pasażera
 	//Tylko po odczytu - losowane przy tworzeniu pasażera
@@ -17,10 +17,10 @@ public class Pasazer {
 	
 	//Informacje o podróży
 	private PunktMapy miastoRodzinne;
+	private PunktMapy obecnyPunkt;
 	private PunktMapy miastoDocelowe;
 	private Droga trasa;
 	private Droga[] trasaPowrotna;
-	private Pojazd obecnyPojazd;
 	
 	/*
 	 * Status :
@@ -80,12 +80,29 @@ public class Pasazer {
 		Random generator = new Random();
 		
 		this.Id = new UID();
-		this.wiek=generator.nextInt(95)+15;
+		this.wiek=generator.nextInt(84)+16;
 		this.status=0;
 		this.pesel=(long)(2015-(1900+this.wiek))*1000000000;
 		this.pesel+=(long)(generator.nextInt(888888888)+111111111);
 		this.imie=ImieRandom.values()[generator.nextInt(142)+1];
 		this.nazwisko=NazwiskoRandom.values()[generator.nextInt(159)+1];
+		this.miastoRodzinne=Swiat.getCityList().get(generator.nextInt(15));
+		this.obecnyPunkt=this.miastoRodzinne;
+	}
+	
+	public PunktMapy getMiastoRodzinne() {
+		return miastoRodzinne;
+	}
+	
+	public void run() {
+		while(true) {
+            try {
+                Thread.sleep(2000);
+                //System.out.println(this.imie+"  "+this.nazwisko);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 	}
 
 }

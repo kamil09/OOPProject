@@ -31,8 +31,15 @@ public class MapPanel extends JPanel implements Runnable {
 	private double maxZOOM=5.6;
 	private double minZOOM=1;
 	
+	//Ostatni rozmiar okna mapy
+	private int mapWidth=720;
+	private int mapHeight=700;
+	
 	//Przyciski mapy
 	private int cityButtonSize=200;
+	
+	//Trasa
+	private int szerokosctrasy=15;
 	
 	private boolean cityRedrow=true;
 	/**
@@ -99,6 +106,11 @@ public class MapPanel extends JPanel implements Runnable {
         
         int x=this.getWidth();
         int y=this.getHeight();
+        if(x!=this.mapWidth || y!=this.mapHeight){
+        	this.cityRedrow=true;
+        	this.mapWidth=x;
+        	this.mapHeight=y;
+        }
           
         int width=(int)(x*mapZOOM);
         int height=(int)(y*mapZOOM);
@@ -118,6 +130,8 @@ public class MapPanel extends JPanel implements Runnable {
         	mapZOOM=maxMapY/(float)y;
         }
     
+       
+        
         displayMapHeight=(int)(y*mapZOOM);
         displayMapWidth=(int)(x*mapZOOM);   
         
@@ -125,6 +139,9 @@ public class MapPanel extends JPanel implements Runnable {
         	       0, 0, x, y,
         	       mapStartX, mapStartY, displayMapWidth+mapStartX, displayMapHeight+mapStartY,
         	       null);
+        
+        
+
 	}
 	
 	public void run() {
@@ -133,7 +150,8 @@ public class MapPanel extends JPanel implements Runnable {
             	if(this.cityRedrow==true){
             		drowAll();
             	}
-                Thread.sleep(15);
+            	
+                Thread.sleep(20);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -141,9 +159,11 @@ public class MapPanel extends JPanel implements Runnable {
 	}
 	
 	public void drowAll(){
-		this.removeAll();
+		this.removeAll();;
 		
 		drowCities();
+		rysujSkrzyzowania();
+		rysujTrasy();
 		
 		this.revalidate();
 		this.repaint();
@@ -160,6 +180,28 @@ public class MapPanel extends JPanel implements Runnable {
 			koorX=(int)((city.getKoorX()-this.mapStartX)/this.mapZOOM);
 			koorY=(int)((city.getKoorY()-this.mapStartY)/this.mapZOOM);
 			
+			//Wyświetlamy tylko to co widać :)
+			if(koorX>-size/2 && koorY>-size/2 && koorX < this.getWidth()+size/2 && koorY < this.getHeight()+size/2){
+				koorX-=size/2;
+				koorY-=size/2;
+				
+				JButton punkt = new MapClickButton(koorX,koorY,size,size,city);
+				add(punkt);
+				if(this.cityRedrow==true) this.cityRedrow=false;
+			}
+		}
+		
+	}
+	public void rysujSkrzyzowania(){
+		int size=100;
+		size/=this.mapZOOM;
+		
+		int koorX;
+		int koorY;
+		
+		for(PunktMapy city : Swiat.getSkrzyzowanieList()){
+			koorX=(int)((city.getKoorX()-this.mapStartX)/this.mapZOOM);
+			koorY=(int)((city.getKoorY()-this.mapStartY)/this.mapZOOM);
 			
 			//Wyświetlamy tylko to co widać :)
 			if(koorX>-size/2 && koorY>-size/2 && koorX < this.getWidth()+size/2 && koorY < this.getHeight()+size/2){
@@ -172,5 +214,13 @@ public class MapPanel extends JPanel implements Runnable {
 			}
 		}
 		
+		
+	}
+	
+	public void rysujTrasy(){
+		
+		for (Droga trasa : Swiat.getListaTras()){
+			
+		}
 	}
 }

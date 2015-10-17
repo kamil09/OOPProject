@@ -1,4 +1,5 @@
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -12,20 +13,26 @@ import javax.imageio.ImageIO;
 public class Swiat {
 	
 	private static BufferedImage bufferImage;
-	private static Graphics imageGraphics;
+	private static Graphics2D imageGraphics;
 	
 	private static List<Pasazer> listaPasazerow = new ArrayList<Pasazer>();
 	private static List<Pojazd> listaPojazdow = new ArrayList<Pojazd>();
+	private static List<Droga> listaTras = new ArrayList<Droga>();
 	
 	private static List<PunktMapy> cityList = new ArrayList<PunktMapy>();
+	private static List<PunktMapy> skrzyzowanieList = new ArrayList<PunktMapy>();
 
-	
+	private static List<Runnable> runnerList = new ArrayList<Runnable>();
+	private static List<Thread> threadsList = new ArrayList<Thread>();
 	
 	public Swiat(){
 		try {
 			bufferImage = ImageIO.read(new File("src/mapa2.png"));
-			setImageGraphics(bufferImage.getGraphics());
+			setImageGraphics((Graphics2D)bufferImage.getGraphics());
 			generujListeMiast();
+			addPasazer();
+			addPasazer();
+			addPasazer();
 		} catch (IOException ex) { 
 			System.out.println("Nie można wczytać pliku mapy");
 			System.exit(2);
@@ -36,7 +43,11 @@ public class Swiat {
 	}
 	
 	public static void addPasazer(){
-		listaPasazerow.add(new Pasazer());
+		Pasazer nowaOsoba= new Pasazer();
+		listaPasazerow.add(nowaOsoba);
+		runnerList.add( nowaOsoba );
+		threadsList.add(new Thread(runnerList.get(runnerList.size()-1)));
+		threadsList.get(threadsList.size()-1).start();;
 	}
 	public static void addSamolotPasazerski(){
 		System.out.println("Dodano samolot pasażerski!");
@@ -64,11 +75,11 @@ public class Swiat {
 	public static List<Pojazd> getListaPojazdow(){
 		return listaPojazdow;
 	}
-	public static Graphics getImageGraphics() {
+	public static Graphics2D getImageGraphics() {
 		return imageGraphics;
 	}
-	public static void setImageGraphics(Graphics imageGraphics) {
-		Swiat.imageGraphics = imageGraphics;
+	public static void setImageGraphics(Graphics2D graphics) {
+		Swiat.imageGraphics = graphics;
 	}
 	public static List<PunktMapy> getCityList(){
 		return cityList;
@@ -97,6 +108,21 @@ public class Swiat {
 		 * 3.	X 3366	Y 2508
 		 * 4.	X 2109	Y 2256
 		 * 5.	X 1767	Y 1593
+		 * SKRZYZOWANIA
+		 * 1.	X 1111	Y 995
+		 * 2.	1479	Y 649
+		 * 3.	X 1512	Y 1291
+		 * 4.	X 1749	Y 687
+		 * 5.	X 2766	Y 539
+		 * 6.	X 3080	Y 660
+		 * 7.	X 2013	Y 3239
+		 * 8.	X 1518	Y 3371
+		 * SKRZYZOWANIA MORSKIE
+		 * 1.	X 2293	Y 1419
+		 * 2.	X 2183	Y 1848
+		 * 3.	X 2596	Y 1320
+		 * 4.	X 2398	Y 1947
+		 * 5.	X 2755	Y 1556
 		 */
 		//LOTNISKA:
 		cityList.add(new Lotnisko(507,519, "Blue City") );
@@ -111,14 +137,38 @@ public class Swiat {
 		cityList.add(new Lotnisko(888,3558, "Brown City") );
 		cityList.add(new Lotnisko(903,2918, "Yellow City") );
 		//PORTY
-		cityList.add(new Port(2379, 987, "Blue Company"));
-		cityList.add(new Port(3141, 1140, "Red Company"));
-		cityList.add(new Port(3366, 2508, "Green Company"));
-		cityList.add(new Port(2109, 2256, "Black Company"));
-		cityList.add(new Port(1767, 1593, "Gray Company"));
+		cityList.add(new Port(2379, 987, "Blue Port"));
+		cityList.add(new Port(3141, 1140, "Red Port"));
+		cityList.add(new Port(3366, 2508, "Green Port"));
+		cityList.add(new Port(2109, 2256, "Black Port"));
+		cityList.add(new Port(1767, 1593, "Gray Port"));
+		//Skrzyzowania
+		skrzyzowanieList.add(new Skrzyzowanie(1111, 995, null, null, null, null, null) );
+		skrzyzowanieList.add(new Skrzyzowanie(1479, 649, null, null, null, null, null) );
+		skrzyzowanieList.add(new Skrzyzowanie(1512, 1291, null, null, null, null, null) );
+		skrzyzowanieList.add(new Skrzyzowanie(1749, 687, null, null, null, null, null) );
+		skrzyzowanieList.add(new Skrzyzowanie(2766, 539, null, null, null, null, null) );
+		skrzyzowanieList.add(new Skrzyzowanie(3080, 660, null, null, null, null, null) );
+		skrzyzowanieList.add(new Skrzyzowanie(2013, 3239, null, null, null, null, null) );
+		skrzyzowanieList.add(new Skrzyzowanie(2580, 3416, null, null, null, null, null) );
+		skrzyzowanieList.add(new Skrzyzowanie(1518, 3371, null, null, null, null, null) );
+		skrzyzowanieList.add(new Skrzyzowanie(1352, 1176, null, null, null, null, null) );
+		skrzyzowanieList.add(new Skrzyzowanie(1644, 1056, null, null, null, null, null) );
+		//Skrzyzowania morskie  
+		skrzyzowanieList.add(new Skrzyzowanie(2293, 1419, null, null, null, null, null) );
+		skrzyzowanieList.add(new Skrzyzowanie(2183, 1848, null, null, null, null, null) );
+		skrzyzowanieList.add(new Skrzyzowanie(2596, 1320, null, null, null, null, null) );
+		skrzyzowanieList.add(new Skrzyzowanie(2398, 1947, null, null, null, null, null) );
+		skrzyzowanieList.add(new Skrzyzowanie(2755, 1556, null, null, null, null, null) );
 		
 		
 		
+	}
+	public static List<Droga> getListaTras() {
+		return listaTras;
+	}
+	public static List<PunktMapy> getSkrzyzowanieList() {
+		return skrzyzowanieList;
 	}
 	
 }

@@ -152,7 +152,7 @@ public class InfoPanel extends JPanel implements Runnable{
 			JLabel label3 = new InfoLabel( "Wiek: "+pasazer.getWiek() );
 			JLabel label4 = new InfoLabel( "Pesel: "+pasazer.getPesel() );
 			JLabel label5 = new InfoLabel( "Czas w miejscu docelowym: "+pasazer.getCzasPostoju() );
-			JLabel label6 = new InfoLabel( "Miasto rodzinne: " );
+			JLabel label6 = new InfoLabel( "Miasto rodzinne: "+ pasazer.getMiastoRodzinne().getName());
 			JLabel label7 = new InfoLabel( "Miasto docelowe: ");
 			JLabel label8 = new InfoLabel( "Obecna trasa: " );
 			JLabel label9 = new InfoLabel( "Obecny pojazd: ");
@@ -214,18 +214,10 @@ public class InfoPanel extends JPanel implements Runnable{
 			panelInfo.removeAll();
 			punkt=punkt2;
 			
-			JLabel label;
-			JLabel label2;
-			if(punkt.getClass() == Lotnisko.class ) {
-				label = new InfoLabel( "Nazwa: "+punkt.getName());
-				label2 = new InfoLabel( "Typ : Lotnisko"); 
-			}	
-			else {
-				label = new InfoLabel( "Firma: "+punkt.getName());
-				label2 = new InfoLabel( "Typ: Port"); 
-			}
+			JLabel label = new InfoLabel( "Nazwa: "+punkt.getName());
+			JLabel label2 = new InfoLabel( "Typ : "+punkt.getClass().getName()); 
 			JLabel label3 = new InfoLabel( "Wspólrzędna X: "+punkt.getKoorX() );
-			JLabel label4 = new InfoLabel( "Współrzędna Y: "+punkt.getKoorY() );	
+			JLabel label4 = new InfoLabel( "Współrzędna Y: "+punkt.getKoorY() );
 			
 			panelInfo.add(label);
 			panelInfo.add(Box.createVerticalStrut(10));
