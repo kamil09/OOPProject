@@ -1,7 +1,7 @@
 
 public class Statek extends Pojazd{
 
-	public Statek(int x,int y, String name){
-		super(x, y, name);
+	public Statek(int x,int y, String name,int id){
+		super(x, y, name,id );
 	}
 }

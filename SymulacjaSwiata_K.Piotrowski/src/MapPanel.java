@@ -38,9 +38,6 @@ public class MapPanel extends JPanel implements Runnable {
 	//Przyciski mapy
 	private int cityButtonSize=200;
 	
-	//Trasa
-	private int szerokosctrasy=15;
-	
 	private boolean cityRedrow=true;
 	/**
 	 * 
@@ -141,6 +138,16 @@ public class MapPanel extends JPanel implements Runnable {
         	       null);
         
         
+        //TESTOWE RYSOWANIE USUNĄĆ PÓŹNIEJ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        for(Droga linia : Swiat.getListaTras()){
+        	for (PunktMapy punktB : linia.getB() ){
+	        	g.drawLine((int)((linia.getA().getKoorX()-this.mapStartX)/mapZOOM), 
+	        			   (int)((linia.getA().getKoorY()-this.mapStartY)/mapZOOM), 
+	        			   (int)((punktB.getKoorX()-this.mapStartX)/mapZOOM), 
+	        			   (int)((punktB.getKoorY()-this.mapStartY)/mapZOOM));
+        	}
+        }
 
 	}
 	
@@ -163,7 +170,6 @@ public class MapPanel extends JPanel implements Runnable {
 		
 		drowCities();
 		rysujSkrzyzowania();
-		rysujTrasy();
 		
 		this.revalidate();
 		this.repaint();
@@ -193,7 +199,7 @@ public class MapPanel extends JPanel implements Runnable {
 		
 	}
 	public void rysujSkrzyzowania(){
-		int size=100;
+		int size=120;
 		size/=this.mapZOOM;
 		
 		int koorX;
@@ -215,12 +221,5 @@ public class MapPanel extends JPanel implements Runnable {
 		}
 		
 		
-	}
-	
-	public void rysujTrasy(){
-		
-		for (Droga trasa : Swiat.getListaTras()){
-			
-		}
 	}
 }

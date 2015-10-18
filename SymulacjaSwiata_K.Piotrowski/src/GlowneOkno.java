@@ -15,14 +15,13 @@ import javax.swing.UIManager;
  */
 public class GlowneOkno {
 
-	private JFrame frmSymulacjaSwiataSamolotow;	
+	private JFrame frmSymulacjaSwiataSamolotow;
 	private JPanel usersPanel;
 	private JPanel infoPanel;
 	private JPanel mapPanel;
-	
-	private Runnable[] runners = new Runnable[3];
-	private Thread[]   threads = new Thread[3];
 
+	private Runnable[] runners = new Runnable[3];
+	private Thread[] threads = new Thread[3];
 
 	/**
 	 * Launch the application.
@@ -51,15 +50,15 @@ public class GlowneOkno {
 		frmSymulacjaSwiataSamolotow.setMinimumSize(new Dimension(1000, 700));
 		frmSymulacjaSwiataSamolotow.setBackground(UIManager.getColor("Button.background"));
 		frmSymulacjaSwiataSamolotow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		usersPanel = new UsersPanel();
 		infoPanel = new InfoPanel();
 		mapPanel = new MapPanel();
-		
+
 		runners[0] = (Runnable) usersPanel;
 		runners[1] = (Runnable) infoPanel;
 		runners[2] = (Runnable) mapPanel;
-		for (int i=0; i<3 ;i++) {
+		for (int i = 0; i < 3; i++) {
 			threads[i] = new Thread(runners[i]);
 			threads[i].start();
 		}
@@ -68,6 +67,6 @@ public class GlowneOkno {
 		frmSymulacjaSwiataSamolotow.getContentPane().add(mapPanel, BorderLayout.CENTER);
 
 		frmSymulacjaSwiataSamolotow.setVisible(true);
-		
+
 	}
 }

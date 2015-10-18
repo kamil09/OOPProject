@@ -1,4 +1,6 @@
 import java.rmi.server.UID;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Pasazer implements Runnable{
@@ -13,23 +15,26 @@ public class Pasazer implements Runnable{
 	
 	//Typ podruży : 0- prywatna 1-służbowa
 	private boolean typPodrozy;
-	private int czasPostoju;
+	private double czasPostoju;
 	
 	//Informacje o podróży
 	private PunktMapy miastoRodzinne;
 	private PunktMapy obecnyPunkt;
 	private PunktMapy miastoDocelowe;
-	private Droga trasa;
-	private Droga[] trasaPowrotna;
+	
+	//Trasa : a - b - c - d - e - f - g - h - ciąg samych miast. bez obecnego, ale łącznie z końcowym!!!
+	private List<PunktMapy> trasa = new ArrayList<PunktMapy>();
+
 	
 	/*
 	 * Status :
 	 * 0- czeka na wylosowanie trasy
-	 * 1- Oczekuje na transport
-	 * 2- W trasie docelowej
-	 * 3- W trasie powrotnej
-	 * 4- Oczekuje w miejscu docelowym
+	 * 1- W punkcie - czeka
+	 * 2- W pojezdzie 
+	 * 3- Oczekuje w miejscu docelowym
+	 * 4- W miejscu docelowym - oczekuje na wylosowanie trasy 
 	 * 5- Powrócił do domu, oczekuje na zmianę statusu w celu wylosowania kolejnej trasy
+	 * 
 	 */
 	private int status;
 
@@ -59,11 +64,11 @@ public class Pasazer implements Runnable{
 		this.typPodrozy = typPodrozy;
 	}
 
-	public int getCzasPostoju() {
+	public double getCzasPostoju() {
 		return czasPostoju;
 	}
 
-	public void setCzasPostoju(int czasPostoju) {
+	public void setCzasPostoju(double czasPostoju) {
 		this.czasPostoju = czasPostoju;
 	}
 
@@ -86,8 +91,11 @@ public class Pasazer implements Runnable{
 		this.pesel+=(long)(generator.nextInt(888888888)+111111111);
 		this.imie=ImieRandom.values()[generator.nextInt(142)+1];
 		this.nazwisko=NazwiskoRandom.values()[generator.nextInt(159)+1];
-		this.miastoRodzinne=Swiat.getCityList().get(generator.nextInt(15));
-		this.obecnyPunkt=this.miastoRodzinne;
+		int miastoR = generator.nextInt(12);
+		//9 - 12 są lotniska wojskowe
+		if(miastoR >=9 && miastoR<=12) miastoR+=4; 
+		this.miastoRodzinne=Swiat.getCityList().get(miastoR);
+		this.setObecnyPunkt(this.miastoRodzinne);
 	}
 	
 	public PunktMapy getMiastoRodzinne() {
@@ -97,12 +105,78 @@ public class Pasazer implements Runnable{
 	public void run() {
 		while(true) {
             try {
-                Thread.sleep(2000);
-                //System.out.println(this.imie+"  "+this.nazwisko);
+            	//Akcje dla poszczególnych stanów pasazera
+            	switch(this.getStatus()){
+            		case 0:
+            			this.setMiastoDocelowe(null);
+            			this.losujTrase();
+            			break;
+            		case 1:
+            			//Sprawdzenie czy nie przesiada się z lotniska / port lub odwrotnie
+            			if( this.getObecnyPunkt().getClass().getName() != this.getTrasa().get(0).getClass().getName() ){
+            				this.setObecnyPunkt(this.getTrasa().get(0));
+            				this.trasa.remove(0);}
+            			//Sprawdzenie czy dotarł już do końca trasy
+            			if( this.getTrasa().get(0).getid() == this.getObecnyPunkt().getid() ){
+            				this.trasa.clear();
+            				this.setStatus(4);
+            				//Dodatkowe sprawdzenie czy powrócił do domu
+            				if(this.getObecnyPunkt().getid() == this.getMiastoRodzinne().getid() ){
+            					this.setStatus(5);
+            				}
+            			}
+            			//Przeszukanie czy w obecnym miejscu znajduje się odpowiedni pojazd
+            			/*
+            			 * XKOOOOOOOOOOOOOOOOOOOOOOOOODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+            			 */
+            			
+            			break;
+            		case 2:
+            			
+            			break;
+            		case 3:
+            			this.czasPostoju-=0.02;
+            			if(this.czasPostoju<0) this.setStatus(2);
+            			break;
+            		case 4:
+            			this.losujTrasePowrotna();
+            			this.setStatus(3);
+            			break;
+            		case 5:
+            			this.setStatus(0);
+            			break;
+            	}
+                Thread.sleep(20);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
 	}
+	
+	public void losujTrase(){
+		
+	}
+	public void losujTrasePowrotna(){
+		
+	}
+	
+	public List<PunktMapy> getTrasa() {
+		return trasa;
+	}
+	public void setTrasa(List<PunktMapy> trasa) {
+		this.trasa = trasa;
+	}
+	public PunktMapy getObecnyPunkt() {
+		return obecnyPunkt;
+	}
+	public void setObecnyPunkt(PunktMapy obecnyPunkt) {
+		this.obecnyPunkt = obecnyPunkt;
+	}
+	public PunktMapy getMiastoDocelowe() {
+		return miastoDocelowe;
+	}
+	public void setMiastoDocelowe(PunktMapy miastoDocelowe) {
+		this.miastoDocelowe = miastoDocelowe;
+	};
 
 }

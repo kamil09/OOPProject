@@ -1,7 +1,7 @@
 
 public class SamolotPasazerski extends Samolot{
 
-	public SamolotPasazerski(int x,int y, String name){
-		super(x, y, name);
+	public SamolotPasazerski(int x,int y, String name, int id){
+		super(x, y, name, id);
 	}
 }

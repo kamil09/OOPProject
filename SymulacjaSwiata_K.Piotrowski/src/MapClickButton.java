@@ -21,7 +21,7 @@ public class MapClickButton extends JButton{
 		this.setFocusable(false);
 		this.setContentAreaFilled(false);
 		this.setDoubleBuffered(true);
-		this.setToolTipText(city.getName());
+		this.setToolTipText(city.getName()+" ID: #"+city.getid());
 		
 		addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {

@@ -1,17 +1,17 @@
-import java.rmi.server.UID;
-
 public class PunktMapy {
-	private UID Id;
+	private int id;
 	
 	private int koorX;
 	private int koorY;
 	private String name;
 	
 	
-	public UID getId() {
-		return Id;
+	public int getid() {
+		return id;
 	}
-
+	public void setId(int id){
+		this.id=id;
+	}
 
 	public int getKoorX() {
 		return koorX;
@@ -42,9 +42,10 @@ public class PunktMapy {
 		this.name = name;
 	}
 	
-	public PunktMapy(int x,int y, String name){
+	public PunktMapy(int x,int y, String name,int id){
 		this.setKoorX(x);
 		this.setKoorY(y);
 		this.setName(name);
+		this.setId(id);
 	}
 }
