@@ -3,7 +3,7 @@
   realizations="true" associations="false" dependencies="false" nesting-relationships="true">  
   <class id="1" language="java" name="GlowneOkno" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/GlowneOkno.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1132" y="-117"/>    
+    <position height="192" width="218" x="193" y="-109"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
@@ -12,7 +12,7 @@
   </class>  
   <class id="2" language="java" name="SamolotPasazerski" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/SamolotPasazerski.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="687" y="593"/>    
+    <position height="66" width="194" x="2964" y="947"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
@@ -21,7 +21,7 @@
   </class>  
   <class id="3" language="java" name="Swiat" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/Swiat.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="60" y="22"/>    
+    <position height="318" width="214" x="451" y="-109"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
@@ -30,7 +30,7 @@
   </class>  
   <class id="4" language="java" name="Lotniskowiec" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/Lotniskowiec.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="291" y="555"/>    
+    <position height="66" width="164" x="2524" y="947"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
@@ -39,7 +39,7 @@
   </class>  
   <class id="5" language="java" name="PaginacjaButton" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/PaginacjaButton.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="39" y="421"/>    
+    <position height="156" width="171" x="946" y="-109"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
@@ -48,7 +48,7 @@
   </class>  
   <class id="6" language="java" name="Lotnisko" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/Lotnisko.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="619" y="236"/>    
+    <position height="66" width="143" x="3081" y="681"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
@@ -57,7 +57,7 @@
   </class>  
   <class id="7" language="java" name="TrasaPowietrzna" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/TrasaPowietrzna.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="927" y="-79"/>    
+    <position height="66" width="252" x="559" y="681"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
@@ -66,7 +66,7 @@
   </class>  
   <class id="8" language="java" name="TrasaMorska" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/TrasaMorska.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="938" y="-184"/>    
+    <position height="66" width="234" x="851" y="681"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
@@ -75,7 +75,7 @@
   </class>  
   <enumeration id="9" language="java" name="NazwiskoRandom" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/NazwiskoRandom.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="232" y="-193"/>    
+    <position height="66" width="127" x="1157" y="-109"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
@@ -84,7 +84,7 @@
   </enumeration>  
   <enumeration id="10" language="java" name="ImieRandom" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/ImieRandom.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="228" y="-115"/>    
+    <position height="66" width="120" x="1324" y="-109"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
@@ -93,7 +93,7 @@
   </enumeration>  
   <class id="11" language="java" name="Aplikacja" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/Aplikacja.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="445" y="-174"/>    
+    <position height="84" width="113" x="1484" y="-109"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
@@ -102,7 +102,7 @@
   </class>  
   <class id="12" language="java" name="StatekWycieczkowy" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/StatekWycieczkowy.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="525" y="500"/>    
+    <position height="66" width="196" x="2728" y="947"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
@@ -111,186 +111,195 @@
   </class>  
   <class id="13" language="java" name="SamolotWojskowy" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/SamolotWojskowy.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="904" y="657"/>    
+    <position height="66" width="190" x="3198" y="947"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
       <operations public="true" package="false" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="14" language="java" name="Pojazd" project="SymulacjaSwiata_K.Piotrowski" 
+  <class id="14" language="java" name="MapClickButton" project="SymulacjaSwiata_K.Piotrowski" 
+    file="/SymulacjaSwiata_K.Piotrowski/src/MapClickButton.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="66" width="217" x="1637" y="-109"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="true" private="true" static="false"/>      
+      <operations public="true" package="false" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="Pojazd" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/Pojazd.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="450" y="224"/>    
+    <position height="120" width="195" x="2846" y="681"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
       <operations public="true" package="false" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="15" language="java" name="UserLabel" project="SymulacjaSwiata_K.Piotrowski" 
+  <class id="16" language="java" name="UserLabel" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/UserLabel.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1142" y="353"/>    
+    <position height="102" width="132" x="1894" y="-109"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
       <operations public="true" package="false" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="16" language="java" name="Pasazer" project="SymulacjaSwiata_K.Piotrowski" 
+  <class id="17" language="java" name="Pasazer" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/Pasazer.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="266" y="208"/>    
+    <position height="750" width="201" x="2066" y="-109"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
       <operations public="true" package="false" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="17" language="java" name="Statek" project="SymulacjaSwiata_K.Piotrowski" 
+  <class id="18" language="java" name="Statek" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/Statek.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="475" y="409"/>    
+    <position height="66" width="134" x="2728" y="841"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
       <operations public="true" package="false" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="18" language="java" name="Droga" project="SymulacjaSwiata_K.Piotrowski" 
+  <class id="19" language="java" name="Droga" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/Droga.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="808" y="-147"/>    
+    <position height="174" width="201" x="705" y="-109"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
       <operations public="true" package="false" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="19" language="java" name="Port" project="SymulacjaSwiata_K.Piotrowski" 
+  <class id="20" language="java" name="Port" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/Port.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="608" y="158"/>    
+    <position height="66" width="124" x="3264" y="681"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
       <operations public="true" package="false" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="20" language="java" name="PunktMapy" project="SymulacjaSwiata_K.Piotrowski" 
+  <class id="21" language="java" name="PunktMapy" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/PunktMapy.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="442" y="9"/>    
+    <position height="282" width="157" x="3264" y="-109"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
       <operations public="true" package="false" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="21" language="java" name="UsersPanel" project="SymulacjaSwiata_K.Piotrowski" 
+  <class id="22" language="java" name="UsersPanel" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/UsersPanel.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1182" y="141"/>    
+    <position height="282" width="177" x="2307" y="-109"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
       <operations public="true" package="false" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="22" language="java" name="InfoLabel" project="SymulacjaSwiata_K.Piotrowski" 
+  <class id="23" language="java" name="InfoLabel" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/InfoLabel.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1161" y="458"/>    
+    <position height="66" width="106" x="2524" y="-109"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
       <operations public="true" package="false" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="23" language="java" name="Samolot" project="SymulacjaSwiata_K.Piotrowski" 
+  <class id="24" language="java" name="Samolot" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/Samolot.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="632" y="357"/>    
+    <position height="66" width="143" x="2964" y="841"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
       <operations public="true" package="false" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="24" language="java" name="MapPanel" project="SymulacjaSwiata_K.Piotrowski" 
+  <class id="25" language="java" name="MapPanel" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/MapPanel.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="953" y="384"/>    
+    <position height="390" width="177" x="2670" y="-109"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
       <operations public="true" package="false" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="25" language="java" name="InfoPanel" project="SymulacjaSwiata_K.Piotrowski" 
+  <class id="26" language="java" name="InfoPanel" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/InfoPanel.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="983" y="66"/>    
+    <position height="174" width="177" x="2887" y="-109"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
       <operations public="true" package="false" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="26" language="java" name="Skrzyzowanie" project="SymulacjaSwiata_K.Piotrowski" 
+  <class id="27" language="java" name="Skrzyzowanie" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/Skrzyzowanie.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="282" width="204" x="548" y="-194"/>    
-    <display autosize="false" stereotype="true" package="false" initial-value="false" signature="true" 
+    <position height="66" width="169" x="3428" y="681"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
       <operations public="true" package="false" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <enumeration id="27" language="java" name="Uzbrojenie" project="SymulacjaSwiata_K.Piotrowski" 
+  <enumeration id="28" language="java" name="Uzbrojenie" project="SymulacjaSwiata_K.Piotrowski" 
     file="/SymulacjaSwiata_K.Piotrowski/src/Uzbrojenie.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="55" y="-169"/>    
+    <position height="66" width="120" x="3104" y="-109"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="true" private="true" static="false"/>      
       <operations public="true" package="false" protected="true" private="true" static="true"/>    
     </display>  
   </enumeration>  
-  <generalization id="28">    
-    <end type="SOURCE" refId="14"/>    
-    <end type="TARGET" refId="20"/>  
-  </generalization>  
   <generalization id="29">    
-    <end type="SOURCE" refId="17"/>    
-    <end type="TARGET" refId="14"/>  
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="19"/>  
   </generalization>  
   <generalization id="30">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="18"/>  
+    <end type="SOURCE" refId="24"/>    
+    <end type="TARGET" refId="15"/>  
   </generalization>  
   <generalization id="31">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="17"/>  
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="24"/>  
   </generalization>  
   <generalization id="32">    
-    <end type="SOURCE" refId="23"/>    
-    <end type="TARGET" refId="14"/>  
-  </generalization>  
-  <generalization id="33">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="17"/>  
-  </generalization>  
-  <generalization id="34">    
-    <end type="SOURCE" refId="13"/>    
-    <end type="TARGET" refId="23"/>  
-  </generalization>  
-  <generalization id="35">    
-    <end type="SOURCE" refId="26"/>    
-    <end type="TARGET" refId="20"/>  
-  </generalization>  
-  <generalization id="36">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="20"/>  
-  </generalization>  
-  <generalization id="37">    
-    <end type="SOURCE" refId="7"/>    
+    <end type="SOURCE" refId="12"/>    
     <end type="TARGET" refId="18"/>  
   </generalization>  
+  <generalization id="33">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="24"/>  
+  </generalization>  
+  <generalization id="34">    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="21"/>  
+  </generalization>  
+  <generalization id="35">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="19"/>  
+  </generalization>  
+  <generalization id="36">    
+    <end type="SOURCE" refId="27"/>    
+    <end type="TARGET" refId="21"/>  
+  </generalization>  
+  <generalization id="37">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="21"/>  
+  </generalization>  
   <generalization id="38">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="23"/>  
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="21"/>  
   </generalization>  
   <generalization id="39">    
-    <end type="SOURCE" refId="19"/>    
-    <end type="TARGET" refId="20"/>  
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="18"/>  
+  </generalization>  
+  <generalization id="40">    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="15"/>  
   </generalization>  
   <classifier-display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
