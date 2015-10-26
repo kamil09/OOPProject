@@ -15,8 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
 
-import WSZYTKO.Pasazer;
-import WSZYTKO.Swiat;
+import MAIN.Swiat;
+import PASAZER.Pasazer;
 
 @SuppressWarnings("serial")
 /**

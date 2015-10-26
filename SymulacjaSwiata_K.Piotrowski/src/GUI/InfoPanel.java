@@ -19,11 +19,11 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
 
-import WSZYTKO.Pasazer;
-import WSZYTKO.PunktMapy;
-import WSZYTKO.Samolot;
-import WSZYTKO.Statek;
-import WSZYTKO.Swiat;
+import MAIN.PunktMapy;
+import MAIN.Swiat;
+import PASAZER.Pasazer;
+import POJAZD.Samolot;
+import POJAZD.Statek;
 
 @SuppressWarnings("serial")
 /**
@@ -149,8 +149,21 @@ public class InfoPanel extends JPanel implements Runnable{
 	public void run() {
 		while(true) {
             try {
-            	repaint();
-                Thread.sleep(3000);     
+            	switch(typ){
+	    			case 0:
+	    				printInfo(pasazer);
+	    				break;
+	    			case 1:
+	    				printInfo(samolot);
+	    				break;
+	    			case 2:
+	    				printInfo(statek);
+	    				break;
+	    			case 3:
+	    				printInfo(punkt);
+	    				break;
+	    		}
+                Thread.sleep(1200);     
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -163,20 +176,6 @@ public class InfoPanel extends JPanel implements Runnable{
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		
-		switch(typ){
-			case 0:
-				printInfo(pasazer);
-				break;
-			case 1:
-				printInfo(samolot);
-				break;
-			case 2:
-				printInfo(statek);
-				break;
-			case 3:
-				printInfo(punkt);
-				break;
-		}
 		scrollPane.setPreferredSize(new Dimension(getWidth(), getHeight()-190 )); 
 	}
 
@@ -187,64 +186,65 @@ public class InfoPanel extends JPanel implements Runnable{
 	 */
 	public static void printInfo(Pasazer pasazer2){
 		
-		if(typ != 0 || !pasazer.equals(pasazer2)){
-			pasazer=pasazer2;
 		
-			panelInfo.removeAll();
-			JLabel label = new InfoLabel( "Imie: "+pasazer.getImie() );
-			JLabel label2 = new InfoLabel( "Nazwisko: "+pasazer.getNazwisko() );
-			JLabel label3 = new InfoLabel( "Wiek: "+pasazer.getWiek() );
-			JLabel label4 = new InfoLabel( "Pesel: "+pasazer.getPesel() );
-			JLabel label5 = new InfoLabel( "Miasto rodzinne: "+ pasazer.getMiastoRodzinne().getName());
-			JLabel label6;
-			if( pasazer.getMiastoDocelowe()!=null){
-				label6 = new InfoLabel( "Miasto docelowe: "+ pasazer.getMiastoDocelowe().getName());
-			}
-			else{
-				label6 = new InfoLabel( "Miasto docelowe: brak");
-			}
-			JLabel label7 = new InfoLabel( "Czas w miejscu docelowym: "+pasazer.getCzasPostoju() );
-			JLabel label8 = new InfoLabel( "Miejsce: " +pasazer.getObecnyPunkt().getName() );
-			JLabel label9;
-			if(pasazer.getObecnyPojazd()!=null){
-				label9 = new InfoLabel( "Pojazd: " +pasazer.getObecnyPojazd().getName() );
-			}
-			else{
-				label9 = new InfoLabel( "Pojazd: brak"  );
-			}
-			JLabel label10 = new InfoLabel( "Trasa: " );
-			
-			
-			panelInfo.add(label);
-			panelInfo.add(Box.createVerticalStrut(10));
-			panelInfo.add(label2);
-			panelInfo.add(Box.createVerticalStrut(10));
-			panelInfo.add(label3);
-			panelInfo.add(Box.createVerticalStrut(10));
-			panelInfo.add(label4);
-			panelInfo.add(Box.createVerticalStrut(10));
-			panelInfo.add(label5);
-			panelInfo.add(Box.createVerticalStrut(10));
-			panelInfo.add(label6);
-			panelInfo.add(Box.createVerticalStrut(10));
-			panelInfo.add(label7);
-			panelInfo.add(Box.createVerticalStrut(10));
-			panelInfo.add(label8);
-			panelInfo.add(Box.createVerticalStrut(10));
-			panelInfo.add(label9);
-			panelInfo.add(Box.createVerticalStrut(10));
-			panelInfo.add(label10);
-			panelInfo.add(Box.createVerticalStrut(5));
-			
-			for( PunktMapy punkt : pasazer.getTrasa() ){
-				JLabel label11 = new InfoLabel( "---  "+punkt.getName() );
-				panelInfo.add(label11);
-			}
-			
-			panelInfo.revalidate();
-			panelInfo.repaint();
+		pasazer=pasazer2;
+	
+		
+		JLabel label = new InfoLabel( "Imie: "+pasazer.getImie() );
+		JLabel label2 = new InfoLabel( "Nazwisko: "+pasazer.getNazwisko() );
+		JLabel label3 = new InfoLabel( "Wiek: "+pasazer.getWiek() );
+		JLabel label4 = new InfoLabel( "Pesel: "+pasazer.getPesel() );
+		JLabel label5 = new InfoLabel( "Miasto rodzinne: "+ pasazer.getMiastoRodzinne().getName());
+		JLabel label6;
+		if( pasazer.getMiastoDocelowe()!=null){
+			label6 = new InfoLabel( "Miasto docelowe: "+ pasazer.getMiastoDocelowe().getName());
 		}
-			typ=0;
+		else{
+			label6 = new InfoLabel( "Miasto docelowe: brak");
+		}
+		JLabel label7 = new InfoLabel( "Czas w miejscu docelowym: "+pasazer.getCzasPostoju() );
+		JLabel label8 = new InfoLabel( "Miejsce: " +pasazer.getObecnyPunkt().getName() );
+		JLabel label9;
+		if(pasazer.getObecnyPojazd()!=null){
+			label9 = new InfoLabel( "Pojazd: " +pasazer.getObecnyPojazd().getName() );
+		}
+		else{
+			label9 = new InfoLabel( "Pojazd: brak"  );
+		}
+		JLabel label10 = new InfoLabel( "Trasa: " );
+		
+		panelInfo.removeAll();
+		
+		panelInfo.add(label);
+		panelInfo.add(Box.createVerticalStrut(10));
+		panelInfo.add(label2);
+		panelInfo.add(Box.createVerticalStrut(10));
+		panelInfo.add(label3);
+		panelInfo.add(Box.createVerticalStrut(10));
+		panelInfo.add(label4);
+		panelInfo.add(Box.createVerticalStrut(10));
+		panelInfo.add(label5);
+		panelInfo.add(Box.createVerticalStrut(10));
+		panelInfo.add(label6);
+		panelInfo.add(Box.createVerticalStrut(10));
+		panelInfo.add(label7);
+		panelInfo.add(Box.createVerticalStrut(10));
+		panelInfo.add(label8);
+		panelInfo.add(Box.createVerticalStrut(10));
+		panelInfo.add(label9);
+		panelInfo.add(Box.createVerticalStrut(10));
+		panelInfo.add(label10);
+		panelInfo.add(Box.createVerticalStrut(5));
+		
+		for( PunktMapy punkt : pasazer.getTrasa() ){
+			JLabel label11 = new InfoLabel( "---  "+punkt.getName() );
+			panelInfo.add(label11);
+		}
+		
+		panelInfo.revalidate();
+		panelInfo.repaint();
+	
+		typ=0;
 		
 	}
 	
@@ -254,17 +254,17 @@ public class InfoPanel extends JPanel implements Runnable{
 	 */
 	public static void printInfo(Samolot samolot2){
 	
-		if(typ!=1 || !samolot.equals(samolot2)){
 		
-			panelInfo.removeAll();
-			samolot=samolot2;
-			
-			
-			
-			panelInfo.revalidate();
-			panelInfo.repaint();
-		}
-		typ=1;
+		
+		panelInfo.removeAll();
+		samolot=samolot2;
+		
+		
+		
+		panelInfo.revalidate();
+		panelInfo.repaint();
+		typ =1;
+		
 	}
 	/**
 	 * Wypisuje informacje o statku
@@ -272,15 +272,14 @@ public class InfoPanel extends JPanel implements Runnable{
 	 */
 	public static void printInfo(Statek statek2){
 		
-		if(typ!=2 || !statek.equals(statek2)){
 		
-			panelInfo.removeAll();	
-			statek=statek2;
-			
-			panelInfo.revalidate();
-			panelInfo.repaint();
-			}
-		typ=2;
+		panelInfo.removeAll();	
+		statek=statek2;
+		
+		panelInfo.revalidate();
+		panelInfo.repaint();
+		typ =2;
+		
 	}
 	
 	/**
@@ -289,30 +288,31 @@ public class InfoPanel extends JPanel implements Runnable{
 	 */
 	public static void printInfo(PunktMapy punkt2){
 			
-		if(typ!=3 || !punkt.equals(punkt2)){
 		
-			panelInfo.removeAll();
-			punkt=punkt2;
-			
-			JLabel label = new InfoLabel( "Nazwa: "+punkt.getName());
-			JLabel label2 = new InfoLabel( "Typ : "+punkt.getClass().getName()); 
-			JLabel label3 = new InfoLabel( "Wspólrzędna X: "+punkt.getKoorX() );
-			JLabel label4 = new InfoLabel( "Współrzędna Y: "+punkt.getKoorY() );
-			
-			panelInfo.add(label);
-			panelInfo.add(Box.createVerticalStrut(10));
-			panelInfo.add(label2);
-			panelInfo.add(Box.createVerticalStrut(10));
-			panelInfo.add(label3);
-			panelInfo.add(Box.createVerticalStrut(10));
-			panelInfo.add(label4);
-			panelInfo.add(Box.createVerticalStrut(10));
-			
-			panelInfo.revalidate();
-			panelInfo.repaint();
-		}
-		typ=3;
+		
+		panelInfo.removeAll();
+		punkt=punkt2;
+		
+		JLabel label = new InfoLabel( "Nazwa: "+punkt.getName());
+		JLabel label2 = new InfoLabel( "Typ : "+punkt.getClass().getName()); 
+		JLabel label3 = new InfoLabel( "Wspólrzędna X: "+punkt.getKoorX() );
+		JLabel label4 = new InfoLabel( "Współrzędna Y: "+punkt.getKoorY() );
+		
+		panelInfo.add(label);
+		panelInfo.add(Box.createVerticalStrut(10));
+		panelInfo.add(label2);
+		panelInfo.add(Box.createVerticalStrut(10));
+		panelInfo.add(label3);
+		panelInfo.add(Box.createVerticalStrut(10));
+		panelInfo.add(label4);
+		panelInfo.add(Box.createVerticalStrut(10));
+		
+		panelInfo.revalidate();
+		panelInfo.repaint();
+		typ =3;
 	}
+	
+
 }
 
 

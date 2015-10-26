@@ -5,7 +5,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 
-import WSZYTKO.PunktMapy;
+import MAIN.PunktMapy;
 
 @SuppressWarnings("serial")
 /**
