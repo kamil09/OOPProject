@@ -21,7 +21,7 @@ public final class Swiat {
 	private static List<Pojazd> listaPojazdow = new ArrayList<Pojazd>();
 	private static List<Droga> listaTras = new ArrayList<Droga>();
 	
-	private static List<PunktMapy> cityList = new ArrayList<PunktMapy>();
+	private static List<Miasto> cityList = new ArrayList<Miasto>();
 	private static List<PunktMapy> skrzyzowanieList = new ArrayList<PunktMapy>();
 
 	private static List<Runnable> runnerList = new ArrayList<Runnable>();
@@ -82,7 +82,7 @@ public final class Swiat {
 	public static void setImageGraphics(Graphics2D graphics) {
 		Swiat.imageGraphics = graphics;
 	}
-	public static List<PunktMapy> getCityList(){
+	public static List<Miasto> getCityList(){
 		return cityList;
 	}
 	

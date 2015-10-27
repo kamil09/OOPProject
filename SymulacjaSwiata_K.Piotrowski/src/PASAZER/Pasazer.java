@@ -7,9 +7,11 @@ import java.util.Random;
 import ENUM.ImieRandom;
 import ENUM.NazwiskoRandom;
 import MAIN.Droga;
+import MAIN.Miasto;
 import MAIN.PunktMapy;
 import MAIN.Swiat;
 import POJAZD.Pojazd;
+import POJAZD.PojazdPasazerski;
 
 /**
  * 
@@ -53,19 +55,19 @@ public class Pasazer implements Runnable{
 	/**
 	 * Miasto rodzinne pasażera
 	 */
-	private PunktMapy miastoRodzinne;
+	private Miasto miastoRodzinne;
 	/**
 	 * Punkt w którym pasażer obecnie sę znajduje (miasto)
 	 */
-	private PunktMapy obecnyPunkt;
+	private Miasto obecnyPunkt;
 	/**
 	 * Obecny pojazd, w którym znajsuje się pasażer
 	 */
-	private Pojazd obecnyPojazd;
+	private PojazdPasazerski obecnyPojazd;
 	/**
 	 * Miasto docelowe do którego zmierza pasażer
 	 */
-	private PunktMapy miastoDocelowe;
+	private Miasto miastoDocelowe;
 	
 	/**
 	 * Trasa : a - b - c - d - e - f - g - h - ciąg samych miast. bez obecnego, ale łącznie z końcowym!!!
@@ -133,22 +135,22 @@ public class Pasazer implements Runnable{
 	public void setTrasa(List<PunktMapy> trasa) {
 		this.trasa = trasa;
 	}
-	public PunktMapy getObecnyPunkt() {
+	public Miasto getObecnyPunkt() {
 		return obecnyPunkt;
 	}
-	public void setObecnyPunkt(PunktMapy obecnyPunkt) {
+	public void setObecnyPunkt(Miasto obecnyPunkt) {
 		this.obecnyPunkt = obecnyPunkt;
 	}
-	public PunktMapy getMiastoDocelowe() {
+	public Miasto getMiastoDocelowe() {
 		return miastoDocelowe;
 	}
-	public void setMiastoDocelowe(PunktMapy miastoDocelowe) {
+	public void setMiastoDocelowe(Miasto miastoDocelowe) {
 		this.miastoDocelowe = miastoDocelowe;
 	}
-	public Pojazd getObecnyPojazd() {
+	public PojazdPasazerski getObecnyPojazd() {
 		return obecnyPojazd;
 	}
-	public void setObecnyPojazd(Pojazd obecnyPojazd) {
+	public void setObecnyPojazd(PojazdPasazerski obecnyPojazd) {
 		this.obecnyPojazd = obecnyPojazd;
 	};
 
@@ -187,11 +189,17 @@ public class Pasazer implements Runnable{
             	 * Akcje dla poszczególnych stanów pasazera
             	 */
             	switch(this.getStatus()){
+            		/**
+            		 * Losowanie trasy
+            		 */
             		case 0:
             			this.setMiastoDocelowe(null);
             			this.losujTrase();
             			this.setStatus(1);
             			break;
+            		/**
+            		 * Pobyt w miescie
+            		 */
             		case 1:
             			if(this.trasa.size()>0){
             				/**
@@ -211,34 +219,49 @@ public class Pasazer implements Runnable{
             				 * Jeśli tak to skaczemy / teleportujemy się / idziemy na piechote lądem / pod ziemią 
             				 */
 	            			if( this.getObecnyPunkt().getClass().getName() != this.getTrasa().get(0).getClass().getName() ){
-	            				this.setObecnyPunkt(this.getTrasa().get(0));
+	            				this.setObecnyPunkt((Miasto)this.getTrasa().get(0));
 	            				this.trasa.remove(0);
 	            				break;
 	            			}
-	            			this.status=3;
-	            			//Przeszukanie czy w obecnym miejscu znajduje się odpowiedni pojazd
 	            			/*
-	            			 * XKOOOOOOOOOOOOOOOOOOOOOOOOODDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+	            			 * Przeszukanie czy w obecnym miejscu znajduje się odpowiedni pojazd
 	            			 */
+	            			for(Pojazd pojazd : this.getObecnyPunkt().getListaPojazdow() ){
+	            				if(pojazd instanceof PojazdPasazerski){
+	            					if(((PojazdPasazerski) pojazd).getWolneMiejsca() > 0){
+	            						this.wsiadzDoPojazdu((PojazdPasazerski)pojazd);
+	            						break;
+	            					}
+	            				}
+	            			}
             			}
-            			
             			break;
             		case 2:
-            			//Sprawdzenie czy pojazd znajduje się w miejscu docelowym
+            			/**
+            			 * Sprawdzenie czy pojazd znajduje się w miejscu docelowym
+            			 */
             			if(this.getObecnyPojazd().getObecneMiejsce().getid() == this.getTrasa().get(0).getid() ){
             				wysiadzZPojazdu();
             			}
             			break;
             		case 3:
-            			//odliczanie
+            			/**
+            			 * odliczanie
+            			 */
             			this.czasPostoju-=0.02;
             			if(this.czasPostoju<0) this.setStatus(1);
             			break;
             		case 4:
+            			/**
+            			 * Przepisanie trasy powrotnej
+            			 */
             			this.zamienTrasy();
             			this.setStatus(3);
             			break;
             		case 5:
+            			/**
+            			 * Cofniecie się do początku
+            			 */
             			this.setStatus(0);
             			break;
             	}
@@ -298,7 +321,7 @@ public class Pasazer implements Runnable{
 		for (PunktMapy punkt : this.trasa) if(punkt.getid()>=20 ) doUsuniecia.add(punkt);
 		for (PunktMapy punkt : doUsuniecia) this.trasa.remove(punkt);
 		//ustawienie miasta docelowego
-		this.miastoDocelowe=this.trasa.get(this.trasa.size()-1);
+		this.miastoDocelowe=(Miasto)this.trasa.get(this.trasa.size()-1);
 		//trasa powrotna
 		for(int i = this.trasa.size()-2 ; i>=0; i-- ){
 			this.trasaPowrotna.add(this.trasa.get(i));
@@ -314,18 +337,31 @@ public class Pasazer implements Runnable{
 		this.trasa=this.trasaPowrotna;
 	}
 	
-	
+	/**
+	 * Metoda - pasażer wysiada z pojazdu
+	 */
 	public void wysiadzZPojazdu(){
-		//
-		this.setObecnyPunkt( this.getTrasa().get(0) );
+		//Ustawienie obecnego punktu
+		this.setObecnyPunkt( (Miasto)this.getTrasa().get(0) );
 		this.trasa.remove(0);
-		//***********************ZMNIEJSZYC LICZBE PASAZEROW W POJEZDZIE*****************************
+		//Zwiększamy liczbę wolnych miejsc w pojeździe
+		this.getObecnyPojazd().setWolneMiejsca(this.getObecnyPojazd().getWolneMiejsca()+1);
+		//Usuwamy pasażera z pojazdu i pojazd z pasażera
+		this.getObecnyPojazd().getListaPasazerow().remove(this);
 		this.setObecnyPojazd(null);
 		this.setStatus(1);
 	}
-	public void wsiadzDoPojazdu( Pojazd pojazd ){
+	/**
+	 * Metoda - pasażer wsiada do pojazdu
+	 * @param pojazd - referencja do pojazdu do którego wsiada pasażer
+	 */
+	public void wsiadzDoPojazdu( PojazdPasazerski pojazd ){
+		//dodajemy pasazera do pojazdu, zmniejszamy ilosc wolnych miejsc
+		pojazd.getListaPasazerow().add(this);
+		pojazd.setWolneMiejsca(this.getObecnyPojazd().getWolneMiejsca()-1);
+		//ustawiamy obecny pojazd
 		this.setObecnyPojazd(pojazd);
-		//******************ZWIEKSZAMY LICZBE PASAZEROW W POJEZDZIE**********************//
+		this.setObecnyPunkt(null);
 		this.setStatus(2);
 	}
 	

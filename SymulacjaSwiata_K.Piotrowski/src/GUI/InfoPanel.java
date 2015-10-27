@@ -22,8 +22,8 @@ import javax.swing.border.MatteBorder;
 import MAIN.PunktMapy;
 import MAIN.Swiat;
 import PASAZER.Pasazer;
-import POJAZD.Samolot;
-import POJAZD.Statek;
+import POJAZD.PojazdPasazerski;
+import POJAZD.PojazdWojskowy;
 
 @SuppressWarnings("serial")
 /**
@@ -53,11 +53,11 @@ public class InfoPanel extends JPanel implements Runnable{
 	/**
 	 * Obecnie wyświetlany statek
 	 */
-	static Statek statek;
+	static PojazdWojskowy statek;
 	/**
 	 * )becnie wyświetlany samolot
 	 */
-	static Samolot samolot;
+	static PojazdPasazerski samolot;
 	/**
 	 * Obecnie wyświetlany punkt mapy (miasto lub sprzyzowanie)
 	 */
@@ -237,7 +237,7 @@ public class InfoPanel extends JPanel implements Runnable{
 		panelInfo.add(Box.createVerticalStrut(5));
 		
 		for( PunktMapy punkt : pasazer.getTrasa() ){
-			JLabel label11 = new InfoLabel( "---  "+punkt.getName() );
+			JLabel label11 = new InfoLabel( "   --->  "+punkt.getName() );
 			panelInfo.add(label11);
 		}
 		
@@ -252,7 +252,7 @@ public class InfoPanel extends JPanel implements Runnable{
 	 * Wypisuje informacje o samolocie
 	 * @param samolot2 - referencja na wyświetlany obiekt
 	 */
-	public static void printInfo(Samolot samolot2){
+	public static void printInfo(PojazdPasazerski samolot2){
 	
 		
 		
@@ -270,7 +270,7 @@ public class InfoPanel extends JPanel implements Runnable{
 	 * Wypisuje informacje o statku
 	 * @param statek2 - referencja do wyświetlanego obiektu
 	 */
-	public static void printInfo(Statek statek2){
+	public static void printInfo(PojazdWojskowy statek2){
 		
 		
 		panelInfo.removeAll();	

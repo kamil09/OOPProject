@@ -5,7 +5,7 @@ package MAIN;
  * Klasa lotniska - dziedziczy po punkcie mapy
  *
  */
-public class Lotnisko extends PunktMapy{
+public class Lotnisko extends Miasto{
 
 	/**
 	 * Konstruktor
