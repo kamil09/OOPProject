@@ -1,8 +1,11 @@
 package POJAZD;
 
-public abstract class Samolot extends Pojazd{
+/**
+ * 
+ * @author Kamil Piotrowski
+ * Interfejs który grupuje samoloty
+ * 
+ */
+public interface Samolot {
 
-	public Samolot(int x,int y, String name, int id){
-		super(x, y, name, id);
-	}
 }

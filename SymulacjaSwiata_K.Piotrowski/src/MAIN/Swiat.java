@@ -1,5 +1,4 @@
 package MAIN;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -11,27 +10,55 @@ import javax.imageio.ImageIO;
 import PASAZER.Pasazer;
 import POJAZD.Pojazd;
 
-
+/**
+ * 
+ * @author Kamil Piotrowski
+ * Klasa świata programu
+ * Znajdują się w niej wszystkie najważniejsze dane
+ *
+ */
 public final class Swiat {
 	
+	/**
+	 * Obraz tła
+	 */
 	private static BufferedImage bufferImage;
-	private static Graphics2D imageGraphics;
-	
+	/**
+	 * Lista wszystkich pasażerów
+	 */
 	private static List<Pasazer> listaPasazerow = new ArrayList<Pasazer>();
+	/**
+	 * Lista wszystkich pojazdów
+	 */
 	private static List<Pojazd> listaPojazdow = new ArrayList<Pojazd>();
+	/**
+	 * Lista wszystkich tras
+	 */
 	private static List<Droga> listaTras = new ArrayList<Droga>();
-	
+	/**
+	 * Lista wszystkich miast
+	 */
 	private static List<Miasto> cityList = new ArrayList<Miasto>();
+	/**
+	 * Lista skrzyżowań
+	 */
 	private static List<PunktMapy> skrzyzowanieList = new ArrayList<PunktMapy>();
-
+	/**
+	 * Lista do wątków
+	 */
 	private static List<Runnable> runnerList = new ArrayList<Runnable>();
+	/**
+	 * Lista do wątków
+	 */
 	private static List<Thread> threadsList = new ArrayList<Thread>();
 	
-	
+	/**
+	 * Konstruktor świata
+	 * Wczytuje obraz tła
+	 */
 	public Swiat(){
 		try {
 			bufferImage = ImageIO.read(new File("src/mapa2.png"));
-			setImageGraphics((Graphics2D)bufferImage.getGraphics());
 			generujListeMiast();
 			for(int i=0;i<100;i++) addPasazer();
 		} catch (IOException ex) { 
@@ -43,6 +70,9 @@ public final class Swiat {
 		return bufferImage;
 	}
 	
+	/**
+	 * Dodawanie pasażera, start wątku
+	 */
 	public static void addPasazer(){
 		Pasazer nowaOsoba= new Pasazer();
 		listaPasazerow.add(nowaOsoba);
@@ -50,47 +80,43 @@ public final class Swiat {
 		threadsList.add(new Thread(runnerList.get(runnerList.size()-1)));
 		threadsList.get(threadsList.size()-1).start();;
 	}
+	/**
+	 * Dodawanie samolotu pasażerskiego
+	 */
 	public static void addSamolotPasazerski(){
 		System.out.println("Dodano samolot pasażerski!");
 	}
+	/**
+	 * Dodawanie samolotu wojskowego
+	 */
 	public static void addSamolotWojskowy(){
 		System.out.println("Dodano samolot wojskowy!");
 	}
+	/**
+	 * Dodawanie statku pasażerskiego
+	 */
 	public static void addStatekPasazerski(){
 		System.out.println("Dodano statek pasazerski!");
 	}
+	/**
+	 * Dodawanie lotniskowca
+	 */
 	public static void addLotniskowiec(){
 		System.out.println("Dodano lotniskowiec!");
 	}
 	public static List<Pasazer> getListaPasazerow(){
 		return listaPasazerow;
 	}
-	
-//	public static void addSamolot(){
-//		listaPojazdow.add(new Samolot());
-//	}
-//	public static void addStatek(){
-//		listaPojazdow.add(new Statek());
-//	}
-	
-	public static List<Pojazd> getListaPojazdow(){
-		return listaPojazdow;
-	}
-	public static Graphics2D getImageGraphics() {
-		return imageGraphics;
-	}
-	public static void setImageGraphics(Graphics2D graphics) {
-		Swiat.imageGraphics = graphics;
-	}
-	public static List<Miasto> getCityList(){
-		return cityList;
-	}
+
 	
 	
 	
 	@SuppressWarnings("serial")
+	/**
+	 * Generuje listę miast oraz tras
+	 */
 	public void generujListeMiast(){
-		/*
+		/**
 		 * LOTNISKA:
 		 * 1.	X 507	Y 519 
 		 * 2.	X 663	Y 1455
@@ -155,9 +181,11 @@ public final class Swiat {
 		skrzyzowanieList.add(new Skrzyzowanie(2571,1275,"Skrzyzowanie Tacjana ",27));
 		skrzyzowanieList.add(new Skrzyzowanie(2757,1563,"Skrzyzowanie Stelli",28));
 	
-		//Generowanie tras
-		//Trasa jest to pojedyńczy odcinek np od skrzyzowania do miasta
-		//Trasa obejmuje punkt A oraz wszystkie następniki B 
+		/**
+		 * Generowanie tras
+		 * Trasa jest to pojedyńczy odcinek np od skrzyzowania do miasta
+		 * Trasa obejmuje punkt A oraz wszystkie następniki B 
+		 */
 		//Trasy morskie:
 		listaTras.add(new TrasaMorska( cityList.get(17), new ArrayList<PunktMapy>(){{
 				add(skrzyzowanieList.get(6));
@@ -322,6 +350,12 @@ public final class Swiat {
 	}
 	public static List<PunktMapy> getSkrzyzowanieList() {
 		return skrzyzowanieList;
+	}
+	public static List<Pojazd> getListaPojazdow(){
+		return listaPojazdow;
+	}
+	public static List<Miasto> getCityList(){
+		return cityList;
 	}
 	
 }

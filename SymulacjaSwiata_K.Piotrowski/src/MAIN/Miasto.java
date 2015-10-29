@@ -5,6 +5,12 @@ import java.util.List;
 
 import POJAZD.Pojazd;
 
+/**
+ * 
+ * @author Kamil Piotrowski
+ * Klasa określająca miasto dziedziczy po punkcie mapy
+ *
+ */
 public abstract class Miasto extends PunktMapy{
 
 	/**

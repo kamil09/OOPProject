@@ -2,7 +2,7 @@ package MAIN;
 /**
  * 
  * @author Kamil Piotrowski
- * Klasa lotniska - dziedziczy po punkcie mapy
+ * Klasa lotniska - dziedziczy po miescie
  *
  */
 public class Lotnisko extends Miasto{

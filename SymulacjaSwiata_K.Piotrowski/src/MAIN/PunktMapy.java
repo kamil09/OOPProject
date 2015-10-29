@@ -1,9 +1,28 @@
 package MAIN;
+
+/**
+ * 
+ * @author Kamil Piotrowski
+ * Klasa okreslająca punkt mapy, dziedziczy po niej wile innych klas
+ *
+ */
 public abstract class PunktMapy {
-	private int id;
 	
+	/**
+	 * ID punktu
+	 */
+	private int id;
+	/**
+	 * Współrzędna X punktu
+	 */
 	private int koorX;
+	/**
+	 * Współrzędna Y punktu
+	 */
 	private int koorY;
+	/**
+	 * Nazwa miejsca na mapie
+	 */
 	private String name;
 	
 	public int getid() {
@@ -42,6 +61,13 @@ public abstract class PunktMapy {
 		this.name = name;
 	}
 	
+	/**
+	 * Konstruktor
+	 * @param x		- współrzędna X
+	 * @param y		- współrzędna Y
+	 * @param name	- nazwa lotniska
+	 * @param id	- id lotniska
+	 */
 	public PunktMapy(int x,int y, String name,int id){
 		this.setKoorX(x);
 		this.setKoorY(y);

@@ -33,16 +33,16 @@ public class Droga {
 
 	
 	public PunktMapy getA() {
-		return A;
+		return this.A;
 	}
 	public void setA(PunktMapy a) {
-		A = a;
+		this.A = a;
 	}
 	public List<PunktMapy> getB() {
-		return B;
+		return this.B;
 	}
 	public void setB(List<PunktMapy> b) {
-		B = b;
+		this.B = b;
 	}
 
 	
