@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import DROGA.Droga;
 import ENUM.ImieRandom;
 import ENUM.NazwiskoRandom;
-import MAIN.Droga;
 import MAIN.Miasto;
 import MAIN.PunktMapy;
 import MAIN.Swiat;
@@ -290,20 +290,20 @@ public class Pasazer implements Runnable{
 		this.trasa.clear();
 		this.trasaPowrotna.clear();
 		while(dlugoscTrasy>0){
-			List<Droga> dostepneTrasy = new ArrayList<Droga>();
-			//Mozliwe trasy, zabezpieczenie przed skakaniem miastoA-portB-miastoA-portB
-			for(Droga trasa : Swiat.getListaTras() )
-				if(trasa.getA().equals(poprzedniPunkt) && trasa.getB().get(0).getid()!=poprzedniPunkt.getid() ) dostepneTrasy.add(trasa);
-			int wybranaTrasa=generator.nextInt(dostepneTrasy.size());
 			//Wybieranie możliwych punktów, zapobieganie cyklom i udaniem się na lotnisko wojskowe :)
 			List<PunktMapy> dostepnePunkty = new ArrayList<PunktMapy>();
-			for (PunktMapy punktTMP : dostepneTrasy.get(wybranaTrasa).getB() ){
-				if(punktTMP.getid() >=9 && punktTMP.getid()<=12 ) continue;
-				boolean goodPoint = true;
-				for (PunktMapy badPoint : this.trasa){
-					if(badPoint.getid() == punktTMP.getid()) goodPoint=false;
+			
+			
+			//Mozliwe trasy, zabezpieczenie przed skakaniem miastoA-portB-miastoA-portB, oraz cyklami
+			for(Droga trasa : Swiat.getListaTras() ){
+				if(trasa.getA().equals(poprzedniPunkt) && trasa.getB().getid()!=poprzedniPunkt.getid() ) {
+					if(trasa.getB().getid() >=9 && trasa.getB().getid()<=12 ) continue;
+					boolean goodPoint = true;
+					for (PunktMapy badPoint : this.trasa){
+						if(badPoint.getid() == trasa.getB().getid() ) goodPoint=false;
+					}
+					if(goodPoint==true) dostepnePunkty.add(trasa.getB());	
 				}
-				if(goodPoint==true) dostepnePunkty.add(punktTMP);
 			}
 			if(dostepnePunkty.size()>0 ){
 				int wybranyPunkt=generator.nextInt(dostepnePunkty.size());
@@ -319,7 +319,7 @@ public class Pasazer implements Runnable{
 		//usuwanie skrzyżowań z listy
 		List<PunktMapy> doUsuniecia = new ArrayList<PunktMapy>();
 		for (PunktMapy punkt : this.trasa) if(punkt.getid()>=20 ) doUsuniecia.add(punkt);
-		for (PunktMapy punkt : doUsuniecia) this.trasa.remove(punkt);
+		this.trasa.removeAll(doUsuniecia);
 		//ustawienie miasta docelowego
 		this.miastoDocelowe=(Miasto)this.trasa.get(this.trasa.size()-1);
 		//trasa powrotna

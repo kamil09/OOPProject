@@ -7,6 +7,9 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import DROGA.Droga;
+import DROGA.TrasaMorska;
+import DROGA.TrasaPowietrzna;
 import PASAZER.Pasazer;
 import POJAZD.Pojazd;
 
@@ -69,7 +72,6 @@ public final class Swiat {
 	public static BufferedImage getBufferImage(){
 		return bufferImage;
 	}
-	
 	/**
 	 * Dodawanie pasażera, start wątku
 	 */
@@ -107,11 +109,6 @@ public final class Swiat {
 	public static List<Pasazer> getListaPasazerow(){
 		return listaPasazerow;
 	}
-
-	
-	
-	
-	@SuppressWarnings("serial")
 	/**
 	 * Generuje listę miast oraz tras
 	 */
@@ -184,166 +181,84 @@ public final class Swiat {
 		/**
 		 * Generowanie tras
 		 * Trasa jest to pojedyńczy odcinek np od skrzyzowania do miasta
-		 * Trasa obejmuje punkt A oraz wszystkie następniki B 
 		 */
 		//Trasy morskie:
-		listaTras.add(new TrasaMorska( cityList.get(17), new ArrayList<PunktMapy>(){{
-				add(skrzyzowanieList.get(6));
-			}}));
-		listaTras.add(new TrasaMorska( cityList.get(13), new ArrayList<PunktMapy>(){{
-			add(skrzyzowanieList.get(6));
-			add(skrzyzowanieList.get(7));
-		}}));
-		listaTras.add(new TrasaMorska( cityList.get(14), new ArrayList<PunktMapy>(){{
-			add(skrzyzowanieList.get(7));
-			add(skrzyzowanieList.get(8));
-		}}));
-		listaTras.add(new TrasaMorska( cityList.get(15), new ArrayList<PunktMapy>(){{
-			add(skrzyzowanieList.get(8));
-		}}));
-		listaTras.add(new TrasaMorska( cityList.get(16), new ArrayList<PunktMapy>(){{
-			add(skrzyzowanieList.get(6));
-			add(skrzyzowanieList.get(8));
-		}}));
-		listaTras.add(new TrasaMorska( skrzyzowanieList.get(6), new ArrayList<PunktMapy>(){{
-			add(skrzyzowanieList.get(7));
-			add(cityList.get(13));
-			add(cityList.get(17));
-			add(cityList.get(16));
-		}}));
-		listaTras.add(new TrasaMorska( skrzyzowanieList.get(7), new ArrayList<PunktMapy>(){{
-			add(skrzyzowanieList.get(6));
-			add(skrzyzowanieList.get(8));
-			add(cityList.get(13));
-			add(cityList.get(14));
-		}}));
-		listaTras.add(new TrasaMorska( skrzyzowanieList.get(8), new ArrayList<PunktMapy>(){{
-			add(skrzyzowanieList.get(7));
-			add(cityList.get(14));
-			add(cityList.get(15));
-			add(cityList.get(16));
-		}}));		
+		listaTras.add(new TrasaMorska( cityList.get(17), skrzyzowanieList.get(6)));
+		listaTras.add(new TrasaMorska( cityList.get(13), skrzyzowanieList.get(6)));
+		listaTras.add(new TrasaMorska( cityList.get(13), skrzyzowanieList.get(7)));		
+		listaTras.add(new TrasaMorska( cityList.get(14), skrzyzowanieList.get(7)));
+		listaTras.add(new TrasaMorska( cityList.get(14), skrzyzowanieList.get(8)));
+		listaTras.add(new TrasaMorska( cityList.get(15), skrzyzowanieList.get(8)));
+		listaTras.add(new TrasaMorska( cityList.get(16), skrzyzowanieList.get(6)));
+		listaTras.add(new TrasaMorska( cityList.get(16), skrzyzowanieList.get(8)));
+		listaTras.add(new TrasaMorska( skrzyzowanieList.get(6), skrzyzowanieList.get(7)));
+		listaTras.add(new TrasaMorska( skrzyzowanieList.get(6), cityList.get(13)));
+		listaTras.add(new TrasaMorska( skrzyzowanieList.get(6), cityList.get(17)));
+		listaTras.add(new TrasaMorska( skrzyzowanieList.get(6), cityList.get(16)));
+		listaTras.add(new TrasaMorska( skrzyzowanieList.get(7), skrzyzowanieList.get(6)));
+		listaTras.add(new TrasaMorska( skrzyzowanieList.get(7), skrzyzowanieList.get(8)));
+		listaTras.add(new TrasaMorska( skrzyzowanieList.get(7), cityList.get(13)));
+		listaTras.add(new TrasaMorska( skrzyzowanieList.get(7), cityList.get(14)));
+		listaTras.add(new TrasaMorska( skrzyzowanieList.get(8), skrzyzowanieList.get(7)));
+		listaTras.add(new TrasaMorska( skrzyzowanieList.get(8), cityList.get(14)));
+		listaTras.add(new TrasaMorska( skrzyzowanieList.get(8), cityList.get(15)));
+		listaTras.add(new TrasaMorska( skrzyzowanieList.get(8), cityList.get(16)));
 //		//Trasy lotnicze
-		listaTras.add(new TrasaPowietrzna( cityList.get(7), new ArrayList<PunktMapy>(){{
-			add(skrzyzowanieList.get(3));
-		}}));
-		listaTras.add(new TrasaPowietrzna( cityList.get(12), new ArrayList<PunktMapy>(){{
-			add(skrzyzowanieList.get(3));
-		}}));
-		listaTras.add(new TrasaPowietrzna( cityList.get(5), new ArrayList<PunktMapy>(){{
-			add(skrzyzowanieList.get(5));
-		}}));
-		listaTras.add(new TrasaPowietrzna( cityList.get(11), new ArrayList<PunktMapy>(){{
-			add(skrzyzowanieList.get(5));
-		}}));
-		listaTras.add(new TrasaPowietrzna( cityList.get(8), new ArrayList<PunktMapy>(){{
-			add(skrzyzowanieList.get(4));
-			add(skrzyzowanieList.get(5));
-			add(skrzyzowanieList.get(1));
-		}}));
-		listaTras.add(new TrasaPowietrzna( cityList.get(6), new ArrayList<PunktMapy>(){{
-			add(skrzyzowanieList.get(3));
-			add(skrzyzowanieList.get(4));
-		}}));
-		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(3), new ArrayList<PunktMapy>(){{
-			add(cityList.get(6));
-			add(cityList.get(7));
-			add(cityList.get(12));
-			add(skrzyzowanieList.get(4));
-		}}));
-		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(4), new ArrayList<PunktMapy>(){{
-			add(cityList.get(6));
-			add(cityList.get(8));
-			add(skrzyzowanieList.get(3));
-			add(skrzyzowanieList.get(5));
-		}}));
-		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(5), new ArrayList<PunktMapy>(){{
-			add(cityList.get(5));
-			add(cityList.get(8));
-			add(cityList.get(11));
-			add(skrzyzowanieList.get(4));
-		}}));
-		listaTras.add(new TrasaPowietrzna( cityList.get(1), new ArrayList<PunktMapy>(){{
-			add(skrzyzowanieList.get(0));
-		}}));
-		listaTras.add(new TrasaPowietrzna( cityList.get(0), new ArrayList<PunktMapy>(){{
-			add(skrzyzowanieList.get(0));
-		}}));
-		listaTras.add(new TrasaPowietrzna( cityList.get(2), new ArrayList<PunktMapy>(){{
-			add(skrzyzowanieList.get(0));
-			add(skrzyzowanieList.get(1));
-			add(skrzyzowanieList.get(2));
-		}}));
-		listaTras.add(new TrasaPowietrzna( cityList.get(9), new ArrayList<PunktMapy>(){{
-			add(skrzyzowanieList.get(0));
-		}}));
-		listaTras.add(new TrasaPowietrzna( cityList.get(4), new ArrayList<PunktMapy>(){{
-			add(skrzyzowanieList.get(2));
-		}}));
-		listaTras.add(new TrasaPowietrzna( cityList.get(10), new ArrayList<PunktMapy>(){{
-			add(skrzyzowanieList.get(2));
-		}}));
-		listaTras.add(new TrasaPowietrzna( cityList.get(3), new ArrayList<PunktMapy>(){{
-			add(skrzyzowanieList.get(1));
-			add(skrzyzowanieList.get(2));
-		}}));
-		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(0), new ArrayList<PunktMapy>(){{
-			add(cityList.get(0));
-			add(cityList.get(1));
-			add(cityList.get(2));
-			add(cityList.get(9));
-			add(skrzyzowanieList.get(1));
-		}}));
-		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(1), new ArrayList<PunktMapy>(){{
-			add(cityList.get(2));
-			add(cityList.get(3));
-			add(cityList.get(8));
-			add(skrzyzowanieList.get(0));
-		}}));
-		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(2), new ArrayList<PunktMapy>(){{
-			add(cityList.get(2));
-			add(cityList.get(3));
-			add(cityList.get(4));
-			add(cityList.get(10));
-		}}));
+		listaTras.add(new TrasaPowietrzna( cityList.get(7), skrzyzowanieList.get(3)));
+		listaTras.add(new TrasaPowietrzna( cityList.get(12), skrzyzowanieList.get(3)));
+		listaTras.add(new TrasaPowietrzna( cityList.get(5), skrzyzowanieList.get(5)));
+		listaTras.add(new TrasaPowietrzna( cityList.get(11), skrzyzowanieList.get(5)));
+		listaTras.add(new TrasaPowietrzna( cityList.get(8), skrzyzowanieList.get(4)));
+		listaTras.add(new TrasaPowietrzna( cityList.get(8), skrzyzowanieList.get(5)));
+		listaTras.add(new TrasaPowietrzna( cityList.get(8), skrzyzowanieList.get(1)));
+		listaTras.add(new TrasaPowietrzna( cityList.get(6), skrzyzowanieList.get(3)));
+		listaTras.add(new TrasaPowietrzna( cityList.get(6), skrzyzowanieList.get(4)));
+		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(3), cityList.get(6)));
+		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(3), cityList.get(7)));
+		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(3), cityList.get(12)));
+		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(3), skrzyzowanieList.get(4)));	
+		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(4), cityList.get(6)));
+		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(4), cityList.get(8)));
+		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(4), skrzyzowanieList.get(3)));
+		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(4), skrzyzowanieList.get(5)));	
+		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(5), cityList.get(5)));
+		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(5), cityList.get(8)));
+		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(5), cityList.get(11)));
+		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(5), skrzyzowanieList.get(4)));
+		listaTras.add(new TrasaPowietrzna( cityList.get(1), skrzyzowanieList.get(0)));
+		listaTras.add(new TrasaPowietrzna( cityList.get(0), skrzyzowanieList.get(0)));
+		listaTras.add(new TrasaPowietrzna( cityList.get(2), skrzyzowanieList.get(0)));
+		listaTras.add(new TrasaPowietrzna( cityList.get(2), skrzyzowanieList.get(1)));
+		listaTras.add(new TrasaPowietrzna( cityList.get(2), skrzyzowanieList.get(2)));
+		listaTras.add(new TrasaPowietrzna( cityList.get(9), skrzyzowanieList.get(0)));
+		listaTras.add(new TrasaPowietrzna( cityList.get(4), skrzyzowanieList.get(2)));
+		listaTras.add(new TrasaPowietrzna( cityList.get(10), skrzyzowanieList.get(2)));
+		listaTras.add(new TrasaPowietrzna( cityList.get(3), skrzyzowanieList.get(1)));
+		listaTras.add(new TrasaPowietrzna( cityList.get(3), skrzyzowanieList.get(2)));
+		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(0), cityList.get(0)));
+		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(0), cityList.get(1)));
+		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(0), cityList.get(2)));
+		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(0), cityList.get(9)));
+		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(0), skrzyzowanieList.get(1)));
+		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(1), cityList.get(2)));
+		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(1), cityList.get(3)));
+		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(1), cityList.get(8)));
+		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(1), skrzyzowanieList.get(0)));
+		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(2), cityList.get(2)));
+		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(2), cityList.get(3)));
+		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(2), cityList.get(4)));
+		listaTras.add(new TrasaPowietrzna( skrzyzowanieList.get(2), cityList.get(10)));
 		//DOROGI LĄDOWE - NATYCHMIASTOWE (ZMIANA LOTNISKA NA PORT ITP)
-		listaTras.add(new Droga( cityList.get(1), new ArrayList<PunktMapy>(){{
-			add(cityList.get(17));
-		}}));
-		listaTras.add(new Droga( cityList.get(17), new ArrayList<PunktMapy>(){{
-			add(cityList.get(1));
-		}}));
-		listaTras.add(new Droga( cityList.get(3), new ArrayList<PunktMapy>(){{
-			add(cityList.get(13));
-		}}));
-		listaTras.add(new Droga( cityList.get(13), new ArrayList<PunktMapy>(){{
-			add(cityList.get(3));
-		}}));
-		listaTras.add(new Droga( cityList.get(14), new ArrayList<PunktMapy>(){{
-			add(cityList.get(4));
-		}}));
-		listaTras.add(new Droga( cityList.get(4), new ArrayList<PunktMapy>(){{
-			add(cityList.get(14));
-		}}));
-		listaTras.add(new Droga( cityList.get(5), new ArrayList<PunktMapy>(){{
-			add(cityList.get(15));
-		}}));
-		listaTras.add(new Droga( cityList.get(15), new ArrayList<PunktMapy>(){{
-			add(cityList.get(5));
-		}}));
-		listaTras.add(new Droga( cityList.get(8), new ArrayList<PunktMapy>(){{
-			add(cityList.get(16));
-		}}));
-		listaTras.add(new Droga( cityList.get(16), new ArrayList<PunktMapy>(){{
-			add(cityList.get(8));
-		}}));
-		
-		
-		
-		
-		
-		
-		
+		listaTras.add(new Droga( cityList.get(1), cityList.get(17)));
+		listaTras.add(new Droga( cityList.get(17), cityList.get(1)));
+		listaTras.add(new Droga( cityList.get(3), cityList.get(13)));
+		listaTras.add(new Droga( cityList.get(13), cityList.get(3)));
+		listaTras.add(new Droga( cityList.get(14), cityList.get(4)));
+		listaTras.add(new Droga( cityList.get(4), cityList.get(14)));
+		listaTras.add(new Droga( cityList.get(5), cityList.get(15)));
+		listaTras.add(new Droga( cityList.get(15), cityList.get(5)));
+		listaTras.add(new Droga( cityList.get(8), cityList.get(16)));
+		listaTras.add(new Droga( cityList.get(16), cityList.get(8)));	
 	}
 	public static List<Droga> getListaTras() {
 		return listaTras;

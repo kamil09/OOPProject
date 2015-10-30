@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
+import DROGA.Droga;
 import MAIN.PunktMapy;
 import MAIN.Swiat;
 
@@ -186,16 +187,15 @@ public class MapPanel extends JPanel implements Runnable {
         
         //TESTOWE RYSOWANIE USUNĄĆ PÓŹNIEJ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        /*
         for(Droga linia : Swiat.getListaTras()){
-        	for (PunktMapy punktB : linia.getB() ){
-	        	g.drawLine((int)((linia.getA().getKoorX()-this.mapStartX)/mapZOOM), 
-	        			   (int)((linia.getA().getKoorY()-this.mapStartY)/mapZOOM), 
-	        			   (int)((punktB.getKoorX()-this.mapStartX)/mapZOOM), 
-	        			   (int)((punktB.getKoorY()-this.mapStartY)/mapZOOM));
-        	}
+        	
+        	g.drawLine((int)((linia.getA().getKoorX()-this.mapStartX)/mapZOOM), 
+        			   (int)((linia.getA().getKoorY()-this.mapStartY)/mapZOOM), 
+        			   (int)((linia.getB().getKoorX()-this.mapStartX)/mapZOOM), 
+        			   (int)((linia.getB().getKoorY()-this.mapStartY)/mapZOOM));
+        
         }
-        */
+        
         
 
 	}
