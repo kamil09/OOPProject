@@ -4,14 +4,18 @@ import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
 import DROGA.Droga;
 import MAIN.PunktMapy;
 import MAIN.Swiat;
+import POJAZD.Pojazd;
 
 /**
  * 
@@ -20,7 +24,7 @@ import MAIN.Swiat;
  *
  */
 @SuppressWarnings("serial")
-public class MapPanel extends JPanel implements Runnable {
+public class MapPanel extends JLayeredPane implements Runnable {
 	
 	/**
 	 * Rozmiar mapy X
@@ -82,6 +86,14 @@ public class MapPanel extends JPanel implements Runnable {
 	 * Czy przerysować miasta
 	 */
 	private boolean cityRedrow=true;
+	/**
+	 * Lista wyświetlanych pnktów na mapie które są pojazdami
+	 */
+	private List<MapClickVehicle> wyswietlanePojazdy= new ArrayList<MapClickVehicle>();
+	/**
+	 * 
+	 */
+	private static List<Pojazd> doRysowania = new ArrayList<Pojazd>();
 	
 	/**
 	 * Konstruktor
@@ -189,16 +201,14 @@ public class MapPanel extends JPanel implements Runnable {
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         for(Droga linia : Swiat.getListaTras()){
         	
-        	g.drawLine((int)((linia.getA().getKoorX()-this.mapStartX)/mapZOOM), 
-        			   (int)((linia.getA().getKoorY()-this.mapStartY)/mapZOOM), 
-        			   (int)((linia.getB().getKoorX()-this.mapStartX)/mapZOOM), 
-        			   (int)((linia.getB().getKoorY()-this.mapStartY)/mapZOOM));
+        	g.drawLine((int)((linia.getA().getKoorX()+linia.getOdX()-this.mapStartX)/mapZOOM), 
+        			   (int)((linia.getA().getKoorY()+linia.getOdY()-this.mapStartY)/mapZOOM), 
+        			   (int)((linia.getB().getKoorX()+linia.getOdX()-this.mapStartX)/mapZOOM), 
+        			   (int)((linia.getB().getKoorY()+linia.getOdY()-this.mapStartY)/mapZOOM));
         
+        	
         }
-        
-        
-
-	}
+    }
 	
 	/**
 	 * Metoda wątka sleep(10)
@@ -208,10 +218,14 @@ public class MapPanel extends JPanel implements Runnable {
 		while(true) {
            try {
             	if(this.cityRedrow==true){
-            		drowAll();
-            	}
+            		this.drowAll();
+            	}  
+          
+            	this.drowVehicles();
             	
-                Thread.sleep(10);
+            	this.revalidate();
+        		this.repaint();
+                Thread.sleep(30);
            } catch (InterruptedException e) {
                 e.printStackTrace();
            }
@@ -221,13 +235,10 @@ public class MapPanel extends JPanel implements Runnable {
 	 * Rysuje wszystkie obiekty na mapie
 	 */
 	public void drowAll(){
-		this.removeAll();;
+		this.removeAll();
 		
 		drowCities();
 		rysujSkrzyzowania();
-		
-		this.revalidate();
-		this.repaint();
 	}
 	
 	/**
@@ -250,11 +261,48 @@ public class MapPanel extends JPanel implements Runnable {
 				koorY-=size/2;
 				
 				JButton punkt = new MapClickButton(koorX,koorY,size,size,city);
-				add(punkt);
+				add(punkt,1);
 				if(this.cityRedrow==true) this.cityRedrow=false;
 			}
 		}
-		
+	}
+	public void drowVehicles(){
+		int koorX;
+		int koorY;
+		int size=80;
+		//RYSOWANIE NOWYCH POJAZDÓW (KTÓRYCH JESZCZE NIE MA NA MAPIE)
+		Swiat.setCanAddPojazd(false);
+		for(Pojazd pojazd : MapPanel.doRysowania ){
+			if(pojazd.getTrasa().isEmpty() ){
+				koorX=(int)((pojazd.getKoorX()-this.mapStartX)/this.mapZOOM);
+				koorY=(int)((pojazd.getKoorY()-this.mapStartY)/this.mapZOOM);
+			}
+			else{
+				koorX=(int)((pojazd.getKoorX()-this.mapStartX+pojazd.getTrasa().get(0).getOdX())/this.mapZOOM);
+				koorY=(int)((pojazd.getKoorY()-this.mapStartY+pojazd.getTrasa().get(0).getOdY())/this.mapZOOM);
+			}
+			MapClickVehicle tmp=pojazd.rysuj(mapZOOM, koorX, koorY);
+			this.wyswietlanePojazdy.add(tmp);
+			this.add(tmp, 3);
+			
+		}
+		MapPanel.doRysowania.clear();
+		Swiat.setCanAddPojazd(true);
+		//PRZERYSOWYWANIE STARYCH POJAZDOW
+		for(MapClickVehicle button : this.wyswietlanePojazdy){
+			this.remove(button);
+			if(button.getPojazd().getTrasa().isEmpty() ){
+				koorX=(int)((button.getPojazd().getKoorX()-this.mapStartX)/this.mapZOOM);
+				koorY=(int)((button.getPojazd().getKoorY()-this.mapStartY)/this.mapZOOM);
+			}
+			else{
+				koorX=(int)((button.getPojazd().getKoorX()-this.mapStartX+button.getPojazd().getTrasa().get(0).getOdX())/this.mapZOOM);
+				koorY=(int)((button.getPojazd().getKoorY()-this.mapStartY+button.getPojazd().getTrasa().get(0).getOdY())/this.mapZOOM);
+			}
+			button.setIcon(button.getPojazd().returnIcon(mapZOOM));
+			button.setBounds(koorX, koorY, (int)(70/mapZOOM), (int)(70/mapZOOM));
+			this.add(button, 3);
+		}
 	}
 	/**
 	 * Rysuje Skrzyżowania na mapie
@@ -276,11 +324,31 @@ public class MapPanel extends JPanel implements Runnable {
 				koorY-=size/2;
 				
 				JButton punkt = new MapClickButton(koorX,koorY,size,size,city);
-				add(punkt);
+				add(punkt,1);
 				if(this.cityRedrow==true) this.cityRedrow=false;
 			}
 		}
-		
-		
+	}
+
+	public List<MapClickVehicle> getWyswietlanePojazdy() {
+		return wyswietlanePojazdy;
+	}
+
+	public void setWyswietlanePojazdy(List<MapClickVehicle> wyswietlanePojazdy) {
+		this.wyswietlanePojazdy = wyswietlanePojazdy;
+	}
+	public void addWyswietlanePojazdy(MapClickVehicle button){
+		this.wyswietlanePojazdy.add(button);
+	}
+
+	public static List<Pojazd> getDoRysowania() {
+		return doRysowania;
+	}
+
+	public static void setDoRysowania(List<Pojazd> doRysowania) {
+		MapPanel.doRysowania = doRysowania;
+	}
+	public static void addDoRysowania(Pojazd pojazd){
+		MapPanel.doRysowania.add(pojazd);
 	}
 }

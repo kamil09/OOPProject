@@ -19,6 +19,11 @@ public abstract class Miasto extends PunktMapy{
 	private List<Pojazd> listaPojazdow = new ArrayList<Pojazd>();
 	
 	/**
+	 * Określa liczbę pojazdów maksymalnie przebywających w jednym czasie w mieście.
+	 */
+	private int pojemosc=5;
+	
+	/**
 	 * Konstruktor
 	 * @param x		- współrzędna X
 	 * @param y		- współrzędna Y
@@ -36,5 +41,15 @@ public abstract class Miasto extends PunktMapy{
 
 	public void setListaPojazdow(List<Pojazd> listaPojazdow) {
 		this.listaPojazdow = listaPojazdow;
+	}
+
+
+	public int getPojemosc() {
+		return pojemosc;
+	}
+
+
+	public void setPojemosc(int pojemosc) {
+		this.pojemosc = pojemosc;
 	}
 }

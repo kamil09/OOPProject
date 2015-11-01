@@ -27,7 +27,6 @@ import PASAZER.Pasazer;
  *
  */
 public class UsersPanel extends JPanel implements Runnable{
-	
 	/**
 	 * Numer obecniej strony (paginacja)
 	 */

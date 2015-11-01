@@ -21,6 +21,9 @@ public abstract class Aplikacja {
 	 */
 	public static void main(String[] args){ 
 		swiat = new Swiat();
+		Runnable runner = swiat;
+		Thread thread = new Thread(runner);
+		thread.start();
 		GlowneOkno.launchWindow();
 	}
 

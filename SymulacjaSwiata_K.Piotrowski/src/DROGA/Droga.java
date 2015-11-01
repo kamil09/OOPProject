@@ -20,7 +20,22 @@ public class Droga {
 	 * Następnik (1) punktu A(punktu startowego drogi)
 	 */
 	private PunktMapy B;
-	
+	/**
+	 * Współczynnik kierunkowy prostej zawierającej naszą drogę
+	 */
+	private double kierunek;
+	/**
+	 * Kąt a naszej prostej (kierunek = tg(katProstej))
+	 */
+	private double katProstej;
+	/**
+	 * Mówi nam ile trasa (do rysowania ) jest oddalona na osi X od odcinka łączącego miasta (A - B)
+	 */
+	private int odX=00;
+	/**
+	 * Mówi nam ile trasa (do rysowania ) jest oddalona na osi Y od odcinka łączącego miasta (A - B)
+	 */
+	private int odY=0;
 	
 	/**
 	 * Konstruktor
@@ -30,6 +45,47 @@ public class Droga {
 	public Droga(PunktMapy a, PunktMapy b) {
 		this.setA(a);
 		this.setB(b);
+		this.przeliczProsta();
+	}
+	
+	private void przeliczProsta(){
+		int OdProstej=30;
+		
+		int diffX=this.getB().getKoorX()-this.getA().getKoorX();
+		int diffY=this.getB().getKoorY()-this.getA().getKoorY();
+		diffY*=-1;
+		this.kierunek=(double)diffY/diffX;
+		this.katProstej=Math.toDegrees(Math.atan(Math.abs(this.getKierunek())));
+		
+		// I ĆWIARTKA
+		if(diffX>0 && diffY> 0){
+			this.odX=(int) (OdProstej*Math.sin(Math.toRadians(this.katProstej)));
+			this.odY=(int) (OdProstej*Math.cos(Math.toRadians(this.katProstej)));
+		}
+		// II ĆWIARTKA
+		if(diffX<0 && diffY> 0) {
+			odX=(int) (OdProstej*Math.sin(Math.toRadians(this.katProstej)));
+			odY=(int) (-OdProstej*Math.cos(Math.toRadians(this.katProstej)));
+			this.katProstej=180-this.katProstej;
+		}
+		// III ĆWIARTKA
+		if(diffX<0 && diffY< 0) {
+			odX=(int) (-OdProstej*Math.sin(Math.toRadians(this.katProstej)));
+			odY=(int) (-OdProstej*Math.cos(Math.toRadians(this.katProstej)));
+			this.katProstej+=180;
+		}
+		// iV ĆWIARTKA
+		if(diffX>0 && diffY< 0) {
+			odX=(int) (-OdProstej*Math.sin(Math.toRadians(this.katProstej)));
+			odY=(int) (OdProstej*Math.cos(Math.toRadians(this.katProstej)));
+			this.katProstej+=180+180-this.katProstej;
+		}
+		
+		
+		
+		
+		
+		//System.out.println(diffX+"  "+diffY+ "kier: "+this.katProstej);
 	}
 	
 	public PunktMapy getA() {
@@ -44,6 +100,28 @@ public class Droga {
 	public void setB(PunktMapy b) {
 		this.B = b;
 	}
+
+	public double getKierunek() {
+		return kierunek;
+	}
+
+	public int getOdX() {
+		return odX;
+	}
+
+	public int getOdY() {
+		return odY;
+	}
+
+	public double getKatProstej() {
+		return katProstej;
+	}
+
+	public void setKatProstej(double katProstej) {
+		this.katProstej = katProstej;
+	}
+
+
 
 	
 }

@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import java.awt.Point;
 
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
@@ -35,7 +36,7 @@ public class GlowneOkno {
 	/**
 	 * Panel z mapą świata
 	 */
-	private JPanel mapPanel;
+	private JLayeredPane mapPanel;
 
 	/**
 	 * Obsuga wątków

@@ -1,25 +1,26 @@
 package GUI;
+
 import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 
-import MAIN.PunktMapy;
+import POJAZD.Pojazd;
 
-@SuppressWarnings("serial")
 /**
  * 
  * @author Kamil Piotrowski
- * Przycisk na mapie w który mozna kliknąć
- *
+ *	Ikona (statek / samolot w którą klikamy na mapie)
  */
-public class MapClickButton extends JButton{
+@SuppressWarnings("serial")
+public class MapClickVehicle extends JButton{
 
+	
 	/**
 	 * Referencja do punktu na mapie w który można kliknać
 	 */
-	private PunktMapy city;
+	private Pojazd pojazd;
 	
 	/**
 	 * Konstruktor
@@ -27,30 +28,30 @@ public class MapClickButton extends JButton{
 	 * @param koorY	polożenie punktu Y
 	 * @param sizeX wielkość punktu X
 	 * @param sizeY wielkosć punktu Y
-	 * @param city referencja do obiektu
+	 * @param pojazd referencja do obiektu
 	 */
-	public MapClickButton(int koorX, int koorY, int sizeX, int sizeY, PunktMapy city){
+	public MapClickVehicle(int koorX, int koorY, int sizeX, int sizeY, Pojazd pojazd){
 		this.setBounds(koorX,koorY,sizeX,sizeY);
-		this.setCity(city);
+		this.setPojazd(pojazd);
 		this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		this.setBorder(null);
 		this.setFocusable(false);
 		this.setContentAreaFilled(false);
 		this.setDoubleBuffered(true);
-		this.setToolTipText(city.getName()+" ID: #"+city.getid());
+		this.setToolTipText(pojazd.getName()+" ID: #"+pojazd.getid());
 		
 		addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				InfoPanel.printInfo(city);
+				InfoPanel.printInfo(pojazd);
 			}
 		});
 	}
 
-	public PunktMapy getCity() {
-		return city;
+	public Pojazd getPojazd() {
+		return pojazd;
 	}
 
-	public void setCity(PunktMapy city) {
-		this.city = city;
+	public void setPojazd(Pojazd pojazd) {
+		this.pojazd = pojazd;
 	}
 }

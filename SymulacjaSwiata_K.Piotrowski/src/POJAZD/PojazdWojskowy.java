@@ -1,6 +1,7 @@
 package POJAZD;
 
 import ENUM.Uzbrojenie;
+import MAIN.Miasto;
 
 /**
  * 
@@ -22,8 +23,8 @@ public abstract class PojazdWojskowy extends Pojazd{
 	 * @param name - nazwa pojazdu
 	 * @param id - id pojazdu
 	 */
-	public PojazdWojskowy(int x,int y, String name,int id){
-		super(x, y, name,id );
+	public PojazdWojskowy(int x,int y, String name,int id, Miasto miasto){
+		super(x, y, name,id, miasto );
 	}
 
 	

@@ -3,6 +3,7 @@ package POJAZD;
 import java.util.ArrayList;
 import java.util.List;
 
+import MAIN.Miasto;
 import PASAZER.Pasazer;
 
 /**
@@ -33,8 +34,8 @@ public abstract class PojazdPasazerski extends Pojazd{
 	 * @param name - nazwa pojazdu
 	 * @param id - id pojazdu
 	 */
-	public PojazdPasazerski(int x,int y, String name, int id){
-		super(x, y, name, id);
+	public PojazdPasazerski(int x,int y, String name, int id, Miasto miasto){
+		super(x, y, name, id, miasto);
 	}
 	
 	

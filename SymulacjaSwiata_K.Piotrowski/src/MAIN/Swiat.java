@@ -4,14 +4,18 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
 import DROGA.Droga;
 import DROGA.TrasaMorska;
 import DROGA.TrasaPowietrzna;
+import GUI.MapPanel;
 import PASAZER.Pasazer;
+import POJAZD.Lotniskowiec;
 import POJAZD.Pojazd;
+import POJAZD.StatekWycieczkowy;
 
 /**
  * 
@@ -20,12 +24,20 @@ import POJAZD.Pojazd;
  * Znajdują się w niej wszystkie najważniejsze dane
  *
  */
-public final class Swiat {
+public class Swiat implements Runnable {
 	
 	/**
 	 * Obraz tła
 	 */
 	private static BufferedImage bufferImage;
+	/**
+	 * Obraz lotniskowca
+	 */
+	private static BufferedImage lotniskowiecImage;
+	/**
+	 * Do generowania ID pojazdów
+	 */
+	private static int idGenerator=0;
 	/**
 	 * Lista wszystkich pasażerów
 	 */
@@ -54,6 +66,15 @@ public final class Swiat {
 	 * Lista do wątków
 	 */
 	private static List<Thread> threadsList = new ArrayList<Thread>();
+	/**
+	 * Czy istnieje lotniskowiec, lewsza jedna zmienna niż szukanie w liście pojazdów
+	 * Nie można stworzyć samolotu wojskowego bez lotniskowca!
+	 */
+	private static boolean czyIstniejeLotniskowiec=false;
+	/**
+	 * Nie można dodawać nowego pojazdu podczas przechodzenia po pętli i wyświetlania na ekranie!!!
+	 */
+	private static boolean canAddPojazd=true;
 	
 	/**
 	 * Konstruktor świata
@@ -62,6 +83,7 @@ public final class Swiat {
 	public Swiat(){
 		try {
 			bufferImage = ImageIO.read(new File("src/mapa2.png"));
+			setLotniskowiecImage(ImageIO.read(new File("src/lotniskowiec.png")));
 			generujListeMiast();
 			for(int i=0;i<100;i++) addPasazer();
 		} catch (IOException ex) { 
@@ -92,19 +114,39 @@ public final class Swiat {
 	 * Dodawanie samolotu wojskowego
 	 */
 	public static void addSamolotWojskowy(){
-		System.out.println("Dodano samolot wojskowy!");
+		if(czyIstniejeLotniskowiec==true){
+			System.out.println("Dodano samolot wojskowy!");
+		}
+		else
+			System.out.println("Nie możesz stworzyć samolotu wojskowego jesli nie posiadasz lotniskowca!");
 	}
 	/**
 	 * Dodawanie statku pasażerskiego
 	 */
 	public static void addStatekPasazerski(){
+		Port port = Swiat.getRandomPort();
+		listaPojazdow.add( new StatekWycieczkowy(port.getKoorX(), port.getKoorY(), "Lotniskowiec"+Swiat.generateId(), Swiat.idGenerator, port));
 		System.out.println("Dodano statek pasazerski!");
 	}
 	/**
 	 * Dodawanie lotniskowca
 	 */
 	public static void addLotniskowiec(){
-		System.out.println("Dodano lotniskowiec!");
+		Port port = Swiat.getRandomPort();
+		Lotniskowiec lotniskowiec = new Lotniskowiec(port.getKoorX(), port.getKoorY(), "Lotniskowiec"+Swiat.generateId(), Swiat.idGenerator, port);
+		
+		while(!canAddPojazd)
+			try {
+				Thread.sleep(5);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			};
+		listaPojazdow.add(lotniskowiec);
+		runnerList.add(lotniskowiec);
+		threadsList.add(new Thread(runnerList.get(runnerList.size()-1)));
+		threadsList.get(threadsList.size()-1).start();
+		if(czyIstniejeLotniskowiec==false) setCzyIstniejeLotniskowiec(true);
+		MapPanel.addDoRysowania(lotniskowiec);
 	}
 	public static List<Pasazer> getListaPasazerow(){
 		return listaPasazerow;
@@ -152,7 +194,7 @@ public final class Swiat {
 		cityList.add(new Lotnisko(1959,201, "Black City", 2) );
 		cityList.add(new Lotnisko(2373,753, "White City", 3) );
 		cityList.add(new Lotnisko(3558,852, "Orange City", 4) );
-		cityList.add(new Lotnisko(3471,2850, "Blue City", 5) );
+		cityList.add(new Lotnisko(3471,2850, "Brown City", 5) );
 		cityList.add(new Lotnisko(2046,3747, "Purple City", 6) );
 		cityList.add(new Lotnisko(935,2849, "Yellow City", 7) );
 		cityList.add(new Lotnisko(1859,2332, "The Middle of Nowhere", 8) );
@@ -271,6 +313,50 @@ public final class Swiat {
 	}
 	public static List<Miasto> getCityList(){
 		return cityList;
+	}
+	public static int generateId(){
+		idGenerator++;
+		return idGenerator;
+	}
+	
+	public static Port getRandomPort(){
+		List<Port> tmpList = new ArrayList<Port>();
+		for(Miasto miasto : Swiat.getCityList()) 
+			if(miasto instanceof Port && miasto.getPojemosc()>0 ) tmpList.add((Port) miasto);
+		
+		Random generator = new Random();
+		return tmpList.get(generator.nextInt(tmpList.size()));
+	}
+	public static Lotnisko getRandomAirPort(){
+		List<Lotnisko> tmpList = new ArrayList<Lotnisko>();
+		for(Miasto miasto : Swiat.getCityList()) 
+			if(miasto instanceof Lotnisko && miasto.getPojemosc()>0 ) tmpList.add((Lotnisko) miasto);
+			
+		Random generator = new Random();
+		return tmpList.get(generator.nextInt(tmpList.size()));
+	}
+	public static boolean isCzyIstniejeLotniskowiec() {
+		return czyIstniejeLotniskowiec;
+	}
+	public static void setCzyIstniejeLotniskowiec(boolean czyIstniejeLotniskowiec) {
+		Swiat.czyIstniejeLotniskowiec = czyIstniejeLotniskowiec;
+	}
+	public static BufferedImage getLotniskowiecImage() {
+		return lotniskowiecImage;
+	}
+	public static void setLotniskowiecImage(BufferedImage lotniskowiecImage) {
+		Swiat.lotniskowiecImage = lotniskowiecImage;
+	}
+	public static boolean isCanAddPojazd() {
+		return canAddPojazd;
+	}
+	public static void setCanAddPojazd(boolean canAddPojazd) {
+		Swiat.canAddPojazd = canAddPojazd;
+	}
+	
+	@Override
+	public void run() {
+		
 	}
 	
 }

@@ -1,0 +1,91 @@
+
+Samoloty dzielą się na pasażerskie i wojskowe. 												OK
+Samoloty pasażerskie charakteryzuje maksymalna pojemność (maksymalna liczba pasażerów), 	OK
+aktualna liczba pasażerów, 																	OK
+liczba personelu, 																			OK	
+stan paliwa,																				OK
+trasa (zbiór kolejnych odwiedzanych lotnisk),												OK
+aktualne położenie na mapie, 																OK
+następne lądowanie(lotnisko)																OK																
+unikatowy identyfikator. 																	OK
+
+Samoloty wojskowe mają identyczne właściwości, oprócz										OK
+maksymalnej pojemności i liczby pasażerów, oraz dodatkowo posiadają typ uzbrojenia.			OK
+
+
+Każdy samolot traci paliwo podczas lotu proporcjonalnie do odległości między kolejnymi lotniskami. 
+Na każdym lotnisku samolot tankuje do pełna oraz zmienia pasażerów. 
+Podczas lotu samolot może zgłosić usterkę i lądować awaryjnie na najbliższym lotnisku niezależnie od ustalonej wcześniej trasy. 
+Samoloty pasażerskie lądują tylko na lotniskach cywilnych, samoloty wojskowe tylko na wojskowych, natomiast
+trasy powietrzne są wspólne dla obu typów samolotów.
+
+Statki dzielą się na wycieczkowce i lotniskowce. 											OK
+Statki pasażerskie charakteryzują się maksymalną											OK
+pojemnością, 																				OK
+aktualną liczbą pasażerów, 																	OK
+firmą, do której należą, 																	OK
+maksymalną prędkością, 																		OK
+aktualnym położeniem oraz unikatowym identyfikatorem. 										OK
+Lotniskowce nie mają pojemności, pasażerów, ani firmy,										OK
+ale posiadają typ uzbrojenia.																OK
+
+Statki kursują ze swoją maksymalną prędkością po trasach morskich. Wycieczkowce kursują między
+portami, gdzie wymieniają pasażerów, a lotniskowce poruszają się losowo po trasach bez stawania w
+jakichkolwiek portach (ale mogą przez nie/obok nich przepłynąć). Lotniskowce są dodatkowo miejscem
+startowym dla wszystkich nowych samolotów wojskowych. Lotniskowiec o danym typie uzbrojenia
+produkuje tylko jeden typ samolotu - o odpowiadającym typie uzbrojenia. Po wystartowaniu z
+lotniskowca, nowy samolot wojskowy dołącza do ruchu lotniczego w najbliższym dogodnym miejscu i
+następne lądowania wykonuje już na lotniskach wojskowych
+
+Pasażerowie podróżują po świecie za pomocą statków i samolotów. Pasażera charakteryzuje imię,
+nazwisko, wiek i PESEL.																					OK
+Ponadto każdy pasażer ma swój plan podróży, który obejmuje ciąg portów i/lub
+lotnisk.																								OK 
+Podróż może być prywatna lub służbowa i każda z nich obejmuje przylot (z przesiadkami) na
+miejsce docelowe i powrót (niekoniecznie tą samą trasą).												OK
+W zależności czy podróż jest prywatna czy
+służbowa, pasażer spędza więcej lub mniej czasu w miejscu docelowym zanim ruszy w podróż powrotną.		OK
+Porty i lotniska nie muszą znajdować się dokładnie w tym samym miejscu na mapie, ale trasa podróży
+musi być logiczna – pasażer może się przesiąść się z samolotu na statek tylko korzystając z najbliższego
+lotniska/portu. Po zakończonej podróży powrotnej pasażer losuje sobie nowy plan podróży
+rozpoczynający się w jego mieście rodzinnym (początkowym).												OK
+
+
+użytkownik tworzy nowe samoloty i statki poprzez panel kontrolny;
+ samoloty i statki są tworzone tylko na polecenie użytkownika, pasażerowie pojawiają się
+automatycznie proporcjonalnie do liczby wycieczkowców i samolotów pasażerskich na mapie;
+ stworzony samolot/statek/pasażer powinien mieć automatycznie wylosowane wszystkie wartości
+pól (nawet jeśli jest tworzony na polecenie użytkownika);
+ wszystkie statki i samoloty są rysowane na mapie świata zgodnie z ich aktualnym położeniem;
+ każdy pasażer, samolot, statek to osobny wątek;
+ użytkownik może oglądać podstawowe informacje o obiekcie (pasażerze, porcie, lotnisku,
+samolocie, statku) w osobnym oknie lub panelu informacyjnym po kliknięciu na narysowany na
+mapie obiekt (lub w przypadku pasażerów po wybraniu z listy);
+ korzystając z przycisków w oknie informacyjnym obiektu, użytkownik może usunąć samolot/statek z
+mapy, zmienić trasę statku/samolotu, zmusić samolot do awaryjnego lądowania;
+
+ na mapie powinno znajdować się minimum 10 lotnisk i 5 portów;
+ lotniska mają ograniczoną pojemność; samolot czekający na zwolnienie się miejsca na lotnisku
+„krąży” wokół lotniska nie tracąc paliwa;
+ samoloty powinny mieć z definicji na tyle pojemne baki, by nie zabrakło im paliwa między dwoma
+kolejnymi lądowaniami;
+ trasy morskie powinny się krzyżować ze sobą; każda trasa między dwoma portami powinna
+posiadać co najmniej jedno skrzyżowanie; na skrzyżowaniu tras może się w danej chwili znajdować
+tylko jeden statek; do zapewnienia bezpieczeństwa na skrzyżowaniu należy wykorzystać mechanizm
+semaforów lub monitorów;
+ trasy lotnicze również powinny się krzyżować ze sobą; każda trasa między dwoma lotniskami
+powinna posiadać co najmniej jedno skrzyżowanie; na skrzyżowaniu dróg powietrznych może się w
+danej chwili znajdować tylko jeden samolot; do zapewnienia bezpieczeństwa na skrzyżowaniu
+proszę wykorzystać mechanizm semaforów lub monitorów.
+ wszystkie trasy (zarówno morskie jak i lotnicze) powinny być dwukierunkowe; oba pasy ruchu
+każdej trasy powinny być graficznie rozdzielone tak aby samoloty/statki podróżujące w przeciwnych
+kierunkach nie najeżdżały na siebie;
+ aplikacja nie ma rozwiązywać żadnych problemów zakleszczeń; jeśli na jakimś skrzyżowaniu wystąpi
+zakleszczenie, jego rozwiązanie będzie możliwe poprzez usunięcie samolotu/statku z drogi;
+ modelowany świat powinien być bezpieczny – żadnych kolizji ani nieudanych postojów;
+ powinna istnieć możliwość zapisania i odtworzenia stanu symulacji poprzez serializację;
+ podstawowymi kryteriami oceny są kod i funkcjonalność zgodna z wymaganiami; walory estetyczne
+wizualizacji działają na plus oddającego, ale brak wymyślnej grafiki w żaden sposób nie obniża
+oceny;
+ podobnie jak walory estetyczne, choć niewymagane, na plus będą działać nawiązania do kultury
+popularnej (np. Top Gun, Transport Tycoon, Iron Eagle, Swat Cats).

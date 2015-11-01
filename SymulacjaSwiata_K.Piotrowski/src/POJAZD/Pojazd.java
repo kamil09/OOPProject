@@ -1,7 +1,15 @@
 package POJAZD;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+
+import DROGA.Droga;
+import GUI.MapClickVehicle;
+import MAIN.Miasto;
 import MAIN.PunktMapy;
 
 /**
@@ -9,7 +17,7 @@ import MAIN.PunktMapy;
  * @author Kamil Piotrowski
  *
  */
-public abstract class Pojazd extends PunktMapy{
+public abstract class Pojazd extends PunktMapy implements Runnable{
 	
 	/**
 	 * Obecne miejsce, jeśli w trakcje lotu/rejsu = null
@@ -27,9 +35,21 @@ public abstract class Pojazd extends PunktMapy{
 	private double paliwo;
 	
 	/**
+	 * Maksymalna prędkość pojazdu
+	 */
+	private int maxSpeed;
+	/**
 	 * Ilość załogi
 	 */
 	private int liczbaZalogi;
+	/**
+	 * Trasa po której porusza się pojazd
+	 */
+	private List<Droga> trasa = new ArrayList<Droga>();
+	/**
+	 * Trasa powrotna - kopia trasy w odwrotnej kolejności
+	 */
+	private List<Droga> trasaPowrotna = new ArrayList<Droga>();
 	
 	/**
 	 * Kostruktor
@@ -37,13 +57,16 @@ public abstract class Pojazd extends PunktMapy{
 	 * @param y - położenie Y Pojazdu
 	 * @param name - nazwa pojazdu
 	 * @param id - id pojazdu
+	 * @param miasto - miasto w którym zaczyna pojazd
 	 * Losuje także paliwo z przedziału 1000 - 1500
+	 * Ustawia obecne miejsce
 	 */
-	public Pojazd(int x,int y, String name, int id){
+	public Pojazd(int x,int y, String name, int id, Miasto miasto){
 		super(x, y, name, id);
 		Random generator = new Random();
 		this.maxPaliwo=generator.nextInt(501)+1000;
 		this.paliwo=maxPaliwo;
+		this.obecneMiejsce=miasto;
 	}
 
 	public PunktMapy getObecneMiejsce() {
@@ -76,6 +99,36 @@ public abstract class Pojazd extends PunktMapy{
 
 	public void setLiczbaZalogi(int liczbaZalogi) {
 		this.liczbaZalogi = liczbaZalogi;
+	}
+
+	public int getMaxSpeed() {
+		return maxSpeed;
+	}
+
+	public void setMaxSpeed(int maxSpeed) {
+		this.maxSpeed = maxSpeed;
+	}
+	
+	public void usunPojazd(){
+	}
+	
+	public abstract MapClickVehicle rysuj(double zoom, int koorX, int koorY);
+	public abstract ImageIcon returnIcon(double zoom);
+
+	public List<Droga> getTrasa() {
+		return trasa;
+	}
+
+	public void setTrasa(List<Droga> trasa) {
+		this.trasa = trasa;
+	}
+
+	public List<Droga> getTrasaPowrotna() {
+		return trasaPowrotna;
+	}
+
+	public void setTrasaPowrotna(List<Droga> trasaPowrotna) {
+		this.trasaPowrotna = trasaPowrotna;
 	}
 
 }
