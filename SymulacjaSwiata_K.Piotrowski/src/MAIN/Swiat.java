@@ -31,9 +31,13 @@ public class Swiat implements Runnable {
 	 */
 	private static BufferedImage bufferImage;
 	/**
-	 * Obraz lotniskowca
+	 * Obray pojazdów
+	 * [0] - lotniskowiec
+	 * [1] - statek pasazersi
+	 * [2] - mysliwiec
+	 * [3] - samolot pasazerski
 	 */
-	private static BufferedImage lotniskowiecImage;
+	private static List<BufferedImage> pojazdyImage = new ArrayList<BufferedImage>();
 	/**
 	 * Do generowania ID pojazdów
 	 */
@@ -83,7 +87,10 @@ public class Swiat implements Runnable {
 	public Swiat(){
 		try {
 			bufferImage = ImageIO.read(new File("src/mapa2.png"));
-			setLotniskowiecImage(ImageIO.read(new File("src/lotniskowiec.png")));
+			pojazdyImage.add(ImageIO.read(new File("src/lotniskowiec.png")));
+			pojazdyImage.add(ImageIO.read(new File("src/lotniskowiec.png")));
+			pojazdyImage.add(ImageIO.read(new File("src/mysliwiec.png")));
+			//pojazdyImage.add(ImageIO.read(new File("src/samolot.png")));
 			generujListeMiast();
 			for(int i=0;i<100;i++) addPasazer();
 		} catch (IOException ex) { 
@@ -125,29 +132,40 @@ public class Swiat implements Runnable {
 	 */
 	public static void addStatekPasazerski(){
 		Port port = Swiat.getRandomPort();
-		listaPojazdow.add( new StatekWycieczkowy(port.getKoorX(), port.getKoorY(), "Lotniskowiec"+Swiat.generateId(), Swiat.idGenerator, port));
-		System.out.println("Dodano statek pasazerski!");
+		if (port!=null){
+			StatekWycieczkowy statek= new StatekWycieczkowy(port.getKoorX(), port.getKoorY(), "Statek Wycieczkowy"+Swiat.generateId(), Swiat.idGenerator, port);
+			addPojazd(port,statek);
+		
+		}
 	}
 	/**
 	 * Dodawanie lotniskowca
 	 */
 	public static void addLotniskowiec(){
 		Port port = Swiat.getRandomPort();
-		Lotniskowiec lotniskowiec = new Lotniskowiec(port.getKoorX(), port.getKoorY(), "Lotniskowiec"+Swiat.generateId(), Swiat.idGenerator, port);
-		
+		if(port!=null){
+			Lotniskowiec lotniskowiec = new Lotniskowiec(port.getKoorX(), port.getKoorY(), "Lotniskowiec"+Swiat.generateId(), Swiat.idGenerator, port);
+			addPojazd(port,lotniskowiec);
+		}
+	}
+	private static void addPojazd(Miasto miasto, Pojazd pojazd){
 		while(!canAddPojazd)
 			try {
 				Thread.sleep(5);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			};
-		listaPojazdow.add(lotniskowiec);
-		runnerList.add(lotniskowiec);
-		threadsList.add(new Thread(runnerList.get(runnerList.size()-1)));
-		threadsList.get(threadsList.size()-1).start();
-		if(czyIstniejeLotniskowiec==false) setCzyIstniejeLotniskowiec(true);
-		MapPanel.addDoRysowania(lotniskowiec);
+			listaPojazdow.add(pojazd);
+			miasto.getListaPojazdow().add(pojazd);
+			miasto.setPojemosc(miasto.getPojemosc()-1);
+			runnerList.add(pojazd);
+			threadsList.add(new Thread(runnerList.get(runnerList.size()-1)));
+			threadsList.get(threadsList.size()-1).start();
+			if(czyIstniejeLotniskowiec==false) setCzyIstniejeLotniskowiec(true);
+			MapPanel.addDoRysowania(pojazd);
+			
 	}
+	
 	public static List<Pasazer> getListaPasazerow(){
 		return listaPasazerow;
 	}
@@ -325,7 +343,9 @@ public class Swiat implements Runnable {
 			if(miasto instanceof Port && miasto.getPojemosc()>0 ) tmpList.add((Port) miasto);
 		
 		Random generator = new Random();
-		return tmpList.get(generator.nextInt(tmpList.size()));
+		if (!tmpList.isEmpty())
+			return tmpList.get(generator.nextInt(tmpList.size()));
+		else return null;
 	}
 	public static Lotnisko getRandomAirPort(){
 		List<Lotnisko> tmpList = new ArrayList<Lotnisko>();
@@ -333,19 +353,15 @@ public class Swiat implements Runnable {
 			if(miasto instanceof Lotnisko && miasto.getPojemosc()>0 ) tmpList.add((Lotnisko) miasto);
 			
 		Random generator = new Random();
-		return tmpList.get(generator.nextInt(tmpList.size()));
+		if (!tmpList.isEmpty())
+			return tmpList.get(generator.nextInt(tmpList.size()));
+		else return null;
 	}
 	public static boolean isCzyIstniejeLotniskowiec() {
 		return czyIstniejeLotniskowiec;
 	}
 	public static void setCzyIstniejeLotniskowiec(boolean czyIstniejeLotniskowiec) {
 		Swiat.czyIstniejeLotniskowiec = czyIstniejeLotniskowiec;
-	}
-	public static BufferedImage getLotniskowiecImage() {
-		return lotniskowiecImage;
-	}
-	public static void setLotniskowiecImage(BufferedImage lotniskowiecImage) {
-		Swiat.lotniskowiecImage = lotniskowiecImage;
 	}
 	public static boolean isCanAddPojazd() {
 		return canAddPojazd;
@@ -357,6 +373,12 @@ public class Swiat implements Runnable {
 	@Override
 	public void run() {
 		
+	}
+	public static List<BufferedImage> getPojazdyImages() {
+		return pojazdyImage;
+	}
+	public static void setPojazdyImages(List<BufferedImage> pojazdy) {
+		Swiat.pojazdyImage = pojazdy;
 	}
 	
 }

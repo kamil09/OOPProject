@@ -9,7 +9,6 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
 import javax.swing.UIManager;
 
 import DROGA.Droga;
@@ -266,10 +265,12 @@ public class MapPanel extends JLayeredPane implements Runnable {
 			}
 		}
 	}
+	/**
+	 * Rysuje wszystkie pojazdy na mapie
+	 */
 	public void drowVehicles(){
 		int koorX;
 		int koorY;
-		int size=80;
 		//RYSOWANIE NOWYCH POJAZDÓW (KTÓRYCH JESZCZE NIE MA NA MAPIE)
 		Swiat.setCanAddPojazd(false);
 		for(Pojazd pojazd : MapPanel.doRysowania ){
@@ -299,6 +300,8 @@ public class MapPanel extends JLayeredPane implements Runnable {
 				koorX=(int)((button.getPojazd().getKoorX()-this.mapStartX+button.getPojazd().getTrasa().get(0).getOdX())/this.mapZOOM);
 				koorY=(int)((button.getPojazd().getKoorY()-this.mapStartY+button.getPojazd().getTrasa().get(0).getOdY())/this.mapZOOM);
 			}
+			koorX-=(button.getPojazd().getSize()/(2*mapZOOM));
+			koorY-= (button.getPojazd().getSize()/(2*mapZOOM));
 			button.setIcon(button.getPojazd().returnIcon(mapZOOM));
 			button.setBounds(koorX, koorY, (int)(70/mapZOOM), (int)(70/mapZOOM));
 			this.add(button, 3);

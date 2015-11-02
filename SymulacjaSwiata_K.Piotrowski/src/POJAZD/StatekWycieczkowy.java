@@ -1,11 +1,9 @@
 package POJAZD;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import java.awt.image.BufferedImage;
 
-import GUI.MapClickVehicle;
 import MAIN.Miasto;
+import MAIN.Swiat;
 
 /**
  * 
@@ -30,6 +28,7 @@ public class StatekWycieczkowy extends PojazdPasazerski implements Statek{
 	 */
 	public StatekWycieczkowy(int x,int y, String name,int id, Miasto port){
 		super(x, y, name, id, port);
+		this.setSize(60);
 	}
 
 	public String getFirma() {
@@ -41,17 +40,17 @@ public class StatekWycieczkowy extends PojazdPasazerski implements Statek{
 	}
 	
 	public void run() {
-		// TODO Auto-generated method stub
-		
+		while(true){
+			try {
+				this.setKoorY(this.getKoorY()+3);
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
-	public MapClickVehicle rysuj(double zoom, int koorX, int koorY){
-		ImageIcon ikona = new ImageIcon();
-		int katObrotu = 0;
-		if( !this.getTrasa().isEmpty() ) katObrotu=(int) this.getTrasa().get(0).getKatProstej();
-		
-		return null;
+	public BufferedImage getImage() {
+		return Swiat.getPojazdyImages().get(1);
 	}
-	public ImageIcon returnIcon(double zoom){
-		return null;
-	}
+	
 }

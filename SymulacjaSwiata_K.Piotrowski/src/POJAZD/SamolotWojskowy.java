@@ -1,10 +1,8 @@
 package POJAZD;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import java.awt.image.BufferedImage;
 
-import GUI.MapClickVehicle;
+import MAIN.Swiat;
 
 /**
  * 
@@ -24,20 +22,24 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot{
 	 */
 	public SamolotWojskowy(int x,int y, String name, int id, Lotniskowiec lotniskowiec){
 		super(x, y, name, id, null);
+		this.setSize(40);
 	}
 	
 	public void run() {
-		// TODO Auto-generated method stub
-		
+		while(true){
+			try {
+				this.setKoorX(this.getKoorX()+5);
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
-	public MapClickVehicle rysuj(double zoom, int koorX, int koorY){
-		ImageIcon ikona = new ImageIcon();
-		int katObrotu = 0;
-		if( !this.getTrasa().isEmpty() ) katObrotu=(int) this.getTrasa().get(0).getKatProstej();
-		
-		return null;
-	}
-	public ImageIcon returnIcon(double zoom){
-		return null;
+
+
+	@Override
+	public BufferedImage getImage() {
+		return Swiat.getPojazdyImages().get(2);
+	
 	}
 }

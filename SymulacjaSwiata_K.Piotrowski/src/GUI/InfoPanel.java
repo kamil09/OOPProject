@@ -19,12 +19,14 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
 
+import DROGA.Droga;
 import MAIN.PunktMapy;
 import MAIN.Swiat;
 import PASAZER.Pasazer;
 import POJAZD.Pojazd;
 import POJAZD.PojazdPasazerski;
 import POJAZD.PojazdWojskowy;
+import POJAZD.StatekWycieczkowy;
 
 @SuppressWarnings("serial")
 /**
@@ -197,15 +199,21 @@ public class InfoPanel extends JPanel implements Runnable{
 			label6 = new InfoLabel( "Miasto docelowe: brak");
 		}
 		JLabel label7 = new InfoLabel( "Czas w miejscu docelowym: "+pasazer.getCzasPostoju() );
-		JLabel label8 = new InfoLabel( "Miejsce: " +pasazer.getObecnyPunkt().getName() );
-		JLabel label9;
+		JLabel label8;
+		if ( pasazer.isTypPodrozy() ) 
+			label8 = new InfoLabel("Typ podróży : służobowa");
+		else
+			label8 = new InfoLabel("Typ posróży : prywatna");
+				
+		JLabel label9 = new InfoLabel( "Miejsce: " +pasazer.getObecnyPunkt().getName() );
+		JLabel label10;
 		if(pasazer.getObecnyPojazd()!=null){
-			label9 = new InfoLabel( "Pojazd: " +pasazer.getObecnyPojazd().getName() );
+			label10 = new InfoLabel( "Pojazd: " +pasazer.getObecnyPojazd().getName() );
 		}
 		else{
-			label9 = new InfoLabel( "Pojazd: brak"  );
+			label10 = new InfoLabel( "Pojazd: brak"  );
 		}
-		JLabel label10 = new InfoLabel( "Trasa: " );
+		JLabel label11 = new InfoLabel( "Trasa: " );
 		
 		panelInfo.removeAll();
 		
@@ -228,16 +236,17 @@ public class InfoPanel extends JPanel implements Runnable{
 		panelInfo.add(label9);
 		panelInfo.add(Box.createVerticalStrut(10));
 		panelInfo.add(label10);
+		panelInfo.add(Box.createVerticalStrut(10));
+		panelInfo.add(label11);
 		panelInfo.add(Box.createVerticalStrut(5));
 		
 		for( PunktMapy punkt : pasazer.getTrasa() ){
-			JLabel label11 = new InfoLabel( "   --->  "+punkt.getName() );
-			panelInfo.add(label11);
+			JLabel label12 = new InfoLabel( "   --->  "+punkt.getName() );
+			panelInfo.add(label12);
 		}
 		
 		panelInfo.revalidate();
 		panelInfo.repaint();
-	
 		typ=0;
 		
 	}
@@ -248,16 +257,85 @@ public class InfoPanel extends JPanel implements Runnable{
 	 */
 	public static void printInfo(Pojazd pojazd2){
 	
-		System.out.println("s");
-		
-		panelInfo.removeAll();
 		pojazd=pojazd2;
+		panelInfo.removeAll();
 		
+		panelInfo.add( new InfoLabel( "Nazwa: "+pojazd.getName() ));
+		panelInfo.add(Box.createVerticalStrut(10));
+		if (pojazd instanceof StatekWycieczkowy ) {
+			panelInfo.add( new InfoLabel( "Firma: "+((StatekWycieczkowy) pojazd).getFirma() ));
+			panelInfo.add(Box.createVerticalStrut(10));
+		}
+		panelInfo.add( new InfoLabel( "ID: "+pojazd.getid() ));
+		panelInfo.add(Box.createVerticalStrut(10));
+		panelInfo.add( new InfoLabel( "Współrzędna X: "+pojazd.getKoorX() ));
+		panelInfo.add(Box.createVerticalStrut(10));
+		panelInfo.add( new InfoLabel( "Współrzędna Y: "+pojazd.getKoorY() ));
+		panelInfo.add(Box.createVerticalStrut(10));
+		panelInfo.add( new InfoLabel( "Predkosc: "+ pojazd.getMaxSpeed()));
+		panelInfo.add(Box.createVerticalStrut(10));
+		panelInfo.add( new InfoLabel( "Paliwo:"+ pojazd.getPaliwo()));
+		panelInfo.add(Box.createVerticalStrut(10));
+		panelInfo.add( new InfoLabel( "Pojemność baku: "+ pojazd.getMaxPaliwo()));
+		panelInfo.add(Box.createVerticalStrut(10));
+		panelInfo.add( new InfoLabel( "Liczba personelu: "+ pojazd.getLiczbaZalogi()));
+		panelInfo.add(Box.createVerticalStrut(10));
+		JLabel label9;
+		if( pojazd.getObecneMiejsce() != null ) label9 = new InfoLabel( "Obecne miasto: "+ pojazd.getObecneMiejsce().getName());
+		else label9 = new InfoLabel( "Obecne miejsce: w trakcie podróży");
+		panelInfo.add( label9 );
+		panelInfo.add(Box.createVerticalStrut(10));
+		
+		
+		
+		
+		if(pojazd instanceof PojazdPasazerski ){
+			panelInfo.add( new InfoLabel( "Liczba wolnych miejsc: "+((PojazdPasazerski) pojazd).getWolneMiejsca() ));
+			panelInfo.add(Box.createVerticalStrut(10));
+			panelInfo.add( new InfoLabel( "Maksymalna liczba miejsc: "+((PojazdPasazerski) pojazd).getMaxMiejsc()));
+			panelInfo.add(Box.createVerticalStrut(10));
+			panelInfo.add( new InfoLabel( "Lista pasażerów: "));
+			panelInfo.add(Box.createVerticalStrut(5));
+			for(Pasazer osoba : ((PojazdPasazerski) pojazd).getListaPasazerow()){
+				panelInfo.add( new InfoLabel( "   --->  "+osoba.getImie() + osoba.getNazwisko() ));
+			}
+			panelInfo.add(Box.createVerticalStrut(10));
+		}
+		if(pojazd instanceof PojazdWojskowy){
+			panelInfo.add( new InfoLabel( "Uzbrojenie: "+((PojazdWojskowy) pojazd).getBron() ));
+			panelInfo.add(Box.createVerticalStrut(10));
+		}
+		
+		panelInfo.add( new InfoLabel( "Trasa: "));
+		panelInfo.add(Box.createVerticalStrut(5));
+		for( Droga droga : pojazd.getTrasa() ){
+			panelInfo.add( new InfoLabel( "   --->  "+droga.getB().getName() ));
+		}
+		
+		panelInfo.add(Box.createVerticalStrut(30));
+		JButton but1 = new JButton("Usun pojazd");
+		but1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		but1.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				//Swiat.removepojazd(pojazd);
+			}
+		});
+		panelInfo.add(but1);
+		panelInfo.add(Box.createVerticalStrut(10));
+		JButton but2 = new JButton("Zmień trase");
+		but2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		but2.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				//Swiat.trasaChange(pojazd);
+			}
+		});
+		panelInfo.add(but2);
+		panelInfo.add(Box.createVerticalStrut(10));
 		
 		
 		panelInfo.revalidate();
 		panelInfo.repaint();
-		typ =1;
+		typ = 1;
 		
 	}
 	

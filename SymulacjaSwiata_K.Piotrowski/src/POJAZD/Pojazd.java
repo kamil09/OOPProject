@@ -1,11 +1,12 @@
 package POJAZD;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 
 import DROGA.Droga;
 import GUI.MapClickVehicle;
@@ -50,6 +51,10 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	 * Trasa powrotna - kopia trasy w odwrotnej kolejności
 	 */
 	private List<Droga> trasaPowrotna = new ArrayList<Droga>();
+	/**
+	 * Wielkość obrazu danego pojazdu
+	 */
+	private int size=70;
 	
 	/**
 	 * Kostruktor
@@ -65,6 +70,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 		super(x, y, name, id);
 		Random generator = new Random();
 		this.maxPaliwo=generator.nextInt(501)+1000;
+		this.liczbaZalogi=generator.nextInt(10)+10;
 		this.paliwo=maxPaliwo;
 		this.obecneMiejsce=miasto;
 	}
@@ -111,9 +117,48 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	
 	public void usunPojazd(){
 	}
-	
-	public abstract MapClickVehicle rysuj(double zoom, int koorX, int koorY);
-	public abstract ImageIcon returnIcon(double zoom);
+	/**
+	 * Zwraca button z pojazdem do wyswietlenia na mapie
+	 * @param zoom	- zoom mapy
+	 * @param koorX	- wspołrzędna X
+	 * @param koorY	- wspólrzędna Y
+	 * @return
+	 */
+	public MapClickVehicle rysuj(double zoom, int koorX, int koorY){
+		int size=(int)(this.getSize()/zoom);		
+		ImageIcon ikona = this.returnIcon(zoom);
+		MapClickVehicle button= new MapClickVehicle(koorX,koorY, size, size, this);
+		button.setIcon(ikona);
+		return button;
+	};
+	/**
+	 * Zwraca obruconą, przeskalowaną ikonę pojazdu
+	 * @param zoom - zomm na mapie
+	 * @return
+	 */
+	public ImageIcon returnIcon(double zoom){
+		int size=(int)(this.getSize()/zoom);
+		int katObrotu = 0;
+		if( !this.getTrasa().isEmpty() ) katObrotu=(int) this.getTrasa().get(0).getKatProstej();
+		katObrotu*=-1;
+		
+		BufferedImage gr = new BufferedImage(size,size,BufferedImage.TYPE_INT_ARGB);
+		Graphics2D bg = gr.createGraphics();
+		
+		bg.setColor(null);
+		bg.setBackground(null);
+		bg.rotate(Math.toRadians(katObrotu), size/2, size/2);
+		bg.drawImage(this.getImage(),0,0,size, size,0,0,this.getSize(), this.getSize(), null);
+	    bg.dispose();
+		ImageIcon ikona = new ImageIcon(gr);
+		
+		return ikona;
+	};
+	/**
+	 * Zwraca obraz danepo pojazdy
+	 * @return obraz danego pojazdu
+	 */
+	public abstract BufferedImage getImage();
 
 	public List<Droga> getTrasa() {
 		return trasa;
@@ -129,6 +174,14 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 
 	public void setTrasaPowrotna(List<Droga> trasaPowrotna) {
 		this.trasaPowrotna = trasaPowrotna;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
 	}
 
 }
