@@ -102,7 +102,7 @@ public class MapPanel extends JLayeredPane implements Runnable {
 		setBackground(UIManager.getColor("Button.focus"));
 		setLayout(null);
 		setDoubleBuffered(true);
-		
+		setLayer(this, 0);
 		addMouseWheelListener(new MouseAdapter() {
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				
@@ -198,15 +198,15 @@ public class MapPanel extends JLayeredPane implements Runnable {
         
         //TESTOWE RYSOWANIE USUNĄĆ PÓŹNIEJ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        for(Droga linia : Swiat.getListaTras()){
-        	
-        	g.drawLine((int)((linia.getA().getKoorX()+linia.getOdX()-this.mapStartX)/mapZOOM), 
-        			   (int)((linia.getA().getKoorY()+linia.getOdY()-this.mapStartY)/mapZOOM), 
-        			   (int)((linia.getB().getKoorX()+linia.getOdX()-this.mapStartX)/mapZOOM), 
-        			   (int)((linia.getB().getKoorY()+linia.getOdY()-this.mapStartY)/mapZOOM));
-        
-        	
-        }
+//        for(Droga linia : Swiat.getListaTras()){
+//        	
+//        	g.drawLine((int)((linia.getA().getKoorX()+linia.getOdX()-this.mapStartX)/mapZOOM), 
+//        			   (int)((linia.getA().getKoorY()+linia.getOdY()-this.mapStartY)/mapZOOM), 
+//        			   (int)((linia.getB().getKoorX()+linia.getOdX()-this.mapStartX)/mapZOOM), 
+//        			   (int)((linia.getB().getKoorY()+linia.getOdY()-this.mapStartY)/mapZOOM));
+//        
+//        	
+//        }
     }
 	
 	/**
@@ -219,23 +219,20 @@ public class MapPanel extends JLayeredPane implements Runnable {
             	if(this.cityRedrow==true){
             		this.drowAll();
             	}  
-          
             	this.drowVehicles();
-            	
             	this.revalidate();
         		this.repaint();
-                Thread.sleep(30);
+                Thread.sleep(40);
            } catch (InterruptedException e) {
                 e.printStackTrace();
            }
         }
 	}
 	/**
-	 * Rysuje wszystkie obiekty na mapie
+	 * Rysuje wszystkie obiekty na mapie (miasta u skrzyzowania)
 	 */
 	public void drowAll(){
 		this.removeAll();
-		
 		drowCities();
 		rysujSkrzyzowania();
 	}
@@ -260,7 +257,7 @@ public class MapPanel extends JLayeredPane implements Runnable {
 				koorY-=size/2;
 				
 				JButton punkt = new MapClickButton(koorX,koorY,size,size,city);
-				add(punkt,1);
+				add(punkt,4);
 				if(this.cityRedrow==true) this.cityRedrow=false;
 			}
 		}
@@ -279,12 +276,18 @@ public class MapPanel extends JLayeredPane implements Runnable {
 				koorY=(int)((pojazd.getKoorY()-this.mapStartY)/this.mapZOOM);
 			}
 			else{
-				koorX=(int)((pojazd.getKoorX()-this.mapStartX+pojazd.getTrasa().get(0).getOdX())/this.mapZOOM);
-				koorY=(int)((pojazd.getKoorY()-this.mapStartY+pojazd.getTrasa().get(0).getOdY())/this.mapZOOM);
+				koorX=(int)((pojazd.getKoorX()-this.mapStartX));
+				koorY=(int)((pojazd.getKoorY()-this.mapStartY));
+				if( !pojazd.isCzyZaparkowano() ){
+					koorX+=pojazd.getTrasa().get(0).getOdX();
+					koorY+=pojazd.getTrasa().get(0).getOdY();
+				}
+				koorX/=this.mapZOOM;
+				koorY/=this.mapZOOM;
 			}
 			MapClickVehicle tmp=pojazd.rysuj(mapZOOM, koorX, koorY);
 			this.wyswietlanePojazdy.add(tmp);
-			this.add(tmp, 3);
+			this.add(tmp, 2);
 			
 		}
 		MapPanel.doRysowania.clear();
@@ -297,14 +300,20 @@ public class MapPanel extends JLayeredPane implements Runnable {
 				koorY=(int)((button.getPojazd().getKoorY()-this.mapStartY)/this.mapZOOM);
 			}
 			else{
-				koorX=(int)((button.getPojazd().getKoorX()-this.mapStartX+button.getPojazd().getTrasa().get(0).getOdX())/this.mapZOOM);
-				koorY=(int)((button.getPojazd().getKoorY()-this.mapStartY+button.getPojazd().getTrasa().get(0).getOdY())/this.mapZOOM);
+				koorX=(int)((button.getPojazd().getKoorX()-this.mapStartX));
+				koorY=(int)((button.getPojazd().getKoorY()-this.mapStartY));
+				if( !button.getPojazd().isCzyZaparkowano() ){
+					koorX+=button.getPojazd().getTrasa().get(0).getOdX();
+					koorY+=button.getPojazd().getTrasa().get(0).getOdY();
+				}
+				koorX/=this.mapZOOM;
+				koorY/=this.mapZOOM;
 			}
 			koorX-=(button.getPojazd().getSize()/(2*mapZOOM));
 			koorY-= (button.getPojazd().getSize()/(2*mapZOOM));
 			button.setIcon(button.getPojazd().returnIcon(mapZOOM));
 			button.setBounds(koorX, koorY, (int)(70/mapZOOM), (int)(70/mapZOOM));
-			this.add(button, 3);
+			this.add(button, 2);
 		}
 	}
 	/**
@@ -327,7 +336,7 @@ public class MapPanel extends JLayeredPane implements Runnable {
 				koorY-=size/2;
 				
 				JButton punkt = new MapClickButton(koorX,koorY,size,size,city);
-				add(punkt,1);
+				add(punkt,3);
 				if(this.cityRedrow==true) this.cityRedrow=false;
 			}
 		}

@@ -204,8 +204,11 @@ public class InfoPanel extends JPanel implements Runnable{
 			label8 = new InfoLabel("Typ podróży : służobowa");
 		else
 			label8 = new InfoLabel("Typ posróży : prywatna");
-				
-		JLabel label9 = new InfoLabel( "Miejsce: " +pasazer.getObecnyPunkt().getName() );
+		JLabel label9;	
+		if( pasazer.getObecnyPunkt()!=null){
+			label9 = new InfoLabel( "Miejsce: " +pasazer.getObecnyPunkt().getName() );
+		}
+		else label9 = new InfoLabel( "Miejsce: w drodze" );
 		JLabel label10;
 		if(pasazer.getObecnyPojazd()!=null){
 			label10 = new InfoLabel( "Pojazd: " +pasazer.getObecnyPojazd().getName() );

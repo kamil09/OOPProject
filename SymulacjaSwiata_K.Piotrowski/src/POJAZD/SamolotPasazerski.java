@@ -28,8 +28,17 @@ public class SamolotPasazerski extends PojazdPasazerski implements Samolot{
 	public void run() {
 		while(true){
 			try {
-				this.setKoorY(this.getKoorY()+4);
-				Thread.sleep(50);
+				if( !this.getTrasa().isEmpty() ){
+					//Jesli mamy gdzie się poruszyć
+						
+						
+						
+						
+					}
+					//Jesli brak trasy
+				else
+				//	this.losujTrase(this);
+				Thread.sleep(20);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -41,5 +50,6 @@ public class SamolotPasazerski extends PojazdPasazerski implements Samolot{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 	
 }

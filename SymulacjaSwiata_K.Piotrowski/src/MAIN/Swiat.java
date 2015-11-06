@@ -55,6 +55,14 @@ public class Swiat implements Runnable {
 	 */
 	private static List<Droga> listaTras = new ArrayList<Droga>();
 	/**
+	 * Lista tras wodnych pomocna przy ustalaniu trasy dla statku
+	 */
+	private static List<TrasaMorska> listaTrasMorskich = new ArrayList<TrasaMorska>();
+	/**
+	 * Lista tras powietrznych pomocna przy ustalaniu trasy dla samolotu
+	 */
+	private static List<TrasaPowietrzna> listaTrasPowietrznych = new ArrayList<TrasaPowietrzna>();
+	/**
 	 * Lista wszystkich miast
 	 */
 	private static List<Miasto> cityList = new ArrayList<Miasto>();
@@ -79,25 +87,30 @@ public class Swiat implements Runnable {
 	 * Nie można dodawać nowego pojazdu podczas przechodzenia po pętli i wyświetlania na ekranie!!!
 	 */
 	private static boolean canAddPojazd=true;
-	
 	/**
 	 * Konstruktor świata
 	 * Wczytuje obraz tła
 	 */
 	public Swiat(){
 		try {
+			//WCZYTYWANIE OBRAZÓW
 			bufferImage = ImageIO.read(new File("src/mapa2.png"));
 			pojazdyImage.add(ImageIO.read(new File("src/lotniskowiec.png")));
-			pojazdyImage.add(ImageIO.read(new File("src/lotniskowiec.png")));
+			pojazdyImage.add(ImageIO.read(new File("src/statek.png")));
 			pojazdyImage.add(ImageIO.read(new File("src/mysliwiec.png")));
-			//pojazdyImage.add(ImageIO.read(new File("src/samolot.png")));
+			pojazdyImage.add(ImageIO.read(new File("src/samolot.png")));
 			generujListeMiast();
+			
+			//USUNĄĆ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			for(int i=0;i<100;i++) addPasazer();
 		} catch (IOException ex) { 
-			System.out.println("Nie można wczytać pliku mapy");
+			System.out.println("Nie można wczytać obrazów");
 			System.exit(2);
 		}    
 	}
+	/**
+	 * @return obraz tła
+	 */
 	public static BufferedImage getBufferImage(){
 		return bufferImage;
 	}
@@ -148,16 +161,21 @@ public class Swiat implements Runnable {
 			addPojazd(port,lotniskowiec);
 		}
 	}
+	/**
+	 * Ogólna metoda dodawania pojazdu
+	 * @param miasto	Miasto w którym zaczyna pojazd
+	 * @param pojazd	Referencja do utworzonego już pojazdu
+	 */
 	private static void addPojazd(Miasto miasto, Pojazd pojazd){
 		while(!canAddPojazd)
 			try {
-				Thread.sleep(5);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			};
+			miasto.setPojemosc(miasto.getPojemosc()-1);
 			listaPojazdow.add(pojazd);
 			miasto.getListaPojazdow().add(pojazd);
-			miasto.setPojemosc(miasto.getPojemosc()-1);
 			runnerList.add(pojazd);
 			threadsList.add(new Thread(runnerList.get(runnerList.size()-1)));
 			threadsList.get(threadsList.size()-1).start();
@@ -166,9 +184,6 @@ public class Swiat implements Runnable {
 			
 	}
 	
-	public static List<Pasazer> getListaPasazerow(){
-		return listaPasazerow;
-	}
 	/**
 	 * Generuje listę miast oraz tras
 	 */
@@ -318,7 +333,17 @@ public class Swiat implements Runnable {
 		listaTras.add(new Droga( cityList.get(5), cityList.get(15)));
 		listaTras.add(new Droga( cityList.get(15), cityList.get(5)));
 		listaTras.add(new Droga( cityList.get(8), cityList.get(16)));
-		listaTras.add(new Droga( cityList.get(16), cityList.get(8)));	
+		listaTras.add(new Droga( cityList.get(16), cityList.get(8)));
+		
+		for(Droga droga : getListaTras() ){
+			if(droga instanceof TrasaMorska){
+				listaTrasMorskich.add((TrasaMorska)droga);
+			}
+			if(droga instanceof TrasaPowietrzna){
+				listaTrasPowietrznych.add((TrasaPowietrzna) droga);
+			}
+			
+		}
 	}
 	public static List<Droga> getListaTras() {
 		return listaTras;
@@ -332,12 +357,16 @@ public class Swiat implements Runnable {
 	public static List<Miasto> getCityList(){
 		return cityList;
 	}
-	public static int generateId(){
+	public static List<Pasazer> getListaPasazerow(){
+		return listaPasazerow;
+	}
+	
+	public synchronized static int generateId(){
 		idGenerator++;
 		return idGenerator;
 	}
 	
-	public static Port getRandomPort(){
+	public synchronized static Port getRandomPort(){
 		List<Port> tmpList = new ArrayList<Port>();
 		for(Miasto miasto : Swiat.getCityList()) 
 			if(miasto instanceof Port && miasto.getPojemosc()>0 ) tmpList.add((Port) miasto);
@@ -347,7 +376,7 @@ public class Swiat implements Runnable {
 			return tmpList.get(generator.nextInt(tmpList.size()));
 		else return null;
 	}
-	public static Lotnisko getRandomAirPort(){
+	public synchronized static Lotnisko getRandomAirPort(){
 		List<Lotnisko> tmpList = new ArrayList<Lotnisko>();
 		for(Miasto miasto : Swiat.getCityList()) 
 			if(miasto instanceof Lotnisko && miasto.getPojemosc()>0 ) tmpList.add((Lotnisko) miasto);
@@ -369,16 +398,27 @@ public class Swiat implements Runnable {
 	public static void setCanAddPojazd(boolean canAddPojazd) {
 		Swiat.canAddPojazd = canAddPojazd;
 	}
-	
-	@Override
-	public void run() {
-		
-	}
 	public static List<BufferedImage> getPojazdyImages() {
 		return pojazdyImage;
 	}
 	public static void setPojazdyImages(List<BufferedImage> pojazdy) {
 		Swiat.pojazdyImage = pojazdy;
+	}
+	@Override
+	public void run() {
+		
+	}
+	public static List<TrasaMorska> getListaTrasMorskich() {
+		return listaTrasMorskich;
+	}
+	public static void setListaTrasMorskich(List<TrasaMorska> listaTrasMorskich) {
+		Swiat.listaTrasMorskich = listaTrasMorskich;
+	}
+	public static List<TrasaPowietrzna> getListaTrasPowietrznych() {
+		return listaTrasPowietrznych;
+	}
+	public static void setListaTrasPowietrznych(List<TrasaPowietrzna> listaTrasPowietrznych) {
+		Swiat.listaTrasPowietrznych = listaTrasPowietrznych;
 	}
 	
 }

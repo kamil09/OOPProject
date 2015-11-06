@@ -226,7 +226,9 @@ public class Pasazer implements Runnable{
 	            			/*
 	            			 * Przeszukanie czy w obecnym miejscu znajduje się odpowiedni pojazd
 	            			 */
+	            			Swiat.setCanAddPojazd(false);
 	            			for(Pojazd pojazd : this.getObecnyPunkt().getListaPojazdow() ){
+	            			
 	            				if(pojazd instanceof PojazdPasazerski){
 	            					if(((PojazdPasazerski) pojazd).getWolneMiejsca() > 0){
 	            						this.wsiadzDoPojazdu((PojazdPasazerski)pojazd);
@@ -234,13 +236,14 @@ public class Pasazer implements Runnable{
 	            					}
 	            				}
 	            			}
+	            			Swiat.setCanAddPojazd(true);
             			}
             			break;
             		case 2:
             			/**
             			 * Sprawdzenie czy pojazd znajduje się w miejscu docelowym
             			 */
-            			if(this.getObecnyPojazd().getObecneMiejsce().getid() == this.getTrasa().get(0).getid() ){
+            			if(this.getObecnyPojazd().getObecneMiejsce()!=null &&  this.getObecnyPojazd().getObecneMiejsce().getid() == this.getTrasa().get(0).getid() ){
             				wysiadzZPojazdu();
             			}
             			break;
@@ -358,7 +361,7 @@ public class Pasazer implements Runnable{
 	public void wsiadzDoPojazdu( PojazdPasazerski pojazd ){
 		//dodajemy pasazera do pojazdu, zmniejszamy ilosc wolnych miejsc
 		pojazd.getListaPasazerow().add(this);
-		pojazd.setWolneMiejsca(this.getObecnyPojazd().getWolneMiejsca()-1);
+		pojazd.setWolneMiejsca( pojazd.getWolneMiejsca()-1 );
 		//ustawiamy obecny pojazd
 		this.setObecnyPojazd(pojazd);
 		this.setObecnyPunkt(null);

@@ -28,8 +28,17 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot{
 	public void run() {
 		while(true){
 			try {
-				this.setKoorX(this.getKoorX()+5);
-				Thread.sleep(50);
+				if( !this.getTrasa().isEmpty() ){
+					//Jesli mamy gdzie się poruszyć
+						
+						
+						
+						
+					}
+				//Jesli brak trasy
+				else
+				//	this.losujTrase();
+				Thread.sleep(20);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

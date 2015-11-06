@@ -1,5 +1,9 @@
 package DROGA;
+import java.util.ArrayList;
+import java.util.List;
+
 import MAIN.PunktMapy;
+import POJAZD.Pojazd;
 
 /**
  * 
@@ -21,6 +25,11 @@ public class Droga {
 	 */
 	private PunktMapy B;
 	/**
+	 * Lista pojazdów znajdujących się na drodze
+	 * Używane podaczas wykrywania kolizji
+	 */
+	private List<Pojazd> pojazdyNaDrodze = new ArrayList<Pojazd>();
+	/**
 	 * Współczynnik kierunkowy prostej zawierającej naszą drogę
 	 */
 	private double kierunek;
@@ -31,7 +40,7 @@ public class Droga {
 	/**
 	 * Mówi nam ile trasa (do rysowania ) jest oddalona na osi X od odcinka łączącego miasta (A - B)
 	 */
-	private int odX=00;
+	private int odX=0;
 	/**
 	 * Mówi nam ile trasa (do rysowania ) jest oddalona na osi Y od odcinka łączącego miasta (A - B)
 	 */
@@ -49,10 +58,10 @@ public class Droga {
 	}
 	
 	private void przeliczProsta(){
-		int OdProstej=30;
+		int OdProstej=40;
 		
-		int diffX=this.getB().getKoorX()-this.getA().getKoorX();
-		int diffY=this.getB().getKoorY()-this.getA().getKoorY();
+		int diffX=(int) (this.getB().getKoorX()-this.getA().getKoorX());
+		int diffY=(int) (this.getB().getKoorY()-this.getA().getKoorY());
 		diffY*=-1;
 		this.kierunek=(double)diffY/diffX;
 		this.katProstej=Math.toDegrees(Math.atan(Math.abs(this.getKierunek())));
@@ -74,11 +83,11 @@ public class Droga {
 			odY=(int) (-OdProstej*Math.cos(Math.toRadians(this.katProstej)));
 			this.katProstej+=180;
 		}
-		// iV ĆWIARTKA
+		// IV ĆWIARTKA
 		if(diffX>0 && diffY< 0) {
 			odX=(int) (-OdProstej*Math.sin(Math.toRadians(this.katProstej)));
 			odY=(int) (OdProstej*Math.cos(Math.toRadians(this.katProstej)));
-			this.katProstej+=180+180-this.katProstej;
+			this.katProstej=360-this.katProstej;
 		}
 		
 		
@@ -119,6 +128,14 @@ public class Droga {
 
 	public void setKatProstej(double katProstej) {
 		this.katProstej = katProstej;
+	}
+
+	public List<Pojazd> getPojazdyNaDrodze() {
+		return pojazdyNaDrodze;
+	}
+
+	public void setPojazdyNaDrodze(List<Pojazd> pojazdyNaDrodze) {
+		this.pojazdyNaDrodze = pojazdyNaDrodze;
 	}
 
 

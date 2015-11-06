@@ -21,7 +21,11 @@ public abstract class Miasto extends PunktMapy{
 	/**
 	 * Określa liczbę pojazdów maksymalnie przebywających w jednym czasie w mieście.
 	 */
-	private int pojemosc=5;
+	private int pojemosc=4;
+	/**
+	 * Parking
+	 */
+	private int[] parking = new int[] { 0,0,0,0 };
 	
 	/**
 	 * Konstruktor
@@ -51,5 +55,15 @@ public abstract class Miasto extends PunktMapy{
 
 	public void setPojemosc(int pojemosc) {
 		this.pojemosc = pojemosc;
+	}
+
+
+	public int[] getParking() {
+		return parking;
+	}
+
+
+	public void setParking(int[] parking) {
+		this.parking = parking;
 	}
 }

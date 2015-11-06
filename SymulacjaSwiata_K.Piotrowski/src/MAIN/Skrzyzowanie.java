@@ -8,6 +8,8 @@ package MAIN;
  */
 public class Skrzyzowanie extends PunktMapy{
 	
+	
+	
 	/**
 	 * Konstruktor
 	 * @param x		- współrzędna X
@@ -17,7 +19,6 @@ public class Skrzyzowanie extends PunktMapy{
 	 */
 	public Skrzyzowanie(int x,int y, String name,int id){
 		super(x, y, name, id);
-		
 	}
 	
 }

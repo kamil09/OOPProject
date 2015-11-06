@@ -15,11 +15,11 @@ public abstract class PunktMapy {
 	/**
 	 * Współrzędna X punktu
 	 */
-	private int koorX;
+	private double koorX;
 	/**
 	 * Współrzędna Y punktu
 	 */
-	private int koorY;
+	private double koorY;
 	/**
 	 * Nazwa miejsca na mapie
 	 */
@@ -32,23 +32,23 @@ public abstract class PunktMapy {
 		this.id=id;
 	}
 
-	public int getKoorX() {
+	public double getKoorX() {
 		return koorX;
 	}
 
 
-	public void setKoorX(int koorX) {
-		this.koorX = koorX;
+	public void setKoorX(double d) {
+		this.koorX = d;
 	}
 
 
-	public int getKoorY() {
+	public double getKoorY() {
 		return koorY;
 	}
 
 
-	public void setKoorY(int koorY) {
-		this.koorY = koorY;
+	public void setKoorY(double d) {
+		this.koorY = d;
 	}
 
 
@@ -61,17 +61,32 @@ public abstract class PunktMapy {
 		this.name = name;
 	}
 	
+	private Object Hulk = new Object();
+	private Object Veronica = new Object();
+	
 	/**
 	 * Konstruktor
-	 * @param x		- współrzędna X
-	 * @param y		- współrzędna Y
+	 * @param d		- współrzędna X
+	 * @param e		- współrzędna Y
 	 * @param name	- nazwa lotniska
 	 * @param id	- id lotniska
 	 */
-	public PunktMapy(int x,int y, String name,int id){
-		this.setKoorX(x);
-		this.setKoorY(y);
+	public PunktMapy(double d,double e, String name,int id){
+		this.setKoorX(d);
+		this.setKoorY(e);
 		this.setName(name);
 		this.setId(id);
+	}
+	public Object getHulk() {
+		return Hulk;
+	}
+	public void setHulk(Object hulk) {
+		Hulk = hulk;
+	}
+	public Object getVeronica() {
+		return Veronica;
+	}
+	public void setVeronica(Object veronica) {
+		Veronica = veronica;
 	}
 }

@@ -18,16 +18,16 @@ public abstract class PojazdWojskowy extends Pojazd{
 	
 	/**
 	 * Kostruktor
-	 * @param x - położenie X Pojazdu
-	 * @param y - położenie Y Pojazdu
+	 * @param d - położenie X Pojazdu
+	 * @param e - położenie Y Pojazdu
 	 * @param name - nazwa pojazdu
 	 * @param id - id pojazdu
 	 */
-	public PojazdWojskowy(int x,int y, String name,int id, Miasto miasto){
-		super(x, y, name,id, miasto );
+	public PojazdWojskowy(double d,double e, String name,int id, Miasto miasto){
+		super(d, e, name,id, miasto );
 	}
 
-	
+
 	public Uzbrojenie getBron() {
 		return bron;
 	}

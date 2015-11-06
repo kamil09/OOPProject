@@ -2,6 +2,7 @@ package POJAZD;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import MAIN.Miasto;
 import PASAZER.Pasazer;
@@ -20,8 +21,11 @@ public abstract class PojazdPasazerski extends Pojazd{
 	/**
 	 * Ilość pozostałych wolnych miejsc
 	 */
-	private int wolneMiejsca;
-	
+	volatile private int wolneMiejsca;
+	/**
+	 * czas oczekiwania na pasażerów w mieście
+	 */
+	private int czasPostoju=100;
 	/**
 	 * Lista pasażerów którzy znajdują się obecnie w pojeździe
 	 */
@@ -29,13 +33,17 @@ public abstract class PojazdPasazerski extends Pojazd{
 	
 	/**
 	 * Kostruktor
-	 * @param x - położenie X Pojazdu
-	 * @param y - położenie Y Pojazdu
+	 * @param d - położenie X Pojazdu
+	 * @param e - położenie Y Pojazdu
 	 * @param name - nazwa pojazdu
 	 * @param id - id pojazdu
 	 */
-	public PojazdPasazerski(int x,int y, String name, int id, Miasto miasto){
-		super(x, y, name, id, miasto);
+	public PojazdPasazerski(double d,double e, String name, int id, Miasto miasto){
+		super(d, e, name, id, miasto);
+		Random generator = new Random();
+		this.setCzasPostoju(generator.nextInt(1000));
+		this.setMaxMiejsc(generator.nextInt(10)+10);
+		this.setWolneMiejsca(this.getMaxMiejsc());
 	}
 	
 	
@@ -45,10 +53,10 @@ public abstract class PojazdPasazerski extends Pojazd{
 	public void setMaxMiejsc(int maxMiejsc) {
 		this.maxMiejsc = maxMiejsc;
 	}
-	public int getWolneMiejsca() {
+	public synchronized int getWolneMiejsca() {
 		return wolneMiejsca;
 	}
-	public void setWolneMiejsca(int wolneMiejsca) {
+	public synchronized void setWolneMiejsca(int wolneMiejsca) {
 		this.wolneMiejsca = wolneMiejsca;
 	}
 	public List<Pasazer> getListaPasazerow() {
@@ -56,5 +64,11 @@ public abstract class PojazdPasazerski extends Pojazd{
 	}
 	public void setListaPasazerow(List<Pasazer> listaPasazerow) {
 		this.listaPasazerow = listaPasazerow;
+	}
+	public int getCzasPostoju() {
+		return czasPostoju;
+	}
+	public void setCzasPostoju(int czasPostoju) {
+		this.czasPostoju = czasPostoju;
 	}
 }
