@@ -54,7 +54,7 @@ public class StatekWycieczkowy extends PojazdPasazerski implements Statek{
 							if(this.getCzasPostoju()<=0){
 								this.wyparkuj();
 								this.setStan(2);
-								this.setCzasPostoju(100);
+								this.setCzasPostoju(700);
 							}
 							else this.setCzasPostoju(this.getCzasPostoju()-1);
 							break;

@@ -23,6 +23,7 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot{
 	public SamolotWojskowy(int x,int y, String name, int id, Lotniskowiec lotniskowiec){
 		super(x, y, name, id, null);
 		this.setSize(40);
+		this.setMaxSpeed(5);
 	}
 	
 	public void run() {

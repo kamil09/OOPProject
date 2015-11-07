@@ -226,6 +226,7 @@ public class Pasazer implements Runnable{
 	            			/*
 	            			 * Przeszukanie czy w obecnym miejscu znajduje się odpowiedni pojazd
 	            			 */
+	            
 	            			Swiat.setCanAddPojazd(false);
 	            			for(Pojazd pojazd : this.getObecnyPunkt().getListaPojazdow() ){
 	            			
@@ -237,9 +238,6 @@ public class Pasazer implements Runnable{
 	            							if(droga.getB().getid() == this.getTrasa().get(0).getid() ) czyWsiada=true;
 	            							if( droga.getB() instanceof Miasto) break;
 	            						}
-	            						
-	            							
-	            						
 	            						if (czyWsiada==true){
 	            							this.wsiadzDoPojazdu((PojazdPasazerski)pojazd);
 	            							break;
@@ -248,7 +246,7 @@ public class Pasazer implements Runnable{
 	            				}
 	            			}
 	            			Swiat.setCanAddPojazd(true);
-            			}
+                  			}
             			break;
             		case 2:
             			/**

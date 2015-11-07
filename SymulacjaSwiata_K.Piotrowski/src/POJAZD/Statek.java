@@ -57,17 +57,4 @@ public interface Statek {
 			}
 		}
 	}
-	
-	public default void przepiszTrase(Pojazd statek){
-		statek.getTrasa().clear();
-		if(statek.getObecneMiejsce().getid() == statek.getTrasaPowrotna().get(0).getA().getid() )
-			for(Droga trasa : statek.getTrasaPowrotna() ){
-				statek.getTrasa().add(trasa);
-			}
-		else
-			for(Droga trasa : statek.getTrasaTmp() ){
-				statek.getTrasa().add(trasa);
-			}
-		statek.getTrasa().get(0).getPojazdyNaDrodze().add(statek);
-	}
 }

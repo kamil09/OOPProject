@@ -42,8 +42,8 @@ public abstract class PojazdPasazerski extends Pojazd{
 	public PojazdPasazerski(double d,double e, String name, int id, Miasto miasto){
 		super(d, e, name, id, miasto);
 		Random generator = new Random();
-		this.setCzasPostoju(generator.nextInt(1000));
-		this.setMaxMiejsc(generator.nextInt(10)+10);
+		this.setCzasPostoju(700);
+		this.setMaxMiejsc(generator.nextInt(10)+5);
 		this.setWolneMiejsca(this.getMaxMiejsc());
 		for(int i=0;i<this.getMaxMiejsc();i++) Swiat.addPasazer();
 	}

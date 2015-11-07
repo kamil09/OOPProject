@@ -76,7 +76,6 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	 * 0 - w mieście startowym, czeka na wylosowanie trasy
 	 * 1 - postój w miescie
 	 * 2 - w trasie
-	 * 3 - na skrzyzowaniu
 	 */
 	private int stan=0;
 	
@@ -240,8 +239,6 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 		synchronized (this.getObecneMiejsce().getVeronica() ){
 			double newKoorX=this.getTrasa().get(0).getA().getKoorX();
 			double newKoorY=this.getTrasa().get(0).getA().getKoorY();
-			//Klinują się w mieście jak za szybko tworzymy pojazdy
-			//DO POPRAWY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			this.moveToPoint(newKoorX, newKoorY);
 			this.move(120);
 			this.setCzyZaparkowano(false);
@@ -330,7 +327,18 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 			this.setPaliwo(this.getMaxPaliwo());
 		}
 	}
-	
+	public void przepiszTrase(Pojazd statek){
+		statek.getTrasa().clear();
+		if(statek.getObecneMiejsce().getid() == statek.getTrasaPowrotna().get(0).getA().getid() )
+			for(Droga trasa : statek.getTrasaPowrotna() ){
+				statek.getTrasa().add(trasa);
+			}
+		else
+			for(Droga trasa : statek.getTrasaTmp() ){
+				statek.getTrasa().add(trasa);
+			}
+		statek.getTrasa().get(0).getPojazdyNaDrodze().add(statek);
+	}
 	
 	public List<Droga> getTrasa() {
 		return trasa;

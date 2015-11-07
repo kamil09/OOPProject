@@ -15,6 +15,7 @@ import GUI.MapPanel;
 import PASAZER.Pasazer;
 import POJAZD.Lotniskowiec;
 import POJAZD.Pojazd;
+import POJAZD.SamolotPasazerski;
 import POJAZD.StatekWycieczkowy;
 
 /**
@@ -125,7 +126,11 @@ public class Swiat implements Runnable {
 	 * Dodawanie samolotu pasażerskiego
 	 */
 	public static void addSamolotPasazerski(){
-		System.out.println("Dodano samolot pasażerski!");
+		Lotnisko lotnisko = Swiat.getRandomAirPort(0);
+		if(lotnisko != null){
+			SamolotPasazerski samolot = new SamolotPasazerski(lotnisko.getKoorX(), lotnisko.getKoorY(), "Samolot pasażerski_"+Swiat.generateId(), Swiat.idGenerator, lotnisko);
+			addPojazd(lotnisko, samolot);
+		}
 	}
 	/**
 	 * Dodawanie samolotu wojskowego
@@ -373,16 +378,22 @@ public class Swiat implements Runnable {
 			return tmpList.get(generator.nextInt(tmpList.size()));
 		else return null;
 	}
-	public synchronized static Lotnisko getRandomAirPort(){
+	public synchronized static Lotnisko getRandomAirPort(int tryb){
 		List<Lotnisko> tmpList = new ArrayList<Lotnisko>();
-		for(Miasto miasto : Swiat.getCityList()) 
-			if(miasto instanceof Lotnisko && miasto.getPojemosc()>0 ) tmpList.add((Lotnisko) miasto);
-			
+		for(Miasto miasto : Swiat.getCityList()){
+			if(tryb==0){
+				if( (miasto instanceof Lotnisko) && (miasto.getPojemosc()>0) && (miasto.getid()<9 ) ) tmpList.add((Lotnisko) miasto);
+			}
+			else{
+				if( (miasto instanceof Lotnisko) && (miasto.getPojemosc()>0) && (miasto.getid()>=9) ) tmpList.add((Lotnisko) miasto);	
+			}
+		}
 		Random generator = new Random();
 		if (!tmpList.isEmpty())
 			return tmpList.get(generator.nextInt(tmpList.size()));
 		else return null;
 	}
+	
 	public static boolean isCzyIstniejeLotniskowiec() {
 		return czyIstniejeLotniskowiec;
 	}
