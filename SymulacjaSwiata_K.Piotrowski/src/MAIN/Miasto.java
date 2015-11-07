@@ -66,4 +66,12 @@ public abstract class Miasto extends PunktMapy{
 	public void setParking(int[] parking) {
 		this.parking = parking;
 	}
+	
+	
+	public synchronized void zwiekszPojemnosc(){
+		this.pojemosc++;
+	}
+	public synchronized void zmniejszPojemnosc(){
+		this.pojemosc--;
+	}
 }

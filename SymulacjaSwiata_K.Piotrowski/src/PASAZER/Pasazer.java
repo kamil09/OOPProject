@@ -211,11 +211,11 @@ public class Pasazer implements Runnable{
             				 */
 	            			if( this.getTrasa().get(this.trasa.size()-1).getid() == this.getObecnyPunkt().getid() ){
 	            				this.trasa.clear();
-	            				this.setStatus(4);
 	            				//Dodatkowe sprawdzenie czy powrócił juz do domu
 	            				if(this.getObecnyPunkt().getid() == this.getMiastoRodzinne().getid() ){
 	            					this.setStatus(5);
 	            				}
+	            				this.setStatus(4);
 	            				break;
 	            			}
             				/**
@@ -250,7 +250,15 @@ public class Pasazer implements Runnable{
 	            				}
 	            			}
 	            			Swiat.setCanAddPojazd(true);
-                  			}
+                  		}
+            			else{
+            				if( this.getObecnyPunkt()!=null ){
+            					if(this.getObecnyPunkt().getid() == this.getMiastoRodzinne().getid() ){
+	            					this.setStatus(5);
+	            				}
+            					else this.setStatus(4);
+            				}
+            			}
             			break;
             		case 2:
             			/**
@@ -351,6 +359,10 @@ public class Pasazer implements Runnable{
 	public void zamienTrasy(){
 		this.trasa.clear();
 		this.trasa=this.trasaPowrotna;
+		if(!this.trasa.isEmpty()){
+			this.miastoDocelowe=(Miasto) this.trasa.get( this.trasa.size()-1 );
+			System.out.println("Pasazer wraca");
+		}
 	}
 	
 	/**

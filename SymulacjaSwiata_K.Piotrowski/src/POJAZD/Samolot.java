@@ -16,6 +16,11 @@ import MAIN.Swiat;
  */
 public interface Samolot {
 	
+	/**
+	 * Znajduje trasę dla samolotu
+	 * Pomija lotniska wojskowe
+	 * @param samolot
+	 */
 	public default void losujTrase(Pojazd samolot) {
 		Random generator = new Random();
 		int dlugoscTrasy= generator.nextInt(1)+3;
@@ -55,6 +60,10 @@ public interface Samolot {
 		//Ustawienie trasy powrotnej
 		znajdzTrasePowrotna(samolot);	
 	}
+	/**
+	 * Znajduje trasę powrotną dla samolotu na podstawie trazy docelowej
+	 * @param samolot - referencja do obiektu typu samolot
+	 */
 	public default void znajdzTrasePowrotna(Pojazd samolot){
 		for(int i=samolot.getTrasa().size()-1 ; i>=0 ; i-- ){
 			for(Droga drogaSw : Swiat.getListaTrasPowietrznych() ){

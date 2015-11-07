@@ -85,6 +85,10 @@ public class MapPanel extends JLayeredPane implements Runnable {
 	 */
 	private boolean cityRedrow=true;
 	/**
+	 * 
+	 */
+	private boolean redrowAllVehicles=false;
+	/**
 	 * Lista wyświetlanych pnktów na mapie które są pojazdami
 	 */
 	private List<MapClickVehicle> wyswietlanePojazdy= new ArrayList<MapClickVehicle>();
@@ -234,6 +238,7 @@ public class MapPanel extends JLayeredPane implements Runnable {
 		this.removeAll();
 		drowCities();
 		rysujSkrzyzowania();
+		this.setRedrowAllVehicles(true);
 	}
 	
 	/**
@@ -296,8 +301,8 @@ public class MapPanel extends JLayeredPane implements Runnable {
 		
 		for(MapClickVehicle button : this.wyswietlanePojazdy){
 			if(button.getPojazd().getKoorX()<-900) doUsuniecua.add(button);
-				
-			this.remove(button);
+			if(this.isRedrowAllVehicles())
+				this.remove(button);
 			if(button.getPojazd().getTrasa().isEmpty() ){
 				koorX=(int)((button.getPojazd().getKoorX()-this.mapStartX)/this.mapZOOM);
 				koorY=(int)((button.getPojazd().getKoorY()-this.mapStartY)/this.mapZOOM);
@@ -316,10 +321,11 @@ public class MapPanel extends JLayeredPane implements Runnable {
 			koorY-=(button.getPojazd().getSize()/(2*mapZOOM));
 			button.setIcon(button.getPojazd().returnIcon(mapZOOM));
 			button.setBounds(koorX, koorY, (int)(70/mapZOOM), (int)(70/mapZOOM));
-			
-			this.add(button, 2);
+			if(this.isRedrowAllVehicles())
+				this.add(button, 2);
 		}
 		this.wyswietlanePojazdy.removeAll(doUsuniecua);
+		this.setRedrowAllVehicles(false);
 	}
 	/**
 	 * Rysuje Skrzyżowania na mapie
@@ -367,5 +373,13 @@ public class MapPanel extends JLayeredPane implements Runnable {
 	}
 	public static void addDoRysowania(Pojazd pojazd){
 		MapPanel.doRysowania.add(pojazd);
+	}
+
+	public boolean isRedrowAllVehicles() {
+		return redrowAllVehicles;
+	}
+
+	public void setRedrowAllVehicles(boolean redrowAllVehicles) {
+		this.redrowAllVehicles = redrowAllVehicles;
 	}
 }

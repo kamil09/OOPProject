@@ -111,6 +111,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 		if((this.isCzyZaparkowano()) && (this.obecneMiejsce instanceof Miasto)){
 			((Miasto)this.getObecneMiejsce()).getParking()[this.getMiejsceParkingowe()]=0;
 			((Miasto)this.getObecneMiejsce()).getListaPojazdow().remove(this);
+			((Miasto)this.getObecneMiejsce()).zwiekszPojemnosc();
 		}
 		//Usuwanie z trasy
 		if(!this.getTrasa().isEmpty()) this.getTrasa().get(0).getPojazdyNaDrodze().remove(this);
@@ -186,14 +187,11 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	 * x - mnożnik przesunięcia
 	 */
 	public void move(int x){
-		
 		double diffX=this.getTrasa().get(0).getB().getKoorX()-this.getKoorX();
 		double diffY=this.getTrasa().get(0).getB().getKoorY()-this.getKoorY();
 		double alfa=Math.atan(diffY/diffX);
-		
 		double moveX= Math.cos(alfa)*this.getMaxSpeed()/3*x;
 		double moveY= Math.sin(alfa)*this.getMaxSpeed()/3*x;
-		
 		double newKoorX=0;
 		double newKoorY=0;
 		if( diffX>0 ){
@@ -204,14 +202,14 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 			newKoorX=this.getKoorX()-moveX;
 			newKoorY=this.getKoorY()-moveY;
 		}
-		while( !this.canMove(newKoorX, newKoorY) ) 	try { Thread.sleep(10); } 
+		while((this.isRunnable()) && (!this.canMove(newKoorX, newKoorY)) ) 	try { Thread.sleep(10); } 
 			catch (InterruptedException e) { e.printStackTrace(); }
 		this.setKoorX(newKoorX);
 		this.setKoorY(newKoorY);
 		this.setPaliwo(this.getPaliwo()-1);
 	}
 	public void moveToPoint(double koorX,double koorY){
-		while( !this.canMove(koorX, koorY) ) 	try { Thread.sleep(10); } 
+		while((this.isRunnable()) && (!this.canMove(koorX, koorY)) ) 	try { Thread.sleep(10); } 
 			catch (InterruptedException e) { e.printStackTrace(); }
 		this.setKoorX(koorX);
 		this.setKoorY(koorY);
@@ -227,7 +225,6 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 				diffY=Math.abs(diffY);
 				double diffP=Math.pow(Math.pow(diffX, 2)+Math.pow(diffY, 2) , 0.5);
 				if( diffP < 65 && !pojazd.isCzyZaparkowano() ) return false;
-			
 			}
 			
 		}
@@ -278,7 +275,6 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 			double newKoorY=this.getTrasa().get(0).getA().getKoorY();
 			this.moveToPoint(newKoorX, newKoorY);
 			this.move(120);
-			this.setCzyZaparkowano(false);
 			//Zwiększanie parkingu w mieście
 			if(this.getObecneMiejsce() instanceof Miasto ){
 				Miasto miasto = (Miasto) this.getObecneMiejsce();
@@ -289,10 +285,11 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 			//Zwiększanie pojemności miasta oraz usuwanie pojazdu z miasta
 			if(this.getObecneMiejsce() instanceof Miasto ){
 				Miasto miasto = (Miasto) this.getObecneMiejsce();
-				miasto.setPojemosc(miasto.getPojemosc()+1);
+				miasto.zwiekszPojemnosc();
 				miasto.getListaPojazdow().remove(this);
 				this.setObecneMiejsce(null);
 			}
+			this.setCzyZaparkowano(false);
 		}
 	}
 	public boolean czyPunktPostoju(){
@@ -322,11 +319,9 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	}
 	public void wejdzNaSkrzyzowanie(){
 		boolean out=false;
-		
-		while(true){
+		while(this.isRunnable()){
 			try {
 				move(1);
-				
 				if(out==false && this.returnDifferenceThisB()<2){
 					this.getTrasa().get(0).getPojazdyNaDrodze().remove(this);
 					this.getTrasa().remove(0);
@@ -344,13 +339,16 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 			}
 		}
 	}
+	/**
+	 * @throws InterruptedException
+	 */
 	public void wejdzDoMiasta() throws InterruptedException{
 		if(this.getTrasa().get(0).getB() instanceof Miasto){
 			Miasto miasto = (Miasto) this.getTrasa().get(0).getB();
 			while( miasto.getPojemosc()<=0 ){
 				Thread.sleep(20);
 			}
-			miasto.setPojemosc(miasto.getPojemosc()-1);
+			miasto.zmniejszPojemnosc();
 			miasto.getListaPojazdow().add(this);
 			this.setObecneMiejsce(miasto);
 			this.setKoorX(miasto.getKoorX());
@@ -364,6 +362,10 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 			this.setPaliwo(this.getMaxPaliwo());
 		}
 	}
+	/**
+	 * Przepisuje prasię porwotną do zmienne trasy (ten na podstawie której podróżujemy i którą zmniejszamy)
+	 * @param statek  - referencja do pojazdu na którym działamy
+	 */
 	public void przepiszTrase(Pojazd statek){
 		statek.getTrasa().clear();
 		if(statek.getObecneMiejsce().getid() == statek.getTrasaPowrotna().get(0).getA().getid() )
@@ -376,6 +378,9 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 			}
 		statek.getTrasa().get(0).getPojazdyNaDrodze().add(statek);
 	}
+	
+	
+	
 	
 	public List<Droga> getTrasa() {
 		return trasa;
@@ -410,23 +415,18 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	public double getPaliwo() {
 		return paliwo;
 	}
-
 	public void setPaliwo(double paliwo) {
 		this.paliwo = paliwo;
 	}
-
 	public int getLiczbaZalogi() {
 		return liczbaZalogi;
 	}
-
 	public void setLiczbaZalogi(int liczbaZalogi) {
 		this.liczbaZalogi = liczbaZalogi;
 	}
-
 	public int getMaxSpeed() {
 		return maxSpeed;
 	}
-
 	public void setMaxSpeed(int maxSpeed) {
 		this.maxSpeed = maxSpeed;
 	}

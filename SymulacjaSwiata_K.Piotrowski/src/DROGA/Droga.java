@@ -58,7 +58,8 @@ public class Droga {
 	}
 	
 	private void przeliczProsta(){
-		int OdProstej=25;
+		int OdProstej=28;
+		if(this instanceof TrasaMorska) OdProstej=20;
 		
 		int diffX=(int) (this.getB().getKoorX()-this.getA().getKoorX());
 		int diffY=(int) (this.getB().getKoorY()-this.getA().getKoorY());
