@@ -58,7 +58,7 @@ public class Droga {
 	}
 	
 	private void przeliczProsta(){
-		int OdProstej=40;
+		int OdProstej=25;
 		
 		int diffX=(int) (this.getB().getKoorX()-this.getA().getKoorX());
 		int diffY=(int) (this.getB().getKoorY()-this.getA().getKoorY());

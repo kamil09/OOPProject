@@ -93,7 +93,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	public Pojazd(double d,double e, String name, int id, Miasto miasto){
 		super(d, e, name, id);
 		Random generator = new Random();
-		this.maxPaliwo=generator.nextInt(501)+1000;
+		this.maxPaliwo=generator.nextInt(5000)+10000;
 		this.liczbaZalogi=generator.nextInt(10)+10;
 		this.paliwo=maxPaliwo;
 		this.obecneMiejsce=miasto;
@@ -147,6 +147,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	public abstract BufferedImage getImage();
 	/**
 	 * Przesuwa pojazd o odpowiednie odległości
+	 * x - mnożnik przesunięcia
 	 */
 	public void move(int x){
 		
@@ -171,6 +172,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 			catch (InterruptedException e) { e.printStackTrace(); }
 		this.setKoorX(newKoorX);
 		this.setKoorY(newKoorY);
+		this.setPaliwo(this.getPaliwo()-1);
 	}
 	public void moveToPoint(double koorX,double koorY){
 		while( !this.canMove(koorX, koorY) ) 	try { Thread.sleep(10); } 
@@ -188,7 +190,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 				diffX=Math.abs(diffX);
 				diffY=Math.abs(diffY);
 				double diffP=Math.pow(Math.pow(diffX, 2)+Math.pow(diffY, 2) , 0.5);
-				if( diffP < 65 ) return false;
+				if( diffP < 65 && !pojazd.isCzyZaparkowano() ) return false;
 			
 			}
 			
@@ -235,29 +237,28 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	 * Wyparkowuje pojazd
 	 */
 	public void wyparkuj(){
-		
-		double newKoorX=this.getTrasa().get(0).getA().getKoorX();
-		double newKoorY=this.getTrasa().get(0).getA().getKoorY();
 		synchronized (this.getObecneMiejsce().getVeronica() ){
+			double newKoorX=this.getTrasa().get(0).getA().getKoorX();
+			double newKoorY=this.getTrasa().get(0).getA().getKoorY();
 			//Klinują się w mieście jak za szybko tworzymy pojazdy
 			//DO POPRAWY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			this.moveToPoint(newKoorX, newKoorY);
 			this.move(120);
-		}
 			this.setCzyZaparkowano(false);
-		//Zwiększanie parkingu w mieście
-		if(this.getObecneMiejsce() instanceof Miasto ){
-			Miasto miasto = (Miasto) this.getObecneMiejsce();
-			if(this.getMiejsceParkingowe()>-1)
-				miasto.getParking()[this.getMiejsceParkingowe()]=0;
-			this.setMiejsceParkingowe(-1);
-		}
-		//Zwiększanie pojemności miasta oraz usuwanie pojazdu z miasta
-		if(this.getObecneMiejsce() instanceof Miasto ){
-			Miasto miasto = (Miasto) this.getObecneMiejsce();
-			miasto.setPojemosc(miasto.getPojemosc()+1);
-			miasto.getListaPojazdow().remove(this);
-			this.setObecneMiejsce(null);
+			//Zwiększanie parkingu w mieście
+			if(this.getObecneMiejsce() instanceof Miasto ){
+				Miasto miasto = (Miasto) this.getObecneMiejsce();
+				if(this.getMiejsceParkingowe()>-1)
+					miasto.getParking()[this.getMiejsceParkingowe()]=0;
+				this.setMiejsceParkingowe(-1);
+			}
+			//Zwiększanie pojemności miasta oraz usuwanie pojazdu z miasta
+			if(this.getObecneMiejsce() instanceof Miasto ){
+				Miasto miasto = (Miasto) this.getObecneMiejsce();
+				miasto.setPojemosc(miasto.getPojemosc()+1);
+				miasto.getListaPojazdow().remove(this);
+				this.setObecneMiejsce(null);
+			}
 		}
 	}
 	public boolean czyPunktPostoju(){
@@ -326,6 +327,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 			if(!this.getTrasa().isEmpty())
 				this.getTrasa().get(0).getPojazdyNaDrodze().add(this);
 			this.setStan(1);
+			this.setPaliwo(this.getMaxPaliwo());
 		}
 	}
 	

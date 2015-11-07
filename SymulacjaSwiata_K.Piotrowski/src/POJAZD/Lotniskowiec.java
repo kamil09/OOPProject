@@ -43,7 +43,6 @@ public class Lotniskowiec extends PojazdWojskowy implements Statek{
 					switch(this.getStan()){
 						case 1:
 							//Lotniskowiec nie zatrzymuje się w mieście, no chyba, że jest korek i nie ma gdzie płynąć:)
-							//Thread.sleep(5000);
 							this.wyparkuj();
 							this.setStan(2);
 							break;
@@ -65,9 +64,6 @@ public class Lotniskowiec extends PojazdWojskowy implements Statek{
 									}
 								}
 							}
-							break;
-						case 3:
-							
 							break;
 					}	
 				}

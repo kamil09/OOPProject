@@ -50,28 +50,38 @@ public class StatekWycieczkowy extends PojazdPasazerski implements Statek{
 				if( !this.getTrasa().isEmpty() ){
 					switch(this.getStan()){
 						case 1:
-							this.wyparkuj();
-							this.setStan(2);
+							//Lotniskowiec nie zatrzymuje się w mieście, no chyba, że jest korek i nie ma gdzie płynąć:)
+							if(this.getCzasPostoju()<=0){
+								this.wyparkuj();
+								this.setStan(2);
+								this.setCzasPostoju(100);
+							}
+							else this.setCzasPostoju(this.getCzasPostoju()-1);
 							break;
 						case 2:
-							if( !this.czyPunktPostoju() ) 
+							//Sprawdzenie czy docieramy do punktu końcowego (miasto lub skrzyzowanie)
+							if( !this.czyPunktPostoju() ) {
 								this.move(1);
+							}
 							else{
+								//Synchronizacja wejscia na skrzyzowanie lub do miasta!
 								if(this.getTrasa().get(0).getB() instanceof Skrzyzowanie ){
 									synchronized(this.getTrasa().get(0).getB().getHulk() ){
 										this.wejdzNaSkrzyzowanie();
 									}
 								}
 								else{
-									//this.zaparkuj();
+									synchronized(this.getTrasa().get(0).getB().getHulk() ){
+										this.wejdzDoMiasta();
+									}
 								}
 							}
 							break;
-							
-						case 3:
-							
-							break;
 					}	
+				}
+				else{
+					this.przepiszTrase(this);
+					this.setStan(1);
 				}
 				Thread.sleep(20);
 			} catch (InterruptedException e) {

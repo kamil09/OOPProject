@@ -68,5 +68,6 @@ public interface Statek {
 			for(Droga trasa : statek.getTrasaTmp() ){
 				statek.getTrasa().add(trasa);
 			}
+		statek.getTrasa().get(0).getPojazdyNaDrodze().add(statek);
 	}
 }

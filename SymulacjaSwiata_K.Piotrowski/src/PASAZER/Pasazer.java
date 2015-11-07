@@ -231,8 +231,19 @@ public class Pasazer implements Runnable{
 	            			
 	            				if(pojazd instanceof PojazdPasazerski){
 	            					if(((PojazdPasazerski) pojazd).getWolneMiejsca() > 0){
-	            						this.wsiadzDoPojazdu((PojazdPasazerski)pojazd);
-	            						break;
+	            						//Sprawdzenie czy jedzie do odpowiedzniego miejsca
+	            						boolean czyWsiada=false;
+	            						for(Droga droga : pojazd.getTrasa() ){
+	            							if(droga.getB().getid() == this.getTrasa().get(0).getid() ) czyWsiada=true;
+	            							if( droga.getB() instanceof Miasto) break;
+	            						}
+	            						
+	            							
+	            						
+	            						if (czyWsiada==true){
+	            							this.wsiadzDoPojazdu((PojazdPasazerski)pojazd);
+	            							break;
+	            						}
 	            					}
 	            				}
 	            			}
