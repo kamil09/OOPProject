@@ -50,7 +50,6 @@ public class StatekWycieczkowy extends PojazdPasazerski implements Statek{
 				if( !this.getTrasa().isEmpty() ){
 					switch(this.getStan()){
 						case 1:
-							
 							this.wyparkuj();
 							this.setStan(2);
 							break;

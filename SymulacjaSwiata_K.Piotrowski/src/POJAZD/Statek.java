@@ -42,5 +42,31 @@ public interface Statek {
 		}
 		statek.setStan(1);
 		statek.getTrasa().get(0).getPojazdyNaDrodze().add(statek);
+		for(Droga trasa : statek.getTrasa() ){
+			statek.getTrasaTmp().add(trasa);
+		}
+		//Ustawienie trasy powrotnej
+		znajdzTrasePowrotna(statek);	
+	}
+	public default void znajdzTrasePowrotna(Pojazd statek){
+		for(int i=statek.getTrasa().size()-1 ; i>=0 ; i-- ){
+			for(Droga drogaSw : Swiat.getListaTrasMorskich() ){
+				if( (statek.getTrasa().get(i).getB().getid()==drogaSw.getA().getid()) && (statek.getTrasa().get(i).getA().getid()==drogaSw.getB().getid()) ){
+					statek.getTrasaPowrotna().add(drogaSw);
+				}	
+			}
+		}
+	}
+	
+	public default void przepiszTrase(Pojazd statek){
+		statek.getTrasa().clear();
+		if(statek.getObecneMiejsce().getid() == statek.getTrasaPowrotna().get(0).getA().getid() )
+			for(Droga trasa : statek.getTrasaPowrotna() ){
+				statek.getTrasa().add(trasa);
+			}
+		else
+			for(Droga trasa : statek.getTrasaTmp() ){
+				statek.getTrasa().add(trasa);
+			}
 	}
 }

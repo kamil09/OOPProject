@@ -16,6 +16,14 @@ import MAIN.Swiat;
  */
 public class Lotniskowiec extends PojazdWojskowy implements Statek{
 
+	/**
+	 * Konstruktor lotniskowca
+	 * @param d		- punkt startowy X
+	 * @param e		- punkt startowy Y
+	 * @param name	- nazwa Lotniskowca
+	 * @param id	- id lotniskowca
+	 * @param port	- Port w którym zaczyna podróż lotniskowiec
+	 */
 	public Lotniskowiec(double d,double e, String name, int id, Miasto port){
 		super(d, e, name, id, port);
 		this.setSize(70);
@@ -24,7 +32,9 @@ public class Lotniskowiec extends PojazdWojskowy implements Statek{
 		this.setStan(0);
 		this.setMaxSpeed(2);
 		this.losujTrase(this);
-		this.zaparkuj();
+		synchronized (this.getObecneMiejsce().getHulk() ){
+			this.zaparkuj();
+		}
 	}
 	public void run() {
 		while(true){
@@ -32,29 +42,38 @@ public class Lotniskowiec extends PojazdWojskowy implements Statek{
 				if( !this.getTrasa().isEmpty() ){
 					switch(this.getStan()){
 						case 1:
-							//Lotniskowiec nie parkuje
+							//Lotniskowiec nie zatrzymuje się w mieście, no chyba, że jest korek i nie ma gdzie płynąć:)
+							//Thread.sleep(5000);
 							this.wyparkuj();
 							this.setStan(2);
 							break;
 						case 2:
-							if( !this.czyPunktPostoju() ) 
+							//Sprawdzenie czy docieramy do punktu końcowego (miasto lub skrzyzowanie)
+							if( !this.czyPunktPostoju() ) {
 								this.move(1);
+							}
 							else{
+								//Synchronizacja wejscia na skrzyzowanie lub do miasta!
 								if(this.getTrasa().get(0).getB() instanceof Skrzyzowanie ){
 									synchronized(this.getTrasa().get(0).getB().getHulk() ){
 										this.wejdzNaSkrzyzowanie();
 									}
 								}
 								else{
-									//this.zaparkuj();
+									synchronized(this.getTrasa().get(0).getB().getHulk() ){
+										this.wejdzDoMiasta();
+									}
 								}
 							}
 							break;
-							
 						case 3:
 							
 							break;
 					}	
+				}
+				else{
+					this.przepiszTrase(this);
+					this.setStan(1);
 				}
 				Thread.sleep(20);
 			} catch (InterruptedException e) {

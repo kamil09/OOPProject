@@ -52,6 +52,10 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	 */
 	private List<Droga> trasaPowrotna = new ArrayList<Droga>();
 	/**
+	 * Przechowuje kopię trasy pierwotnej
+	 */
+	private List<Droga> trasaTmp = new ArrayList<Droga>();
+	/**
 	 * Wielkość obrazu danego pojazdu
 	 */
 	private int size=70;
@@ -195,38 +199,37 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	 * Parkuje pojazd
 	 */
 	public void zaparkuj(){
-		synchronized (this.getObecneMiejsce().getHulk() ){
-			if(this.getObecneMiejsce() instanceof Miasto ){
-				Miasto miasto = (Miasto) this.getObecneMiejsce();
-				for(int i=0;i<4;i++ ){
-					if(miasto.getParking()[i] == 0){
-						switch(i){
-						case 0:
-							this.setKoorX(this.getKoorX()+38);
-							this.setKoorY(this.getKoorY()+38);
-							break;
-						case 1:
-							this.setKoorX(this.getKoorX()+38);
-							this.setKoorY(this.getKoorY()-38);
-							break;
-						case 2:
-							this.setKoorX(this.getKoorX()-38);
-							this.setKoorY(this.getKoorY()-38);
-							break;
-						case 3:
-							this.setKoorX(this.getKoorX()-38);
-							this.setKoorY(this.getKoorY()+38);
-							break;
-						}
-						miasto.getParking()[i]=1;
-						this.setMiejsceParkingowe(i);
+		if(this.getObecneMiejsce() instanceof Miasto ){
+			Miasto miasto = (Miasto) this.getObecneMiejsce();
+			for(int i=0;i<4;i++ ){
+				if(miasto.getParking()[i] == 0){
+					switch(i){
+					case 0:
+						this.setKoorX(this.getKoorX()+38);
+						this.setKoorY(this.getKoorY()+38);
+						break;
+					case 1:
+						this.setKoorX(this.getKoorX()+38);
+						this.setKoorY(this.getKoorY()-38);
+						break;
+					case 2:
+						this.setKoorX(this.getKoorX()-38);
+						this.setKoorY(this.getKoorY()-38);
+						break;
+					case 3:
+						this.setKoorX(this.getKoorX()-38);
+						this.setKoorY(this.getKoorY()+38);
 						break;
 					}
+					miasto.getParking()[i]=1;
+					this.setMiejsceParkingowe(i);
+					break;
 				}
-				
 			}
-			this.setCzyZaparkowano(true);
+			
 		}
+		this.setCzyZaparkowano(true);
+		
 	}
 	/**
 	 * Wyparkowuje pojazd
@@ -306,47 +309,57 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 			}
 		}
 	}
+	public void wejdzDoMiasta() throws InterruptedException{
+		if(this.getTrasa().get(0).getB() instanceof Miasto){
+			Miasto miasto = (Miasto) this.getTrasa().get(0).getB();
+			while( miasto.getPojemosc()<=0 ){
+				Thread.sleep(20);
+			}
+			miasto.setPojemosc(miasto.getPojemosc()-1);
+			miasto.getListaPojazdow().add(this);
+			this.setObecneMiejsce(miasto);
+			this.setKoorX(miasto.getKoorX());
+			this.setKoorY(miasto.getKoorY());
+			this.zaparkuj();
+			this.getTrasa().get(0).getPojazdyNaDrodze().remove(this);
+			this.getTrasa().remove(0);
+			if(!this.getTrasa().isEmpty())
+				this.getTrasa().get(0).getPojazdyNaDrodze().add(this);
+			this.setStan(1);
+		}
+	}
 	
 	
 	public List<Droga> getTrasa() {
 		return trasa;
 	}
-
 	public void setTrasa(List<Droga> trasa) {
 		this.trasa = trasa;
 	}
-
 	public List<Droga> getTrasaPowrotna() {
 		return trasaPowrotna;
 	}
-
 	public void setTrasaPowrotna(List<Droga> trasaPowrotna) {
 		this.trasaPowrotna = trasaPowrotna;
 	}
-
 	public int getSize() {
 		return size;
 	}
-
 	public void setSize(int size) {
 		this.size = size;
 	}
 	public PunktMapy getObecneMiejsce() {
 		return obecneMiejsce;
 	}
-
 	public void setObecneMiejsce(PunktMapy obecneMiejsce) {
 		this.obecneMiejsce = obecneMiejsce;
 	}
-
 	public double getMaxPaliwo() {
 		return maxPaliwo;
 	}
-
 	public void setMaxPaliwo(double maxPaliwo) {
 		this.maxPaliwo = maxPaliwo;
 	}
-
 	public double getPaliwo() {
 		return paliwo;
 	}
@@ -393,6 +406,12 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	}
 	public void setMiejsceParkingowe(int miejsceParkingowe) {
 		this.miejsceParkingowe = miejsceParkingowe;
+	}
+	public List<Droga> getTrasaTmp() {
+		return trasaTmp;
+	}
+	public void setTrasaTmp(List<Droga> trasaTmp) {
+		this.trasaTmp = trasaTmp;
 	}
 
 }

@@ -11,7 +11,6 @@ import javax.swing.JButton;
 import javax.swing.JLayeredPane;
 import javax.swing.UIManager;
 
-import DROGA.Droga;
 import MAIN.PunktMapy;
 import MAIN.Swiat;
 import POJAZD.Pojazd;

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import MAIN.Miasto;
+import MAIN.Swiat;
 import PASAZER.Pasazer;
 
 /**
@@ -44,6 +45,7 @@ public abstract class PojazdPasazerski extends Pojazd{
 		this.setCzasPostoju(generator.nextInt(1000));
 		this.setMaxMiejsc(generator.nextInt(10)+10);
 		this.setWolneMiejsca(this.getMaxMiejsc());
+		for(int i=0;i<this.getMaxMiejsc();i++) Swiat.addPasazer();
 	}
 	
 	

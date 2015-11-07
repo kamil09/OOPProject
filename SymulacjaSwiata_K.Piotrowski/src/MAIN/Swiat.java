@@ -100,9 +100,6 @@ public class Swiat implements Runnable {
 			pojazdyImage.add(ImageIO.read(new File("src/mysliwiec.png")));
 			pojazdyImage.add(ImageIO.read(new File("src/samolot.png")));
 			generujListeMiast();
-			
-			//USUNĄĆ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			for(int i=0;i<100;i++) addPasazer();
 		} catch (IOException ex) { 
 			System.out.println("Nie można wczytać obrazów");
 			System.exit(2);
