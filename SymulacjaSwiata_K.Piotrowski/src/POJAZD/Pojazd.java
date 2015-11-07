@@ -12,6 +12,8 @@ import DROGA.Droga;
 import GUI.MapClickVehicle;
 import MAIN.Miasto;
 import MAIN.PunktMapy;
+import MAIN.Swiat;
+import PASAZER.Pasazer;
 
 /**
  * Klasa grupująca wszystkie pojazdy
@@ -72,6 +74,10 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	 */
 	private int miejsceParkingowe=-1;
 	/**
+	 * Czy wykonywana pętla wątka
+	 */
+	private boolean runnable=true;
+	/**
 	 * Stan pojazdu
 	 * 0 - w mieście startowym, czeka na wylosowanie trasy
 	 * 1 - postój w miescie
@@ -100,7 +106,38 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	/**
 	 * Usuwa pojazd oraz wszystko co z nim związane
 	 */
-	public void usunPojazd(){
+	public synchronized void removePojazd(){
+		//Usuwanie z parkingu / miasta
+		if((this.isCzyZaparkowano()) && (this.obecneMiejsce instanceof Miasto)){
+			((Miasto)this.getObecneMiejsce()).getParking()[this.getMiejsceParkingowe()]=0;
+			((Miasto)this.getObecneMiejsce()).getListaPojazdow().remove(this);
+		}
+		//Usuwanie z trasy
+		if(!this.getTrasa().isEmpty()) this.getTrasa().get(0).getPojazdyNaDrodze().remove(this);
+		//Czyszczenie pasażerów
+		if(this instanceof PojazdPasazerski){
+			System.out.println("Własnie zabiłeś: "+((PojazdPasazerski)this).getListaPasazerow().size() + " pasażerow");
+			for(Pasazer pas : ((PojazdPasazerski)this).getListaPasazerow() ){
+				pas.stop();
+				Swiat.getListaPasazerow().remove(pas);
+				pas=null;
+			}
+			((PojazdPasazerski)this).getListaPasazerow().clear();
+		}
+		//Usuwanie z Listy głównej
+		Swiat.getListaPojazdow().remove(this);
+		//Zatrzymywanie wątku
+		this.stop();
+		//Usuwanie z mapy
+		this.setKoorX(-1000);
+		this.setKoorY(-1000);
+		
+		
+		
+		
+	
+	
+	
 	}
 	/**
 	 * Zwraca button z pojazdem do wyswietlenia na mapie
@@ -422,6 +459,15 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	}
 	public void setTrasaTmp(List<Droga> trasaTmp) {
 		this.trasaTmp = trasaTmp;
+	}
+	public boolean isRunnable() {
+		return runnable;
+	}
+	public void setRunnable(boolean runnable) {
+		this.runnable = runnable;
+	}
+	public void stop(){
+		this.setRunnable(false);
 	}
 
 }

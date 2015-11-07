@@ -16,6 +16,8 @@ import MAIN.Swiat;
  */
 public class Lotniskowiec extends PojazdWojskowy implements Statek{
 
+	private SamolotWojskowy dodanySamolotW=null;
+	
 	/**
 	 * Konstruktor lotniskowca
 	 * @param d		- punkt startowy X
@@ -37,7 +39,7 @@ public class Lotniskowiec extends PojazdWojskowy implements Statek{
 		}
 	}
 	public void run() {
-		while(true){
+		while(this.isRunnable()){
 			try {
 				if( !this.getTrasa().isEmpty() ){
 					switch(this.getStan()){
@@ -80,6 +82,12 @@ public class Lotniskowiec extends PojazdWojskowy implements Statek{
 
 	public BufferedImage getImage() {
 		return Swiat.getPojazdyImages().get(0);
+	}
+	public SamolotWojskowy getDodanySamolotW() {
+		return dodanySamolotW;
+	}
+	public void setDodanySamolotW(SamolotWojskowy dodanySamolotW) {
+		this.dodanySamolotW = dodanySamolotW;
 	}
 	
 	

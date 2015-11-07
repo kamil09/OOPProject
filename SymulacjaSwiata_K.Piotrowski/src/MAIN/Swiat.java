@@ -16,6 +16,7 @@ import PASAZER.Pasazer;
 import POJAZD.Lotniskowiec;
 import POJAZD.Pojazd;
 import POJAZD.SamolotPasazerski;
+import POJAZD.SamolotWojskowy;
 import POJAZD.StatekWycieczkowy;
 
 /**
@@ -137,7 +138,28 @@ public class Swiat implements Runnable {
 	 */
 	public static void addSamolotWojskowy(){
 		if(czyIstniejeLotniskowiec==true){
-			System.out.println("Dodano samolot wojskowy!");
+			Lotniskowiec lotniskowiec = Swiat.getRandomLotniskowiec();
+			if(lotniskowiec!=null){
+				synchronized(lotniskowiec.getHulk()){	
+					if(lotniskowiec.getDodanySamolotW()==null){
+						SamolotWojskowy samolotW = new SamolotWojskowy(lotniskowiec.getKoorX(), lotniskowiec.getKoorY(), "Samolot wojskowy_"+Swiat.generateId(), Swiat.idGenerator, lotniskowiec);
+						lotniskowiec.setDodanySamolotW(samolotW);
+						addPojazd(null, samolotW);
+					}
+					else{
+						double diffX=lotniskowiec.getKoorX()-lotniskowiec.getDodanySamolotW().getKoorX();
+						double diffY=lotniskowiec.getKoorY()-lotniskowiec.getDodanySamolotW().getKoorY();
+						diffX=Math.abs(diffX);
+						diffY=Math.abs(diffY);
+						double diffP=Math.pow(Math.pow(diffX, 2)+Math.pow(diffY, 2) , 0.5);
+						if(diffP>70){
+							SamolotWojskowy samolotW = new SamolotWojskowy(lotniskowiec.getKoorX(), lotniskowiec.getKoorY(), "Samolot wojskowy_"+Swiat.generateId(), Swiat.idGenerator, lotniskowiec);
+							lotniskowiec.setDodanySamolotW(samolotW);
+							addPojazd(null, samolotW);
+						}
+					}
+				}
+			}
 		}
 		else
 			System.out.println("Nie możesz stworzyć samolotu wojskowego jesli nie posiadasz lotniskowca!");
@@ -163,6 +185,9 @@ public class Swiat implements Runnable {
 			addPojazd(port,lotniskowiec);
 		}
 	}
+	public static void removePojazd(Pojazd pojazd){
+		pojazd.removePojazd();
+	}
 	/**
 	 * Ogólna metoda dodawania pojazdu
 	 * @param miasto	Miasto w którym zaczyna pojazd
@@ -175,9 +200,11 @@ public class Swiat implements Runnable {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			};
-			miasto.setPojemosc(miasto.getPojemosc()-1);
+			if(miasto!=null){
+				miasto.setPojemosc(miasto.getPojemosc()-1);
+				miasto.getListaPojazdow().add(pojazd);
+			}
 			listaPojazdow.add(pojazd);
-			miasto.getListaPojazdow().add(pojazd);
 			runnerList.add(pojazd);
 			threadsList.add(new Thread(runnerList.get(runnerList.size()-1)));
 			threadsList.get(threadsList.size()-1).start();
@@ -392,6 +419,21 @@ public class Swiat implements Runnable {
 		if (!tmpList.isEmpty())
 			return tmpList.get(generator.nextInt(tmpList.size()));
 		else return null;
+	}
+	public synchronized static Lotniskowiec getRandomLotniskowiec(){
+		Random generator = new Random();
+		List<Lotniskowiec> lista= new ArrayList<Lotniskowiec>();
+		//Jest 4:02, nie chce mi się nazw wymyslać
+		for(Pojazd cos : Swiat.getListaPojazdow() ){
+			if(cos instanceof Lotniskowiec ) lista.add((Lotniskowiec)cos);
+		}
+		if(!lista.isEmpty()){
+			if(lista.size()==1) return lista.get(0);
+			else
+				return lista.get(generator.nextInt(lista.size()-1));
+		}
+		else
+			return null;
 	}
 	
 	public static boolean isCzyIstniejeLotniskowiec() {

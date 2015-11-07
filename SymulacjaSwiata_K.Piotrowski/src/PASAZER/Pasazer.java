@@ -68,6 +68,10 @@ public class Pasazer implements Runnable{
 	 * Miasto docelowe do którego zmierza pasażer
 	 */
 	private Miasto miastoDocelowe;
+	/**
+	 * Czy wykonujemy pętle wątku
+	 */
+	private boolean running=true;
 	
 	/**
 	 * Trasa : a - b - c - d - e - f - g - h - ciąg samych miast. bez obecnego, ale łącznie z końcowym!!!
@@ -183,7 +187,7 @@ public class Pasazer implements Runnable{
 	 * Metoda w której żyje pasażer
 	 */
 	public void run() {
-		while(true) {
+		while(running) {
             try {
             	/**
             	 * Akcje dla poszczególnych stanów pasazera
@@ -383,6 +387,15 @@ public class Pasazer implements Runnable{
 	}
 	public void setTrasaPowrotna(List<PunktMapy> trasaPowrotna) {
 		this.trasaPowrotna = trasaPowrotna;
+	}
+	public void stop() {
+		this.setRunning(false);
+	}
+	public boolean isRunning() {
+		return running;
+	}
+	public void setRunning(boolean running) {
+		this.running = running;
 	}
 	
 	

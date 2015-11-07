@@ -31,7 +31,7 @@ public class SamolotPasazerski extends PojazdPasazerski implements Samolot{
 	}
 	
 	public void run() {
-		while(true){
+		while(this.isRunnable()){
 			try {
 				if( !this.getTrasa().isEmpty() ){
 					switch(this.getStan()){

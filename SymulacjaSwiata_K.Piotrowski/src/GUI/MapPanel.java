@@ -292,7 +292,11 @@ public class MapPanel extends JLayeredPane implements Runnable {
 		MapPanel.doRysowania.clear();
 		Swiat.setCanAddPojazd(true);
 		//PRZERYSOWYWANIE STARYCH POJAZDOW
+		List<MapClickVehicle> doUsuniecua= new ArrayList<MapClickVehicle>();
+		
 		for(MapClickVehicle button : this.wyswietlanePojazdy){
+			if(button.getPojazd().getKoorX()<-900) doUsuniecua.add(button);
+				
 			this.remove(button);
 			if(button.getPojazd().getTrasa().isEmpty() ){
 				koorX=(int)((button.getPojazd().getKoorX()-this.mapStartX)/this.mapZOOM);
@@ -309,11 +313,13 @@ public class MapPanel extends JLayeredPane implements Runnable {
 				koorY/=this.mapZOOM;
 			}
 			koorX-=(button.getPojazd().getSize()/(2*mapZOOM));
-			koorY-= (button.getPojazd().getSize()/(2*mapZOOM));
+			koorY-=(button.getPojazd().getSize()/(2*mapZOOM));
 			button.setIcon(button.getPojazd().returnIcon(mapZOOM));
 			button.setBounds(koorX, koorY, (int)(70/mapZOOM), (int)(70/mapZOOM));
+			
 			this.add(button, 2);
 		}
+		this.wyswietlanePojazdy.removeAll(doUsuniecua);
 	}
 	/**
 	 * Rysuje Skrzyżowania na mapie

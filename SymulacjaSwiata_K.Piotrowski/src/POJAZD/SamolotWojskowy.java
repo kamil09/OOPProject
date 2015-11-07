@@ -14,20 +14,21 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot{
 
 	/**
 	 * Kostruktor
-	 * @param x - położenie X Pojazdu
-	 * @param y - położenie Y Pojazdu
+	 * @param d - położenie X Pojazdu
+	 * @param e - położenie Y Pojazdu
 	 * @param name - nazwa pojazdu
 	 * @param id - id pojazdu
 	 * Losuje także paliwo z przedziału 1000 - 1500
 	 */
-	public SamolotWojskowy(int x,int y, String name, int id, Lotniskowiec lotniskowiec){
-		super(x, y, name, id, null);
+	public SamolotWojskowy(double d,double e, String name, int id, Lotniskowiec lotniskowiec){
+		super(d, e, name, id, null);
 		this.setSize(40);
 		this.setMaxSpeed(5);
+		this.znajdzNajblizszyPunkt();
 	}
 	
 	public void run() {
-		while(true){
+		while(this.isRunnable()){
 			try {
 				if( !this.getTrasa().isEmpty() ){
 					//Jesli mamy gdzie się poruszyć
@@ -45,11 +46,12 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot{
 			}
 		}
 	}
-
-
-	@Override
 	public BufferedImage getImage() {
 		return Swiat.getPojazdyImages().get(2);
 	
+	}
+	
+	private void znajdzNajblizszyPunkt(){
+		
 	}
 }

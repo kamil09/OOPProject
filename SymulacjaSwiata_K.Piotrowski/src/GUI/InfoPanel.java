@@ -320,7 +320,7 @@ public class InfoPanel extends JPanel implements Runnable{
 		but1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		but1.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				//Swiat.removepojazd(pojazd);
+				Swiat.removePojazd(pojazd);
 			}
 		});
 		panelInfo.add(but1);

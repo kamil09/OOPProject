@@ -45,7 +45,7 @@ public class StatekWycieczkowy extends PojazdPasazerski implements Statek{
 	}
 	
 	public void run() {
-		while(true){
+		while(this.isRunnable()){
 			try {
 				if( !this.getTrasa().isEmpty() ){
 					switch(this.getStan()){
