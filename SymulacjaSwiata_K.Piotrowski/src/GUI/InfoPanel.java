@@ -372,6 +372,18 @@ public class InfoPanel extends JPanel implements Runnable{
 		typ =3;
 	}
 	
+	public static void infoClear(){
+		typ=-1;
+		panelInfo.removeAll();
+		pasazer=null;
+		pojazd=null;
+		punkt=null;
+		panelInfo.revalidate();
+		panelInfo.repaint();
+		
+		
+	}
+	
 
 }
 

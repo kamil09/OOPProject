@@ -10,6 +10,7 @@ import javax.swing.ImageIcon;
 
 import DROGA.Droga;
 import DROGA.TrasaMorska;
+import GUI.InfoPanel;
 import GUI.MapClickVehicle;
 import MAIN.Miasto;
 import MAIN.PunktMapy;
@@ -108,6 +109,10 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	 * Usuwa pojazd oraz wszystko co z nim związane
 	 */
 	public synchronized void removePojazd(){
+		//Usuwanie z mapy
+		this.setKoorX(-1000);
+		this.setKoorY(-1000);
+		InfoPanel.infoClear();
 		//Usuwanie z parkingu / miasta
 		if((this.isCzyZaparkowano()) && (this.obecneMiejsce instanceof Miasto)){
 			((Miasto)this.getObecneMiejsce()).getParking()[this.getMiejsceParkingowe()]=0;
@@ -129,17 +134,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 		//Usuwanie z Listy głównej
 		Swiat.getListaPojazdow().remove(this);
 		//Zatrzymywanie wątku
-		this.stop();
-		//Usuwanie z mapy
-		this.setKoorX(-1000);
-		this.setKoorY(-1000);
-		
-		
-		
-		
-	
-	
-	
+		this.stop();	
 	}
 	/**
 	 * Zwraca button z pojazdem do wyswietlenia na mapie

@@ -68,6 +68,12 @@ public class Pasazer implements Runnable{
 	 * Miasto docelowe do którego zmierza pasażer
 	 */
 	private Miasto miastoDocelowe;
+	
+	/**
+	 * Poprzednie miasto - potrzebne przy sprawdzaniu czy pasażer zabłądził (pojazd zmienił trase z pasażerem na pokładzie)
+	 */
+	private Miasto poprzednieMiasto;
+	
 	/**
 	 * Czy wykonujemy pętle wątku
 	 */
@@ -177,6 +183,7 @@ public class Pasazer implements Runnable{
 		if(miastoR >=9 && miastoR<=12) miastoR+=4; 
 		this.miastoRodzinne=Swiat.getCityList().get(miastoR);
 		this.setObecnyPunkt(this.miastoRodzinne);
+		this.poprzednieMiasto=this.miastoRodzinne;
 	}
 	
 	public PunktMapy getMiastoRodzinne() {
@@ -230,10 +237,8 @@ public class Pasazer implements Runnable{
 	            			/*
 	            			 * Przeszukanie czy w obecnym miejscu znajduje się odpowiedni pojazd
 	            			 */
-	            
 	            			Swiat.setCanAddPojazd(false);
 	            			for(Pojazd pojazd : this.getObecnyPunkt().getListaPojazdow() ){
-	            			
 	            				if(pojazd instanceof PojazdPasazerski){
 	            					if(((PojazdPasazerski) pojazd).getWolneMiejsca() > 0){
 	            						//Sprawdzenie czy jedzie do odpowiedzniego miejsca
@@ -264,8 +269,19 @@ public class Pasazer implements Runnable{
             			/**
             			 * Sprawdzenie czy pojazd znajduje się w miejscu docelowym
             			 */
-            			if(this.getObecnyPojazd().getObecneMiejsce()!=null &&  this.getObecnyPojazd().getObecneMiejsce().getid() == this.getTrasa().get(0).getid() ){
-            				wysiadzZPojazdu();
+            			if(this.getObecnyPojazd().getObecneMiejsce()!=null){
+            				//Normalnie wysiadamy
+            				PunktMapy tmp=this.getObecnyPojazd().getObecneMiejsce();
+            				if( tmp.getid() == this.getTrasa().get(0).getid() ){
+            					wysiadzZPojazdu();
+            				}else{
+	            				if((tmp.getid()<20)  
+	            				&& (tmp.getid() != this.getTrasa().get(0).getid() )
+	            				&& (this.poprzednieMiasto.getid()!=tmp.getid() ) ){
+	            					wysiadzZdenerwowany();
+	            					System.out.println("Pasażer jest zły!!!");
+	            				}
+            				}
             			}
             			break;
             		case 3:
@@ -354,7 +370,7 @@ public class Pasazer implements Runnable{
 	}
 	/**
 	 * Kopiuje trasę Powrotną do trasy
-	 * Robimy to dlatego, że podczas podróży operujemy na obiekcie trasa, z którego usuwamy odwiedzone punkty
+	 * Robimy to dlatego, że podczas podróży operujemy na liscie trasa, z której usuwamy odwiedzone punkty
 	 */
 	public void zamienTrasy(){
 		this.trasa.clear();
@@ -371,10 +387,25 @@ public class Pasazer implements Runnable{
 	public void wysiadzZPojazdu(){
 		//Ustawienie obecnego punktu
 		this.setObecnyPunkt( (Miasto)this.getTrasa().get(0) );
+		this.poprzednieMiasto=this.getObecnyPunkt();
 		this.trasa.remove(0);
 		//Zwiększamy liczbę wolnych miejsc w pojeździe
 		this.getObecnyPojazd().setWolneMiejsca(this.getObecnyPojazd().getWolneMiejsca()+1);
 		//Usuwamy pasażera z pojazdu i pojazd z pasażera
+		this.getObecnyPojazd().getListaPasazerow().remove(this);
+		this.setObecnyPojazd(null);
+		this.setStatus(1);
+	}
+	/**
+	 * Pasazer wysiada zdenerwowany
+	 * chciał dolecieć do jakiegoś punktu, ale zły człowiek zmienił trase.
+	 */
+	public void wysiadzZdenerwowany(){
+		this.setObecnyPunkt((Miasto) this.getObecnyPojazd().getObecneMiejsce());
+		this.poprzednieMiasto=this.getObecnyPunkt();
+		this.getObecnyPojazd().setWolneMiejsca(this.getObecnyPojazd().getWolneMiejsca()+1);
+		//Usuwamy pasażera z pojazdu i pojazd z pasażera
+		this.getObecnyPojazd().getListaPasazerow().remove(this);
 		this.getObecnyPojazd().getListaPasazerow().remove(this);
 		this.setObecnyPojazd(null);
 		this.setStatus(1);
@@ -385,10 +416,11 @@ public class Pasazer implements Runnable{
 	 */
 	public void wsiadzDoPojazdu( PojazdPasazerski pojazd ){
 		//dodajemy pasazera do pojazdu, zmniejszamy ilosc wolnych miejsc
-		pojazd.getListaPasazerow().add(this);
 		pojazd.setWolneMiejsca( pojazd.getWolneMiejsca()-1 );
+		pojazd.getListaPasazerow().add(this);
 		//ustawiamy obecny pojazd
 		this.setObecnyPojazd(pojazd);
+		this.poprzednieMiasto=this.getObecnyPunkt();
 		this.setObecnyPunkt(null);
 		this.setStatus(2);
 	}
