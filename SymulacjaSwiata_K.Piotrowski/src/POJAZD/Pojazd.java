@@ -9,6 +9,7 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 
 import DROGA.Droga;
+import DROGA.TrasaMorska;
 import GUI.MapClickVehicle;
 import MAIN.Miasto;
 import MAIN.PunktMapy;
@@ -274,7 +275,10 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 			double newKoorX=this.getTrasa().get(0).getA().getKoorX();
 			double newKoorY=this.getTrasa().get(0).getA().getKoorY();
 			this.moveToPoint(newKoorX, newKoorY);
-			this.move(120);
+			if(this instanceof SamolotWojskowy )
+				this.move(60);
+			else
+				this.move(120);
 			//Zwiększanie parkingu w mieście
 			if(this.getObecneMiejsce() instanceof Miasto ){
 				Miasto miasto = (Miasto) this.getObecneMiejsce();
@@ -298,7 +302,10 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 		diffX=Math.abs(diffX);
 		diffY=Math.abs(diffY);
 		double diffP=Math.pow(Math.pow(diffX, 2)+Math.pow(diffY, 2) , 0.5);
-		if( diffP < 110) return true;
+		if(this.getTrasa() instanceof TrasaMorska ){
+			if( diffP < 110) return true;
+		}
+		else if( diffP < 160) return true;
 		return false;
 	}
 	public double returnDifferenceThisB(){
@@ -379,6 +386,8 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 			}
 		statek.getTrasa().get(0).getPojazdyNaDrodze().add(statek);
 	}
+	
+	public abstract void zmienTrase();
 	
 	
 	

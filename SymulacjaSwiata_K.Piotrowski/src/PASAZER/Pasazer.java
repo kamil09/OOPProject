@@ -361,7 +361,7 @@ public class Pasazer implements Runnable{
 		this.trasa=this.trasaPowrotna;
 		if(!this.trasa.isEmpty()){
 			this.miastoDocelowe=(Miasto) this.trasa.get( this.trasa.size()-1 );
-			System.out.println("Pasazer wraca");
+			//System.out.println("Pasazer wraca");
 		}
 	}
 	

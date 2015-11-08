@@ -41,6 +41,7 @@ public class Lotniskowiec extends PojazdWojskowy implements Statek{
 	public void run() {
 		while(this.isRunnable()){
 			try {
+				
 				if( !this.getTrasa().isEmpty() ){
 					switch(this.getStan()){
 						case 1:
@@ -73,11 +74,16 @@ public class Lotniskowiec extends PojazdWojskowy implements Statek{
 					this.przepiszTrase(this);
 					this.setStan(1);
 				}
+				
 				Thread.sleep(20);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
+		
+	}
+	public void zmienTrase(){
+		zmianaTrasyStatku(this);
 	}
 
 	public BufferedImage getImage() {

@@ -300,7 +300,7 @@ public class InfoPanel extends JPanel implements Runnable{
 			panelInfo.add( new InfoLabel( "Lista pasażerów: "));
 			panelInfo.add(Box.createVerticalStrut(5));
 			for(Pasazer osoba : ((PojazdPasazerski) pojazd).getListaPasazerow()){
-				panelInfo.add( new InfoLabel( "   --->  "+osoba.getImie() + osoba.getNazwisko() ));
+				panelInfo.add( new InfoLabel( "   --->  "+osoba.getImie() + " "+osoba.getNazwisko() ));
 			}
 			panelInfo.add(Box.createVerticalStrut(10));
 		}
@@ -329,7 +329,7 @@ public class InfoPanel extends JPanel implements Runnable{
 		but2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		but2.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				//Swiat.trasaChange(pojazd);
+				Swiat.trasaChange(pojazd);
 			}
 		});
 		panelInfo.add(but2);

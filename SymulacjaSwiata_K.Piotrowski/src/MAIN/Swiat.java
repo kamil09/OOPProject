@@ -188,6 +188,9 @@ public class Swiat implements Runnable {
 	public static void removePojazd(Pojazd pojazd){
 		pojazd.removePojazd();
 	}
+	public static void trasaChange(Pojazd pojazd){
+		pojazd.zmienTrase();
+	}
 	/**
 	 * Ogólna metoda dodawania pojazdu
 	 * @param miasto	Miasto w którym zaczyna pojazd

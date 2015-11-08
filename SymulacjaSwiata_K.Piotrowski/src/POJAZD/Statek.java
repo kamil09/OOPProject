@@ -13,8 +13,9 @@ public interface Statek {
 	public default void losujTrase(Pojazd statek) {
 		Random generator = new Random();
 		int dlugoscTrasy= generator.nextInt(1)+2;
-		statek.getTrasa().clear();
+		//statek.getTrasa().clear();
 		statek.getTrasaPowrotna().clear();
+		statek.getTrasaTmp().clear();
 		while(dlugoscTrasy>0){
 			List<Droga> dostepneTrasy = new ArrayList<Droga>();
 			//Mozliwe trasy
@@ -55,6 +56,27 @@ public interface Statek {
 					statek.getTrasaPowrotna().add(drogaSw);
 				}	
 			}
+		}
+	}
+	public default void zmianaTrasyStatku(Pojazd statek){
+		Droga cpS =  statek.getTrasa().get(0);
+		int stan = statek.getStan();
+		boolean additional=false;
+		synchronized (statek){
+			statek.getTrasa().clear();
+			if( !(cpS.getA() instanceof Miasto) ){
+				for(Droga drogaNeed : Swiat.getListaTrasMorskich() ){
+					if((drogaNeed.getB().getid() == cpS.getA().getid()) && (drogaNeed.getA() instanceof Miasto) && (drogaNeed.getA().getid()!=cpS.getB().getid())){
+						statek.getTrasa().add(drogaNeed);
+						additional=true;
+						break;
+					}
+				}
+			}		
+			statek.getTrasa().add(cpS);
+			losujTrase(statek);
+			if(additional==true) statek.getTrasa().remove(0);
+			statek.setStan(stan);
 		}
 	}
 }

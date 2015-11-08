@@ -2,6 +2,7 @@ package POJAZD;
 
 import java.awt.image.BufferedImage;
 
+import DROGA.Droga;
 import MAIN.Miasto;
 import MAIN.Skrzyzowanie;
 import MAIN.Swiat;
@@ -33,6 +34,7 @@ public class SamolotPasazerski extends PojazdPasazerski implements Samolot{
 	public void run() {
 		while(this.isRunnable()){
 			try {
+				
 				if( !this.getTrasa().isEmpty() ){
 					switch(this.getStan()){
 						case 1:
@@ -69,10 +71,35 @@ public class SamolotPasazerski extends PojazdPasazerski implements Samolot{
 					this.przepiszTrase(this);
 					this.setStan(1);
 				}
+			
 				Thread.sleep(20);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+	public void zmienTrase(){
+		Droga cpS =  this.getTrasa().get(0);
+		int stan = this.getStan();
+		boolean additional=false;
+		synchronized (this){
+			this.getTrasa().clear();
+			if( !(cpS.getA() instanceof Miasto) ){
+				for(Droga drogaNeed : Swiat.getListaTrasPowietrznych() ){
+					if((drogaNeed.getB().getid() == cpS.getA().getid()) 
+					&& (drogaNeed.getA() instanceof Miasto) 
+					&& (drogaNeed.getA().getid()!=cpS.getB().getid())
+					&& (drogaNeed.getA().getid()<9 )){
+						this.getTrasa().add(drogaNeed);
+						additional=true;
+						break;
+					}
+				}
+			}	
+			this.getTrasa().add(cpS);
+			this.losujTrase(this);
+			if(additional==true) this.getTrasa().remove(0);
+			this.setStan(stan);
 		}
 	}
 

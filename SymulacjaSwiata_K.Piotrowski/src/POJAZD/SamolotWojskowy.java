@@ -7,6 +7,7 @@ import java.util.Random;
 
 import DROGA.Droga;
 import DROGA.TrasaPowietrzna;
+import MAIN.Miasto;
 import MAIN.Port;
 import MAIN.PunktMapy;
 import MAIN.Skrzyzowanie;
@@ -39,7 +40,7 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot{
 	public SamolotWojskowy(double d,double e, String name, int id, Lotniskowiec lotniskowiec){
 		super(d, e, name, id, null);
 		this.setSize(40);
-		this.setMaxSpeed(5);
+		this.setMaxSpeed(7);
 		this.znajdzNajblizszyPunkt();
 		this.setBron(lotniskowiec.getBron());
 	}
@@ -47,13 +48,14 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot{
 	public void run() {
 		while(this.isRunnable()){
 			try {
+				
 				if( !this.getTrasa().isEmpty() ){
 					switch(this.getStan()){
 						case 1:
 							if(this.getObecneMiejsce()!=null && this.getObecneMiejsce().getid()>=9 && this.time>0 ){
 								this.time--;
-							}else{
 								this.setPaliwo(this.getMaxPaliwo());
+							}else{
 								this.time=1000;
 								this.wyparkuj();
 								this.setStan(2);
@@ -84,10 +86,38 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot{
 					this.przepiszTrase(this);
 					this.setStan(1);
 				}
+				
 				Thread.sleep(20);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+	public void zmienTrase(){
+		Droga cpS =  this.getTrasa().get(0);
+		int stan = this.getStan();
+		boolean additional=false;
+		synchronized(this){
+			this.getTrasa().clear();
+			if( !(cpS.getA() instanceof Miasto) ){
+				for(Droga drogaNeed : Swiat.getListaTrasPowietrznych() ){
+					if((drogaNeed.getB().getid() == cpS.getA().getid()) 
+					&& (drogaNeed.getA() instanceof Miasto) 
+					&& (drogaNeed.getA().getid()!=cpS.getB().getid())){
+						this.getTrasa().add(drogaNeed);
+						additional=true;
+						break;
+					}
+				}
+			}
+			this.getTrasa().add(cpS);
+			this.trasaDoLotniskaWojskowego();
+			for(Droga trasa : this.getTrasa() ){
+				this.getTrasaTmp().add(trasa);
+			}
+			znajdzTrasePowrotna(this);
+			if(additional==true) this.getTrasa().remove(0);
+			this.setStan(stan);
 		}
 	}
 	public BufferedImage getImage() {

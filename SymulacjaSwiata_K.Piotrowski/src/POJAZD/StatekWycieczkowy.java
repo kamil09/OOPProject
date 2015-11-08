@@ -83,11 +83,15 @@ public class StatekWycieczkowy extends PojazdPasazerski implements Statek{
 					this.przepiszTrase(this);
 					this.setStan(1);
 				}
+				
 				Thread.sleep(20);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
+	}
+	public void zmienTrase(){
+		zmianaTrasyStatku(this);
 	}
 	public BufferedImage getImage() {
 		return Swiat.getPojazdyImages().get(1);

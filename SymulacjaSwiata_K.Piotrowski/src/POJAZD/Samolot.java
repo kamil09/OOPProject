@@ -24,8 +24,9 @@ public interface Samolot {
 	public default void losujTrase(Pojazd samolot) {
 		Random generator = new Random();
 		int dlugoscTrasy= generator.nextInt(1)+3;
-		samolot.getTrasa().clear();
+		//samolot.getTrasa().clear();
 		samolot.getTrasaPowrotna().clear();
+		samolot.getTrasaTmp().clear();
 		while(dlugoscTrasy>0){
 			List<Droga> dostepneTrasy = new ArrayList<Droga>();
 			//Mozliwe trasy
