@@ -359,7 +359,8 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 			if(!this.getTrasa().isEmpty())
 				this.getTrasa().get(0).getPojazdyNaDrodze().add(this);
 			this.setStan(1);
-			this.setPaliwo(this.getMaxPaliwo());
+			if(!(this instanceof SamolotWojskowy))
+				this.setPaliwo(this.getMaxPaliwo());
 		}
 	}
 	/**
