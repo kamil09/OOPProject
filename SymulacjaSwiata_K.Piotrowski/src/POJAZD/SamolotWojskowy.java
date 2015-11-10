@@ -121,8 +121,7 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot{
 		}
 	}
 	public BufferedImage getImage() {
-		return Swiat.getPojazdyImages().get(2);
-	
+		return Swiat.getPojazdyImages()[2];
 	}
 	
 	private void znajdzNajblizszyPunkt(){

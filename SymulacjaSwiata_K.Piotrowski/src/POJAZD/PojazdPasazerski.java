@@ -1,6 +1,6 @@
 package POJAZD;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -30,7 +30,7 @@ public abstract class PojazdPasazerski extends Pojazd{
 	/**
 	 * Lista pasażerów którzy znajdują się obecnie w pojeździe
 	 */
-	private List<Pasazer> listaPasazerow = new ArrayList<Pasazer>();
+	private List<Pasazer> listaPasazerow = new LinkedList<Pasazer>();
 	
 	/**
 	 * Kostruktor

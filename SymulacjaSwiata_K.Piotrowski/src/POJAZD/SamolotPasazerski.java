@@ -104,7 +104,7 @@ public class SamolotPasazerski extends PojazdPasazerski implements Samolot{
 	}
 
 	public BufferedImage getImage() {
-		return Swiat.getPojazdyImages().get(3);
+		return Swiat.getPojazdyImages()[3];
 	}
 
 	

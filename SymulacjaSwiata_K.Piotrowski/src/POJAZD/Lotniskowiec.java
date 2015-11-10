@@ -87,7 +87,7 @@ public class Lotniskowiec extends PojazdWojskowy implements Statek{
 	}
 
 	public BufferedImage getImage() {
-		return Swiat.getPojazdyImages().get(0);
+		return Swiat.getPojazdyImages()[0];
 	}
 	public SamolotWojskowy getDodanySamolotW() {
 		return dodanySamolotW;

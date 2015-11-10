@@ -3,6 +3,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -39,7 +40,7 @@ public class Swiat implements Runnable {
 	 * [2] - mysliwiec
 	 * [3] - samolot pasazerski
 	 */
-	private static List<BufferedImage> pojazdyImage = new ArrayList<BufferedImage>();
+	private static BufferedImage[] pojazdyImage = new BufferedImage[4];
 	/**
 	 * Do generowania ID pojazdów
 	 */
@@ -47,11 +48,11 @@ public class Swiat implements Runnable {
 	/**
 	 * Lista wszystkich pasażerów
 	 */
-	private static List<Pasazer> listaPasazerow = new ArrayList<Pasazer>();
+	private static List<Pasazer> listaPasazerow = new LinkedList<Pasazer>();
 	/**
 	 * Lista wszystkich pojazdów
 	 */
-	private static List<Pojazd> listaPojazdow = new ArrayList<Pojazd>();
+	private static List<Pojazd> listaPojazdow = new LinkedList<Pojazd>();
 	/**
 	 * Lista wszystkich tras
 	 */
@@ -88,7 +89,7 @@ public class Swiat implements Runnable {
 	/**
 	 * Nie można dodawać nowego pojazdu podczas przechodzenia po pętli i wyświetlania na ekranie!!!
 	 */
-	private static boolean canAddPojazd=true;
+	private static Object canAddPojazdObject = new Object();
 	/**
 	 * Konstruktor świata
 	 * Wczytuje obraz tła
@@ -97,10 +98,10 @@ public class Swiat implements Runnable {
 		try {
 			//WCZYTYWANIE OBRAZÓW
 			bufferImage = ImageIO.read(new File("src/mapa2.png"));
-			pojazdyImage.add(ImageIO.read(new File("src/lotniskowiec.png")));
-			pojazdyImage.add(ImageIO.read(new File("src/statek.png")));
-			pojazdyImage.add(ImageIO.read(new File("src/mysliwiec.png")));
-			pojazdyImage.add(ImageIO.read(new File("src/samolot.png")));
+			pojazdyImage[0]=ImageIO.read(new File("src/lotniskowiec.png"));
+			pojazdyImage[1]=ImageIO.read(new File("src/statek.png"));
+			pojazdyImage[2]=ImageIO.read(new File("src/mysliwiec.png"));
+			pojazdyImage[3]=ImageIO.read(new File("src/samolot.png"));
 			generujListeMiast();
 		} catch (IOException ex) { 
 			System.out.println("Nie można wczytać obrazów");
@@ -197,12 +198,7 @@ public class Swiat implements Runnable {
 	 * @param pojazd	Referencja do utworzonego już pojazdu
 	 */
 	private static void addPojazd(Miasto miasto, Pojazd pojazd){
-		while(!canAddPojazd)
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			};
+		synchronized (Swiat.canAddPojazdObject){
 			if(miasto!=null){
 				miasto.setPojemosc(miasto.getPojemosc()-1);
 				miasto.getListaPojazdow().add(pojazd);
@@ -213,7 +209,7 @@ public class Swiat implements Runnable {
 			threadsList.get(threadsList.size()-1).start();
 			if(czyIstniejeLotniskowiec==false) setCzyIstniejeLotniskowiec(true);
 			MapPanel.addDoRysowania(pojazd);
-			
+		}
 	}
 	
 	/**
@@ -445,16 +441,10 @@ public class Swiat implements Runnable {
 	public static void setCzyIstniejeLotniskowiec(boolean czyIstniejeLotniskowiec) {
 		Swiat.czyIstniejeLotniskowiec = czyIstniejeLotniskowiec;
 	}
-	public static boolean isCanAddPojazd() {
-		return canAddPojazd;
-	}
-	public static void setCanAddPojazd(boolean canAddPojazd) {
-		Swiat.canAddPojazd = canAddPojazd;
-	}
-	public static List<BufferedImage> getPojazdyImages() {
+	public static BufferedImage[] getPojazdyImages() {
 		return pojazdyImage;
 	}
-	public static void setPojazdyImages(List<BufferedImage> pojazdy) {
+	public static void setPojazdyImages(BufferedImage[] pojazdy) {
 		Swiat.pojazdyImage = pojazdy;
 	}
 	@Override
@@ -472,6 +462,12 @@ public class Swiat implements Runnable {
 	}
 	public static void setListaTrasPowietrznych(List<TrasaPowietrzna> listaTrasPowietrznych) {
 		Swiat.listaTrasPowietrznych = listaTrasPowietrznych;
+	}
+	public static Object getCanAddPojazdObject() {
+		return canAddPojazdObject;
+	}
+	public static void setCanAddPojazdObject(Object canAddPojazdObject) {
+		Swiat.canAddPojazdObject = canAddPojazdObject;
 	}
 	
 }

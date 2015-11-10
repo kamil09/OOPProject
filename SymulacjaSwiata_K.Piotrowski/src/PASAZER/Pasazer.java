@@ -237,24 +237,24 @@ public class Pasazer implements Runnable{
 	            			/*
 	            			 * Przeszukanie czy w obecnym miejscu znajduje się odpowiedni pojazd
 	            			 */
-	            			Swiat.setCanAddPojazd(false);
-	            			for(Pojazd pojazd : this.getObecnyPunkt().getListaPojazdow() ){
-	            				if(pojazd instanceof PojazdPasazerski){
-	            					if(((PojazdPasazerski) pojazd).getWolneMiejsca() > 0){
-	            						//Sprawdzenie czy jedzie do odpowiedzniego miejsca
-	            						boolean czyWsiada=false;
-	            						for(Droga droga : pojazd.getTrasa() ){
-	            							if(droga.getB().getid() == this.getTrasa().get(0).getid() ) czyWsiada=true;
-	            							if( droga.getB() instanceof Miasto) break;
-	            						}
-	            						if (czyWsiada==true){
-	            							this.wsiadzDoPojazdu((PojazdPasazerski)pojazd);
-	            							break;
-	            						}
-	            					}
-	            				}
+	            			synchronized(this.getObecnyPunkt().getVeronica() ){
+		            			for(Pojazd pojazd : this.getObecnyPunkt().getListaPojazdow() ){
+		            				if(pojazd instanceof PojazdPasazerski){
+		            					if(((PojazdPasazerski) pojazd).getWolneMiejsca() > 0){
+		            						//Sprawdzenie czy jedzie do odpowiedzniego miejsca
+		            						boolean czyWsiada=false;
+		            						for(Droga droga : pojazd.getTrasa() ){
+		            							if(droga.getB().getid() == this.getTrasa().get(0).getid() ) czyWsiada=true;
+		            							if( droga.getB() instanceof Miasto) break;
+		            						}
+		            						if (czyWsiada==true){
+		            							this.wsiadzDoPojazdu((PojazdPasazerski)pojazd);
+		            							break;
+		            						}
+		            					}
+		            				}
+		            			}
 	            			}
-	            			Swiat.setCanAddPojazd(true);
                   		}
             			else{
             				if( this.getObecnyPunkt()!=null ){
@@ -305,7 +305,7 @@ public class Pasazer implements Runnable{
             			this.setStatus(0);
             			break;
             	}
-                Thread.sleep(20);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -324,8 +324,8 @@ public class Pasazer implements Runnable{
 		Random generator = new Random();
 		int dlugoscTrasy= generator.nextInt(5)+2;
 		PunktMapy poprzedniPunkt = this.miastoRodzinne;
-		this.czasPostoju=generator.nextInt(200);
-		if(this.czasPostoju < 100) this.typPodrozy = true;
+		this.czasPostoju=generator.nextInt(40);
+		if(this.czasPostoju < 20) this.typPodrozy = true;
 		else this.typPodrozy = false;
 		this.trasa.clear();
 		this.trasaPowrotna.clear();
@@ -416,13 +416,17 @@ public class Pasazer implements Runnable{
 	 */
 	public void wsiadzDoPojazdu( PojazdPasazerski pojazd ){
 		//dodajemy pasazera do pojazdu, zmniejszamy ilosc wolnych miejsc
-		pojazd.setWolneMiejsca( pojazd.getWolneMiejsca()-1 );
-		pojazd.getListaPasazerow().add(this);
-		//ustawiamy obecny pojazd
-		this.setObecnyPojazd(pojazd);
-		this.poprzednieMiasto=this.getObecnyPunkt();
-		this.setObecnyPunkt(null);
-		this.setStatus(2);
+		synchronized( pojazd.getHulk() ){
+			if(pojazd.getWolneMiejsca()>0){
+				pojazd.setWolneMiejsca( pojazd.getWolneMiejsca()-1 );
+				pojazd.getListaPasazerow().add(this);
+				//ustawiamy obecny pojazd
+				this.setObecnyPojazd(pojazd);
+				this.poprzednieMiasto=this.getObecnyPunkt();
+				this.setObecnyPunkt(null);
+				this.setStatus(2);
+			}
+		}
 	}
 	
 	

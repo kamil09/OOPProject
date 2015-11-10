@@ -108,33 +108,36 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	/**
 	 * Usuwa pojazd oraz wszystko co z nim związane
 	 */
-	public synchronized void removePojazd(){
+	public void removePojazd(){
 		//Usuwanie z mapy
-		this.setKoorX(-1000);
-		this.setKoorY(-1000);
-		InfoPanel.infoClear();
-		//Usuwanie z parkingu / miasta
-		if((this.isCzyZaparkowano()) && (this.obecneMiejsce instanceof Miasto)){
-			((Miasto)this.getObecneMiejsce()).getParking()[this.getMiejsceParkingowe()]=0;
-			((Miasto)this.getObecneMiejsce()).getListaPojazdow().remove(this);
-			((Miasto)this.getObecneMiejsce()).zwiekszPojemnosc();
-		}
-		//Usuwanie z trasy
-		if(!this.getTrasa().isEmpty()) this.getTrasa().get(0).getPojazdyNaDrodze().remove(this);
-		//Czyszczenie pasażerów
-		if(this instanceof PojazdPasazerski){
-			System.out.println("Własnie zabiłeś: "+((PojazdPasazerski)this).getListaPasazerow().size() + " pasażerow");
-			for(Pasazer pas : ((PojazdPasazerski)this).getListaPasazerow() ){
-				pas.stop();
-				Swiat.getListaPasazerow().remove(pas);
-				pas=null;
-			}
-			((PojazdPasazerski)this).getListaPasazerow().clear();
-		}
-		//Usuwanie z Listy głównej
-		Swiat.getListaPojazdow().remove(this);
 		//Zatrzymywanie wątku
-		this.stop();	
+		synchronized(Swiat.getCanAddPojazdObject()){
+			this.stop();
+			this.setKoorX(-1000);
+			this.setKoorY(-1000);
+			InfoPanel.infoClear();
+			//Usuwanie z parkingu / miasta
+			if((this.isCzyZaparkowano()) && (this.obecneMiejsce instanceof Miasto)){
+				((Miasto)this.getObecneMiejsce()).getParking()[this.getMiejsceParkingowe()]=0;
+				((Miasto)this.getObecneMiejsce()).getListaPojazdow().remove(this);
+				((Miasto)this.getObecneMiejsce()).zwiekszPojemnosc();
+			}
+			//Usuwanie z trasy
+			if(!this.getTrasa().isEmpty()) this.getTrasa().get(0).getPojazdyNaDrodze().remove(this);
+			//Czyszczenie pasażerów
+			if(this instanceof PojazdPasazerski){
+				System.out.println("Własnie zabiłeś: "+((PojazdPasazerski)this).getListaPasazerow().size() + " pasażerow");
+				for(Pasazer pas : ((PojazdPasazerski)this).getListaPasazerow() ){
+					pas.stop();
+					Swiat.getListaPasazerow().remove(pas);
+					pas=null;
+				}
+				((PojazdPasazerski)this).getListaPasazerow().clear();
+			}
+	
+		//Usuwanie z Listy głównej
+			Swiat.getListaPojazdow().remove(this);
+		}
 	}
 	/**
 	 * Zwraca button z pojazdem do wyswietlenia na mapie
@@ -178,6 +181,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	 * @return obraz danego pojazdu
 	 */
 	public abstract BufferedImage getImage();
+	
 	/**
 	 * Przesuwa pojazd o odpowiednie odległości
 	 * x - mnożnik przesunięcia
@@ -198,14 +202,16 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 			newKoorX=this.getKoorX()-moveX;
 			newKoorY=this.getKoorY()-moveY;
 		}
-		while((this.isRunnable()) && (!this.canMove(newKoorX, newKoorY)) ) 	try { Thread.sleep(10); } 
+		while((this.isRunnable()) && (!this.canMove(newKoorX, newKoorY)) ) 	try { Thread.sleep(50); } 
 			catch (InterruptedException e) { e.printStackTrace(); }
-		this.setKoorX(newKoorX);
-		this.setKoorY(newKoorY);
-		this.setPaliwo(this.getPaliwo()-1);
+		if(this.isRunnable()){
+			this.setKoorX(newKoorX);
+			this.setKoorY(newKoorY);
+			this.setPaliwo(this.getPaliwo()-1);
+		}
 	}
 	public void moveToPoint(double koorX,double koorY){
-		while((this.isRunnable()) && (!this.canMove(koorX, koorY)) ) 	try { Thread.sleep(10); } 
+		while((this.isRunnable()) && (!this.canMove(koorX, koorY)) ) 	try { Thread.sleep(50); } 
 			catch (InterruptedException e) { e.printStackTrace(); }
 		this.setKoorX(koorX);
 		this.setKoorY(koorY);
@@ -220,7 +226,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 				diffX=Math.abs(diffX);
 				diffY=Math.abs(diffY);
 				double diffP=Math.pow(Math.pow(diffX, 2)+Math.pow(diffY, 2) , 0.5);
-				if( diffP < 65 && !pojazd.isCzyZaparkowano() ) return false;
+				if( diffP < 72 && !pojazd.isCzyZaparkowano() ) return false;
 			}
 			
 		}
@@ -297,7 +303,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 		diffX=Math.abs(diffX);
 		diffY=Math.abs(diffY);
 		double diffP=Math.pow(Math.pow(diffX, 2)+Math.pow(diffY, 2) , 0.5);
-		if(this.getTrasa() instanceof TrasaMorska ){
+		if(this.getTrasa().get(0) instanceof TrasaMorska ){
 			if( diffP < 110) return true;
 		}
 		else if( diffP < 160) return true;
@@ -324,7 +330,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 		while(this.isRunnable()){
 			try {
 				move(1);
-				if(out==false && this.returnDifferenceThisB()<2){
+				if( (this.isRunnable()) && (out==false) && (this.returnDifferenceThisB()<2)){
 					this.getTrasa().get(0).getPojazdyNaDrodze().remove(this);
 					this.getTrasa().remove(0);
 					this.setKoorX(this.getTrasa().get(0).getA().getKoorX());
@@ -366,7 +372,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 		}
 	}
 	/**
-	 * Przepisuje prasię porwotną do zmienne trasy (ten na podstawie której podróżujemy i którą zmniejszamy)
+	 * Przepisuje trasę porwotną do zmienne trasy (tej na podstawie której podróżujemy i którą zmniejszamy)
 	 * @param statek  - referencja do pojazdu na którym działamy
 	 */
 	public void przepiszTrase(Pojazd statek){
@@ -383,9 +389,6 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	}
 	
 	public abstract void zmienTrase();
-	
-	
-	
 	
 	public List<Droga> getTrasa() {
 		return trasa;

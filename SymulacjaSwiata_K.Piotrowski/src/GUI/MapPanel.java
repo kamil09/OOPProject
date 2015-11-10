@@ -134,23 +134,24 @@ public class MapPanel extends JLayeredPane implements Runnable {
 		});
 		addMouseMotionListener(new MouseAdapter() {
 			public void mouseDragged(MouseEvent e){
-				
-				int przesuniecieX=e.getX()-mouseClickX;
-				int przesuniecieY=e.getY()-mouseClickY;
-				
-				mapStartX-=(przesuniecieX/30*mapZOOM);
-				mapStartY-=(przesuniecieY/30*mapZOOM);
-				
-				if(mapStartX<0) mapStartX=0;
-				if(mapStartY<0) mapStartY=0;
-				if(mapStartX+displayMapWidth>maxMapX){
-					mapStartX=maxMapX-displayMapWidth;
+				if(mapZOOM<maxZOOM){
+					int przesuniecieX=e.getX()-mouseClickX;
+					int przesuniecieY=e.getY()-mouseClickY;
+					
+					mapStartX-=(przesuniecieX/30*mapZOOM);
+					mapStartY-=(przesuniecieY/30*mapZOOM);
+					
+					if(mapStartX<0) mapStartX=0;
+					if(mapStartY<0) mapStartY=0;
+					if(mapStartX+displayMapWidth>maxMapX){
+						mapStartX=maxMapX-displayMapWidth;
+					}
+					if(mapStartY+displayMapHeight>maxMapY){
+						mapStartY=maxMapY-displayMapHeight;
+					}
+					
+					cityRedrow=true;
 				}
-				if(mapStartY+displayMapHeight>maxMapY){
-					mapStartY=maxMapY-displayMapHeight;
-				}
-				
-				cityRedrow=true;
 			}
 		});
 	}
@@ -273,7 +274,7 @@ public class MapPanel extends JLayeredPane implements Runnable {
 		int koorX;
 		int koorY;
 		//RYSOWANIE NOWYCH POJAZDÓW (KTÓRYCH JESZCZE NIE MA NA MAPIE)
-		Swiat.setCanAddPojazd(false);
+		
 		for(Pojazd pojazd : MapPanel.doRysowania ){
 			if(pojazd.getTrasa().isEmpty() ){
 				koorX=(int)((pojazd.getKoorX()-this.mapStartX)/this.mapZOOM);
@@ -292,41 +293,52 @@ public class MapPanel extends JLayeredPane implements Runnable {
 			MapClickVehicle tmp=pojazd.rysuj(mapZOOM, koorX, koorY);
 			this.wyswietlanePojazdy.add(tmp);
 			this.add(tmp, 2);
-			
 		}
+		
 		MapPanel.doRysowania.clear();
-		Swiat.setCanAddPojazd(true);
+		
 		//PRZERYSOWYWANIE STARYCH POJAZDOW
 		List<MapClickVehicle> doUsuniecua= new ArrayList<MapClickVehicle>();
 		
 		for(MapClickVehicle button : this.wyswietlanePojazdy){
-			if(button.getPojazd().getKoorX()<-900) doUsuniecua.add(button);
-			if(this.isRedrowAllVehicles())
-				this.remove(button);
-			if(button.getPojazd().getTrasa().isEmpty() ){
-				koorX=(int)((button.getPojazd().getKoorX()-this.mapStartX)/this.mapZOOM);
-				koorY=(int)((button.getPojazd().getKoorY()-this.mapStartY)/this.mapZOOM);
-			}
+			if( (button.getPojazd().getKoorX()<-100) ||  (button.getPojazd().getKoorY()<-100) ) doUsuniecua.add(button);
 			else{
-				koorX=(int)((button.getPojazd().getKoorX()-this.mapStartX));
-				koorY=(int)((button.getPojazd().getKoorY()-this.mapStartY));
-				if( !button.getPojazd().isCzyZaparkowano() ){
-					koorX+=button.getPojazd().getTrasa().get(0).getOdX();
-					koorY+=button.getPojazd().getTrasa().get(0).getOdY();
+				if(this.isRedrowAllVehicles())
+					this.remove(button);
+				if(button.getPojazd().getTrasa().isEmpty() ){
+					koorX=(int)((button.getPojazd().getKoorX()-this.mapStartX)/this.mapZOOM);
+					koorY=(int)((button.getPojazd().getKoorY()-this.mapStartY)/this.mapZOOM);
 				}
-				koorX/=this.mapZOOM;
-				koorY/=this.mapZOOM;
+				else{
+					koorX=(int)((button.getPojazd().getKoorX()-this.mapStartX));
+					koorY=(int)((button.getPojazd().getKoorY()-this.mapStartY));
+					if( !button.getPojazd().isCzyZaparkowano() ){
+						koorX+=button.getPojazd().getTrasa().get(0).getOdX();
+						koorY+=button.getPojazd().getTrasa().get(0).getOdY();
+					}
+					koorX/=this.mapZOOM;
+					koorY/=this.mapZOOM;
+				}
+				koorX-=(button.getPojazd().getSize()/(2*mapZOOM));
+				koorY-=(button.getPojazd().getSize()/(2*mapZOOM));
+				button.setIcon(button.getPojazd().returnIcon(mapZOOM));
+				button.setBounds(koorX, koorY, (int)(70/mapZOOM), (int)(70/mapZOOM));
+				if(this.isRedrowAllVehicles())
+					this.add(button, 2);
 			}
-			koorX-=(button.getPojazd().getSize()/(2*mapZOOM));
-			koorY-=(button.getPojazd().getSize()/(2*mapZOOM));
-			button.setIcon(button.getPojazd().returnIcon(mapZOOM));
-			button.setBounds(koorX, koorY, (int)(70/mapZOOM), (int)(70/mapZOOM));
-			if(this.isRedrowAllVehicles())
-				this.add(button, 2);
 		}
 		this.wyswietlanePojazdy.removeAll(doUsuniecua);
+		this.remove(doUsuniecua);
 		this.setRedrowAllVehicles(false);
 	}
+	
+	private void remove(List<MapClickVehicle> doUsuniecua) {
+		for(MapClickVehicle but : doUsuniecua){
+			this.remove(but);
+		}
+		
+	}
+
 	/**
 	 * Rysuje Skrzyżowania na mapie
 	 */

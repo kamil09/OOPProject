@@ -94,7 +94,7 @@ public class StatekWycieczkowy extends PojazdPasazerski implements Statek{
 		zmianaTrasyStatku(this);
 	}
 	public BufferedImage getImage() {
-		return Swiat.getPojazdyImages().get(1);
+		return Swiat.getPojazdyImages()[1];
 	}
 	
 	

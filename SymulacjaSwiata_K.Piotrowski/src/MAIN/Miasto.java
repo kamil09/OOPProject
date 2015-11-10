@@ -1,6 +1,6 @@
 package MAIN;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import POJAZD.Pojazd;
@@ -16,7 +16,7 @@ public abstract class Miasto extends PunktMapy{
 	/**
 	 * Lista pojazdów stacjonujących obecnie w mieście
 	 */
-	private List<Pojazd> listaPojazdow = new ArrayList<Pojazd>();
+	private List<Pojazd> listaPojazdow = new LinkedList<Pojazd>();
 	
 	/**
 	 * Określa liczbę pojazdów maksymalnie przebywających w jednym czasie w mieście.

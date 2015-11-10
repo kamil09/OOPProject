@@ -159,7 +159,7 @@ public class InfoPanel extends JPanel implements Runnable{
 	    				printInfo(punkt);
 	    				break;
 	    		}
-                Thread.sleep(1200);     
+                Thread.sleep(1000);     
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -308,13 +308,11 @@ public class InfoPanel extends JPanel implements Runnable{
 			panelInfo.add( new InfoLabel( "Uzbrojenie: "+((PojazdWojskowy) pojazd).getBron() ));
 			panelInfo.add(Box.createVerticalStrut(10));
 		}
-		
 		panelInfo.add( new InfoLabel( "Trasa: "));
 		panelInfo.add(Box.createVerticalStrut(5));
 		for( Droga droga : pojazd.getTrasa() ){
 			panelInfo.add( new InfoLabel( "   --->  "+droga.getB().getName() ));
 		}
-		
 		panelInfo.add(Box.createVerticalStrut(30));
 		JButton but1 = new JButton("Usun pojazd");
 		but1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
