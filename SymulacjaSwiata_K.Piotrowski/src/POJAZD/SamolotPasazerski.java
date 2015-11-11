@@ -21,6 +21,7 @@ public class SamolotPasazerski extends PojazdPasazerski implements Samolot{
 	 * @param e - położenie Y Pojazdu
 	 * @param name - nazwa pojazdu
 	 * @param id - id pojazdu
+	 * @param miasto - miasto w którym tworzony jets samolot
 	 * Losuje także paliwo z przedziału 1000 - 1500
 	 */
 	public SamolotPasazerski(double d,double e, String name, int id, Miasto miasto){
@@ -30,7 +31,9 @@ public class SamolotPasazerski extends PojazdPasazerski implements Samolot{
 		this.losujTrase(this);
 		this.zaparkuj();
 	}
-	
+	/**
+	 * Pętla wątku samolotu pasażerkiego
+	 */
 	public void run() {
 		while(this.isRunnable()){
 			try {
@@ -78,6 +81,9 @@ public class SamolotPasazerski extends PojazdPasazerski implements Samolot{
 			}
 		}
 	}
+	/**
+	 * Zamiana tras dla samolotu pasażerskiego
+	 */
 	public void zmienTrase(){
 		Droga cpS =  this.getTrasa().get(0);
 		int stan = this.getStan();
@@ -102,7 +108,9 @@ public class SamolotPasazerski extends PojazdPasazerski implements Samolot{
 			this.setStan(stan);
 		}
 	}
-
+	/**
+	 * Zwraca obraz pojazdu
+	 */
 	public BufferedImage getImage() {
 		return Swiat.getPojazdyImages()[3];
 	}

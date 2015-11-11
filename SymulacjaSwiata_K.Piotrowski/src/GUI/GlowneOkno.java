@@ -39,15 +39,6 @@ public class GlowneOkno {
 	private JLayeredPane mapPanel;
 
 	/**
-	 * Obsuga wątków
-	 */
-	private Runnable[] runners = new Runnable[3];
-	/**
-	 * Obsługa wątków
-	 */
-	private Thread[] threads = new Thread[3];
-
-	/**
 	 * Launch the application.
 	 */
 	public static void launchWindow() {
@@ -80,6 +71,10 @@ public class GlowneOkno {
 		infoPanel = new InfoPanel();
 		mapPanel = new MapPanel();
 
+		//Każde z 3 części GUI to oddzielne wątki :)
+		Runnable[] runners = new Runnable[3];
+		Thread[] threads = new Thread[3];
+		
 		runners[0] = (Runnable) usersPanel;
 		runners[1] = (Runnable) infoPanel;
 		runners[2] = (Runnable) mapPanel;

@@ -11,8 +11,8 @@ public class TrasaMorska extends Droga{
 
 	/**
 	 * Konstruktor
-	 * @param a - punkt mapy A
-	 * @param b - lista wszystkich następników punktu A
+	 * @param A - punkt mapy A
+	 * @param B - lista wszystkich następników punktu A
 	 */
 	public TrasaMorska(PunktMapy A, PunktMapy B){
 		super(A,B);

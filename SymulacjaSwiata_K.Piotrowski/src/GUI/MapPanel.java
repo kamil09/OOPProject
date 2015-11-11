@@ -93,7 +93,8 @@ public class MapPanel extends JLayeredPane implements Runnable {
 	 */
 	private List<MapClickVehicle> wyswietlanePojazdy= new ArrayList<MapClickVehicle>();
 	/**
-	 * 
+	 * Lista pojazdów które są przeznaczone do narysowania na mapie, ale jeszcze nie są w liści "wyswietlanePojazdy"
+	 * Pojazd nowo dodany jest dodawany do tej listy a nastepnie jego button jest dodawany do wyświetlanych Pojazdów
 	 */
 	private static List<Pojazd> doRysowania = new ArrayList<Pojazd>();
 	
@@ -331,7 +332,10 @@ public class MapPanel extends JLayeredPane implements Runnable {
 		this.remove(doUsuniecua);
 		this.setRedrowAllVehicles(false);
 	}
-	
+	/**
+	 * Usuwa z mapy buttony określające pojazdy
+	 * @param doUsuniecua Usuwa z mapy całość listy doUsuniecia
+	 */
 	private void remove(List<MapClickVehicle> doUsuniecua) {
 		for(MapClickVehicle but : doUsuniecua){
 			this.remove(but);

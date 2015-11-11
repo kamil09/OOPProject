@@ -25,6 +25,7 @@ public class StatekWycieczkowy extends PojazdPasazerski implements Statek{
 	 * @param e - położenie Y Pojazdu
 	 * @param name - nazwa pojazdu
 	 * @param id - id pojazdu
+	 * @param port - referencja na port w którym tworzy się statek
 	 * Losuje także paliwo z przedziału 1000 - 1500
 	 */
 	public StatekWycieczkowy(double d,double e, String name,int id, Miasto port){
@@ -36,14 +37,10 @@ public class StatekWycieczkowy extends PojazdPasazerski implements Statek{
 		this.zaparkuj();
 	}
 
-	public String getFirma() {
-		return firma;
-	}
-
-	public void setFirma(String firma) {
-		this.firma = firma;
-	}
 	
+	/**
+	 * Pętla wątku
+	 */
 	public void run() {
 		while(this.isRunnable()){
 			try {
@@ -90,11 +87,24 @@ public class StatekWycieczkowy extends PojazdPasazerski implements Statek{
 			}
 		}
 	}
+	/**
+	 * Zmiana trasy
+	 */
 	public void zmienTrase(){
 		zmianaTrasyStatku(this);
 	}
+	/**
+	 * Zwraca obraz statku
+	 */
 	public BufferedImage getImage() {
 		return Swiat.getPojazdyImages()[1];
+	}
+	public String getFirma() {
+		return firma;
+	}
+
+	public void setFirma(String firma) {
+		this.firma = firma;
 	}
 	
 	

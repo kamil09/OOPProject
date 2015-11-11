@@ -35,6 +35,7 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot{
 	 * @param e - położenie Y Pojazdu
 	 * @param name - nazwa pojazdu
 	 * @param id - id pojazdu
+	 * @param lotniskowiec - referencja na lotniskowiec w którym tworzony jest myśliwiec
 	 * Losuje także paliwo z przedziału 1000 - 1500
 	 */
 	public SamolotWojskowy(double d,double e, String name, int id, Lotniskowiec lotniskowiec){
@@ -44,7 +45,9 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot{
 		this.znajdzNajblizszyPunkt();
 		this.setBron(lotniskowiec.getBron());
 	}
-	
+	/**
+	 * Pętla watku
+	 */
 	public void run() {
 		while(this.isRunnable()){
 			try {
@@ -93,6 +96,9 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot{
 			}
 		}
 	}
+	/**
+	 * Zamienia trasę samolotu wojskowego
+	 */
 	public void zmienTrase(){
 		Droga cpS =  this.getTrasa().get(0);
 		int stan = this.getStan();
@@ -123,7 +129,9 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot{
 	public BufferedImage getImage() {
 		return Swiat.getPojazdyImages()[2];
 	}
-	
+	/**
+	 * Znajduje najbliższy punkt do którego samolot ma lecieć zaraz po stworzeniu, wyznacza tą drogę
+	 */
 	private void znajdzNajblizszyPunkt(){
 		double najS=9999;
 		PunktMapy punktTmp=null;
@@ -154,7 +162,10 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot{
 		this.losujTraseWojskowa();
 		this.setStan(2);
 	}
-	
+	/**
+	 * Losuje trase dla somolotu wojskowego
+	 * Dokładnie to losuje 1 drogę a następnie wywołuje metode trasaDoLotniskaWojskowego();
+	 */
 	private void losujTraseWojskowa() {
 		this.getTrasaPowrotna().clear();
 		this.getTrasaTmp().clear();
@@ -189,7 +200,10 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot{
 		}
 		this.getTrasa().get(0).getPojazdyNaDrodze().add(this);
 	}
-
+	/**
+	 * Wyznacza trase do jakiegoś lotniska wojskowego od obecnego punktu
+	 * Uwaga pierwsza droga musi być już wybrana, nie można zaczynać z pustą trasą!!!
+	 */
 	private void trasaDoLotniskaWojskowego(){
 		Random generator = new Random();
 		while(true){
@@ -220,11 +234,9 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot{
 	public PunktMapy getPierwszyPunkt() {
 		return pierwszyPunkt;
 	}
-
 	public void setPierwszyPunkt(PunktMapy pierwszyPunkt) {
 		this.pierwszyPunkt = pierwszyPunkt;
 	}
-
 	public double getTime() {
 		return time;
 	}

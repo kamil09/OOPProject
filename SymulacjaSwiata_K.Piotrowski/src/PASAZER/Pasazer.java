@@ -42,7 +42,6 @@ public class Pasazer implements Runnable{
 	 * pesel pasażera
 	 */
 	private long pesel;
-	
 	/**
 	 * Typ podruży : false- prywatna true-służbowa
 	 */
@@ -51,7 +50,6 @@ public class Pasazer implements Runnable{
 	 * Czas postoju w miejscu docelowym
 	 */
 	private double czasPostoju;
-	
 	/**
 	 * Miasto rodzinne pasażera
 	 */
@@ -68,17 +66,14 @@ public class Pasazer implements Runnable{
 	 * Miasto docelowe do którego zmierza pasażer
 	 */
 	private Miasto miastoDocelowe;
-	
 	/**
 	 * Poprzednie miasto - potrzebne przy sprawdzaniu czy pasażer zabłądził (pojazd zmienił trase z pasażerem na pokładzie)
 	 */
 	private Miasto poprzednieMiasto;
-	
 	/**
 	 * Czy wykonujemy pętle wątku
 	 */
 	private boolean running=true;
-	
 	/**
 	 * Trasa : a - b - c - d - e - f - g - h - ciąg samych miast. bez obecnego, ale łącznie z końcowym!!!
 	 */
@@ -101,68 +96,7 @@ public class Pasazer implements Runnable{
 	 */
 	private int status;
 
-//SETTERY I GETTERY
-	public UID getId(){
-		return Id;
-	}
-	public ImieRandom getImie() {
-		return imie;
-	}
-	public NazwiskoRandom getNazwisko() {
-		return nazwisko;
-	}
-	public int getWiek() {
-		return wiek;
-	}
-	public long getPesel() {
-		return pesel;
-	}
-	public boolean isTypPodrozy() {
-		return typPodrozy;
-	}
 
-	public void setTypPodrozy(boolean typPodrozy) {
-		this.typPodrozy = typPodrozy;
-	}
-
-	public double getCzasPostoju() {
-		return czasPostoju;
-	}
-	public void setCzasPostoju(double czasPostoju) {
-		this.czasPostoju = czasPostoju;
-	}
-
-	public int getStatus() {
-		return status;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
-	}
-	public List<PunktMapy> getTrasa() {
-		return trasa;
-	}
-	public void setTrasa(List<PunktMapy> trasa) {
-		this.trasa = trasa;
-	}
-	public Miasto getObecnyPunkt() {
-		return obecnyPunkt;
-	}
-	public void setObecnyPunkt(Miasto obecnyPunkt) {
-		this.obecnyPunkt = obecnyPunkt;
-	}
-	public Miasto getMiastoDocelowe() {
-		return miastoDocelowe;
-	}
-	public void setMiastoDocelowe(Miasto miastoDocelowe) {
-		this.miastoDocelowe = miastoDocelowe;
-	}
-	public PojazdPasazerski getObecnyPojazd() {
-		return obecnyPojazd;
-	}
-	public void setObecnyPojazd(PojazdPasazerski obecnyPojazd) {
-		this.obecnyPojazd = obecnyPojazd;
-	};
 
 	/**
 	 * Konstruktor
@@ -445,6 +379,68 @@ public class Pasazer implements Runnable{
 	public void setRunning(boolean running) {
 		this.running = running;
 	}
+	
+	public UID getId(){
+		return Id;
+	}
+	public ImieRandom getImie() {
+		return imie;
+	}
+	public NazwiskoRandom getNazwisko() {
+		return nazwisko;
+	}
+	public int getWiek() {
+		return wiek;
+	}
+	public long getPesel() {
+		return pesel;
+	}
+	public boolean isTypPodrozy() {
+		return typPodrozy;
+	}
+
+	public void setTypPodrozy(boolean typPodrozy) {
+		this.typPodrozy = typPodrozy;
+	}
+
+	public double getCzasPostoju() {
+		return czasPostoju;
+	}
+	public void setCzasPostoju(double czasPostoju) {
+		this.czasPostoju = czasPostoju;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	public List<PunktMapy> getTrasa() {
+		return trasa;
+	}
+	public void setTrasa(List<PunktMapy> trasa) {
+		this.trasa = trasa;
+	}
+	public Miasto getObecnyPunkt() {
+		return obecnyPunkt;
+	}
+	public void setObecnyPunkt(Miasto obecnyPunkt) {
+		this.obecnyPunkt = obecnyPunkt;
+	}
+	public Miasto getMiastoDocelowe() {
+		return miastoDocelowe;
+	}
+	public void setMiastoDocelowe(Miasto miastoDocelowe) {
+		this.miastoDocelowe = miastoDocelowe;
+	}
+	public PojazdPasazerski getObecnyPojazd() {
+		return obecnyPojazd;
+	}
+	public void setObecnyPojazd(PojazdPasazerski obecnyPojazd) {
+		this.obecnyPojazd = obecnyPojazd;
+	};
 	
 	
 

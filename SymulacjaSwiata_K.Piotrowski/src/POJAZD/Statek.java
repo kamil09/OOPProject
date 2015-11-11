@@ -10,6 +10,10 @@ import MAIN.Swiat;
 
 public interface Statek {
 	
+	/**
+	 * Losuje trasę dla statku
+	 * @param statek - referencja na statek dla którego szukamy trasy
+	 */
 	public default void losujTrase(Pojazd statek) {
 		Random generator = new Random();
 		int dlugoscTrasy= generator.nextInt(1)+2;
@@ -49,6 +53,10 @@ public interface Statek {
 		//Ustawienie trasy powrotnej
 		znajdzTrasePowrotna(statek);	
 	}
+	/**
+	 * Znajdujemy trase powrotną dla statku
+	 * @param statek referencja na statek
+	 */
 	public default void znajdzTrasePowrotna(Pojazd statek){
 		for(int i=statek.getTrasa().size()-1 ; i>=0 ; i-- ){
 			for(Droga drogaSw : Swiat.getListaTrasMorskich() ){
@@ -58,6 +66,11 @@ public interface Statek {
 			}
 		}
 	}
+	/**
+	 * Zamienia trase statku
+	 * Uzywane po dotarciu do celu
+	 * @param statek referencja na obiekt
+	 */
 	public default void zmianaTrasyStatku(Pojazd statek){
 		Droga cpS =  statek.getTrasa().get(0);
 		int stan = statek.getStan();

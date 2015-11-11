@@ -156,7 +156,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	/**
 	 * Zwraca obruconą, przeskalowaną ikonę pojazdu
 	 * @param zoom - zomm na mapie
-	 * @return
+	 * @return ikona pojazdu
 	 */
 	public ImageIcon returnIcon(double zoom){
 		int size=(int)(this.getSize()/zoom);
@@ -184,7 +184,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	
 	/**
 	 * Przesuwa pojazd o odpowiednie odległości
-	 * x - mnożnik przesunięcia
+	 * @param x - mnożnik przesunięcia
 	 */
 	public void move(int x){
 		double diffX=this.getTrasa().get(0).getB().getKoorX()-this.getKoorX();
@@ -210,12 +210,23 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 			this.setPaliwo(this.getPaliwo()-1);
 		}
 	}
+	/**
+	 * Przesuwa pojazd do określonego punktu
+	 * @param koorX współrzędna punktu X
+	 * @param koorY współrzędna punktu Y
+	 */
 	public void moveToPoint(double koorX,double koorY){
 		while((this.isRunnable()) && (!this.canMove(koorX, koorY)) ) 	try { Thread.sleep(50); } 
 			catch (InterruptedException e) { e.printStackTrace(); }
 		this.setKoorX(koorX);
 		this.setKoorY(koorY);
 	}
+	/**
+	 * Zwraca true jeśli pojazd może pojechać w dane miejsce
+	 * @param X współrzędna X punktu
+	 * @param Y współrzędna Y ppunktu
+	 * @return true / false
+	 */
 	public boolean canMove(double X, double Y ){
 		for(Pojazd pojazd : this.getTrasa().get(0).getPojazdyNaDrodze()){
 			if(pojazd.getid()!=this.getid()){
@@ -279,7 +290,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 			if(this instanceof SamolotWojskowy )
 				this.move(60);
 			else
-				this.move(120);
+				this.move(130);
 			//Zwiększanie parkingu w mieście
 			if(this.getObecneMiejsce() instanceof Miasto ){
 				Miasto miasto = (Miasto) this.getObecneMiejsce();
@@ -297,6 +308,11 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 			this.setCzyZaparkowano(false);
 		}
 	}
+	/**
+	 * Zwraca true jeśli pojazd znajduje się przy pontu postojowym (skrzyzowanie / lotnisko)
+	 * Nie może on wtedy wykonać normalnego ruchu tylko musi wejść w obszar symchronizowany
+	 * @return true false
+	 */
 	public boolean czyPunktPostoju(){
 		double diffX=this.getTrasa().get(0).getB().getKoorX()-this.getKoorX();
 		double diffY=this.getTrasa().get(0).getB().getKoorY()-this.getKoorY();
@@ -309,6 +325,10 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 		else if( diffP < 160) return true;
 		return false;
 	}
+	/**
+	 * 
+	 * @return Odległość Punktu B trasy od obecnego położenia
+	 */
 	public double returnDifferenceThisB(){
 		double diffX=this.getTrasa().get(0).getB().getKoorX()-this.getKoorX();
 		double diffY=this.getTrasa().get(0).getB().getKoorY()-this.getKoorY();
@@ -317,6 +337,10 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 		double diffP=Math.pow(Math.pow(diffX, 2)+Math.pow(diffY, 2) , 0.5);
 		return diffP;
 	}
+	/**
+	 * 
+	 * @return Odległość Punktu A trasy od obecnego położenia
+	 */
 	public double returnDifferenceThisA(){
 		double diffX=this.getTrasa().get(0).getA().getKoorX()-this.getKoorX();
 		double diffY=this.getTrasa().get(0).getA().getKoorY()-this.getKoorY();
@@ -325,6 +349,9 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 		double diffP=Math.pow(Math.pow(diffX, 2)+Math.pow(diffY, 2) , 0.5);
 		return diffP;
 	}
+	/**
+	 * Pojazd wchodzi na skrzyzowanie, porusza się na nim, oraz w końcu je opuszcza
+	 */
 	public void wejdzNaSkrzyzowanie(){
 		boolean out=false;
 		while(this.isRunnable()){
@@ -349,6 +376,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	}
 	/**
 	 * @throws InterruptedException
+	 * Pasażer wchodzi do miasta
 	 */
 	public void wejdzDoMiasta() throws InterruptedException{
 		if(this.getTrasa().get(0).getB() instanceof Miasto){
@@ -387,7 +415,10 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 			}
 		statek.getTrasa().get(0).getPojazdyNaDrodze().add(statek);
 	}
-	
+	/**
+	 * Metoda zamieniająca trasy
+	 * Uzywana gdy pojazd dotrze do celu
+	 */
 	public abstract void zmienTrase();
 	
 	public List<Droga> getTrasa() {

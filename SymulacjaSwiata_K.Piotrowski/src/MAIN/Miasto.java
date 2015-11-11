@@ -16,16 +16,16 @@ public abstract class Miasto extends PunktMapy{
 	/**
 	 * Lista pojazdów stacjonujących obecnie w mieście
 	 */
-	private List<Pojazd> listaPojazdow = new LinkedList<Pojazd>();
+	volatile private List<Pojazd> listaPojazdow = new LinkedList<Pojazd>();
 	
 	/**
 	 * Określa liczbę pojazdów maksymalnie przebywających w jednym czasie w mieście.
 	 */
-	private int pojemosc=4;
+	volatile private int pojemosc=4;
 	/**
 	 * Parking
 	 */
-	private int[] parking = new int[] { 0,0,0,0 };
+	volatile private int[] parking = new int[] { 0,0,0,0 };
 	
 	/**
 	 * Konstruktor

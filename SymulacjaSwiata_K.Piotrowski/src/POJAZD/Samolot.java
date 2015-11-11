@@ -19,7 +19,7 @@ public interface Samolot {
 	/**
 	 * Znajduje trasę dla samolotu
 	 * Pomija lotniska wojskowe
-	 * @param samolot
+	 * @param samolot - referencja na samolot
 	 */
 	public default void losujTrase(Pojazd samolot) {
 		Random generator = new Random();
@@ -73,6 +73,12 @@ public interface Samolot {
 				}	
 			}
 		}
+	}
+	/**
+	 * Metoda która odpowiada za awaryjne lądowanie samolotu
+	 */
+	public default void awaryjneLadowanie(){
+		
 	}
 
 }

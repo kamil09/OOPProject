@@ -32,12 +32,15 @@ public class Lotniskowiec extends PojazdWojskowy implements Statek{
 		Random generator = new Random();
 		this.setBron(Uzbrojenie.values()[generator.nextInt(6)] );
 		this.setStan(0);
-		this.setMaxSpeed(2);
+		this.setMaxSpeed(3);
 		this.losujTrase(this);
 		synchronized (this.getObecneMiejsce().getHulk() ){
 			this.zaparkuj();
 		}
 	}
+	/**
+	 * Pętla wątka
+	 */
 	public void run() {
 		while(this.isRunnable()){
 			try {
@@ -85,7 +88,6 @@ public class Lotniskowiec extends PojazdWojskowy implements Statek{
 	public void zmienTrase(){
 		zmianaTrasyStatku(this);
 	}
-
 	public BufferedImage getImage() {
 		return Swiat.getPojazdyImages()[0];
 	}

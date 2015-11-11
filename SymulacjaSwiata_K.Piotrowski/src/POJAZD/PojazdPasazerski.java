@@ -38,6 +38,7 @@ public abstract class PojazdPasazerski extends Pojazd{
 	 * @param e - położenie Y Pojazdu
 	 * @param name - nazwa pojazdu
 	 * @param id - id pojazdu
+	 * @param miasto - referencja na miasto
 	 */
 	public PojazdPasazerski(double d,double e, String name, int id, Miasto miasto){
 		super(d, e, name, id, miasto);

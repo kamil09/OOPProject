@@ -9,7 +9,7 @@ import POJAZD.Pojazd;
  * 
  * @author Kamil Piotrowski
  * Klasa określająca drogę w naszym ściecie
- * Zawiera punkt A oraz listę jego następników B   -> To był jednak zły pomysł, bardzo zły :(
+ * Zawiera punkt A oraz listę jego następników B    To był jednak zły pomysł, bardzo zły :(
  * Droga określa jednak tylko 1 ! odcinek między 2 punktami
  * Jako drogę rozumie się najmniejszy możliwy odcinek trasy np miasto - skrzyżowanie
  *
@@ -47,16 +47,20 @@ public class Droga {
 	private int odY=0;
 	
 	/**
-	 * Konstruktor
-	 * @param a - punkt mapy A
-	 * @param b - następnik punktu A
+	 * 
+	 * @param a - punkt A
+	 * @param b - następnik punktu a
+	 * Droga jest tworzona na podstawie tych 2 punktów
 	 */
 	public Droga(PunktMapy a, PunktMapy b) {
 		this.setA(a);
 		this.setB(b);
 		this.przeliczProsta();
 	}
-	
+	/**
+	 * Metoda która z funkcji trygonometrycznych wylicza takie wartości jak kąt nachylenia / kierunek 
+	 * Oraz najważenijsze : odsunięcie które używamy podczas rysowania pojazdów
+	 */
 	private void przeliczProsta(){
 		int OdProstej=32;
 		if(this instanceof TrasaMorska) OdProstej=20;
@@ -90,12 +94,6 @@ public class Droga {
 			odY=(int) (OdProstej*Math.cos(Math.toRadians(this.katProstej)));
 			this.katProstej=360-this.katProstej;
 		}
-		
-		
-		
-		
-		
-		//System.out.println(diffX+"  "+diffY+ "kier: "+this.katProstej);
 	}
 	
 	public PunktMapy getA() {

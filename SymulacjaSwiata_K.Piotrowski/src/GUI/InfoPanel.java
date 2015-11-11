@@ -26,6 +26,7 @@ import PASAZER.Pasazer;
 import POJAZD.Pojazd;
 import POJAZD.PojazdPasazerski;
 import POJAZD.PojazdWojskowy;
+import POJAZD.Samolot;
 import POJAZD.StatekWycieczkowy;
 
 @SuppressWarnings("serial")
@@ -256,7 +257,7 @@ public class InfoPanel extends JPanel implements Runnable{
 	
 	/**
 	 * Wypisuje informacje o samolocie
-	 * @param samolot2 - referencja na wyświetlany obiekt
+	 * @param pojazd2 - referencja na wyświetlany obiekt
 	 */
 	public static void printInfo(Pojazd pojazd2){
 	
@@ -318,7 +319,7 @@ public class InfoPanel extends JPanel implements Runnable{
 		but1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		but1.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				Swiat.removePojazd(pojazd);
+				pojazd.removePojazd();
 			}
 		});
 		panelInfo.add(but1);
@@ -327,11 +328,23 @@ public class InfoPanel extends JPanel implements Runnable{
 		but2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		but2.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				Swiat.trasaChange(pojazd);
+				pojazd.zmienTrase();
 			}
 		});
 		panelInfo.add(but2);
 		panelInfo.add(Box.createVerticalStrut(10));
+		
+		if(pojazd instanceof Samolot){
+			panelInfo.add(Box.createVerticalStrut(10));
+			JButton but3 = new JButton("Zmień trase");
+			but3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			but3.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e) {
+					((Samolot)pojazd).awaryjneLadowanie();
+				}
+			});
+			panelInfo.add(but3);
+		}
 		
 		
 		panelInfo.revalidate();
@@ -370,6 +383,10 @@ public class InfoPanel extends JPanel implements Runnable{
 		typ =3;
 	}
 	
+	/**
+	 * Metoda która czyści panel z informacją
+	 * Używane podczas usuwania obiektór które są w danech chwili wyświetlane
+	 */
 	public static void infoClear(){
 		typ=-1;
 		panelInfo.removeAll();

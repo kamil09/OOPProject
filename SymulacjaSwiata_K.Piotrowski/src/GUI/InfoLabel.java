@@ -12,6 +12,10 @@ import javax.swing.JLabel;
  */
 public class InfoLabel extends JLabel{
 
+	/**
+	 * Kontruktor
+	 * @param text String - Label jest tworzony z tym tekstem
+	 */
 	public InfoLabel(String text){
 		setForeground(Color.WHITE);
 		setText(text);

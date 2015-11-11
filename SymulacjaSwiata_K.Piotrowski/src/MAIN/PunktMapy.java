@@ -24,45 +24,16 @@ public abstract class PunktMapy {
 	 * Nazwa miejsca na mapie
 	 */
 	private String name;
-	
-	public int getid() {
-		return id;
-	}
-	public void setId(int id){
-		this.id=id;
-	}
-
-	public double getKoorX() {
-		return koorX;
-	}
-
-
-	public void setKoorX(double d) {
-		this.koorX = d;
-	}
-
-
-	public double getKoorY() {
-		return koorY;
-	}
-
-
-	public void setKoorY(double d) {
-		this.koorY = d;
-	}
-
-
-	public String getName() {
-		return name;
-	}
-
-
-	public void setName(String name) {
-		this.name = name;
-	}
-	
+	/**
+	 * Objekt używany jako monitor
+	 */
 	private Object Hulk = new Object();
+	/**
+	 * Obiekt używany jako monitor
+	 */
 	private Object Veronica = new Object();
+	
+	
 	
 	/**
 	 * Konstruktor
@@ -88,5 +59,29 @@ public abstract class PunktMapy {
 	}
 	public void setVeronica(Object veronica) {
 		Veronica = veronica;
+	}
+	public int getid() {
+		return id;
+	}
+	public void setId(int id){
+		this.id=id;
+	}
+	public double getKoorX() {
+		return koorX;
+	}
+	public void setKoorX(double d) {
+		this.koorX = d;
+	}
+	public double getKoorY() {
+		return koorY;
+	}
+	public void setKoorY(double d) {
+		this.koorY = d;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 }

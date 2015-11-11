@@ -44,7 +44,7 @@ public class Swiat implements Runnable {
 	/**
 	 * Do generowania ID pojazdów
 	 */
-	private static int idGenerator=0;
+	volatile private static int idGenerator=0;
 	/**
 	 * Lista wszystkich pasażerów
 	 */
@@ -85,7 +85,7 @@ public class Swiat implements Runnable {
 	 * Czy istnieje lotniskowiec, lewsza jedna zmienna niż szukanie w liście pojazdów
 	 * Nie można stworzyć samolotu wojskowego bez lotniskowca!
 	 */
-	private static boolean czyIstniejeLotniskowiec=false;
+	volatile private static boolean czyIstniejeLotniskowiec=false;
 	/**
 	 * Nie można dodawać nowego pojazdu podczas przechodzenia po pętli i wyświetlania na ekranie!!!
 	 */
@@ -185,12 +185,6 @@ public class Swiat implements Runnable {
 			Lotniskowiec lotniskowiec = new Lotniskowiec(port.getKoorX(), port.getKoorY(), "Lotniskowiec"+Swiat.generateId(), Swiat.idGenerator, port);
 			addPojazd(port,lotniskowiec);
 		}
-	}
-	public static void removePojazd(Pojazd pojazd){
-		pojazd.removePojazd();
-	}
-	public static void trasaChange(Pojazd pojazd){
-		pojazd.zmienTrase();
 	}
 	/**
 	 * Ogólna metoda dodawania pojazdu
@@ -373,6 +367,96 @@ public class Swiat implements Runnable {
 			
 		}
 	}
+	
+	/**
+	 * 
+	 * @return Losowy Port
+	 */
+	public synchronized static Port getRandomPort(){
+		List<Port> tmpList = new ArrayList<Port>();
+		for(Miasto miasto : Swiat.getCityList()) 
+			if(miasto instanceof Port && miasto.getPojemosc()>0 ) tmpList.add((Port) miasto);
+		
+		Random generator = new Random();
+		if (!tmpList.isEmpty())
+			return tmpList.get(generator.nextInt(tmpList.size()));
+		else return null;
+	}
+	/**
+	 * 
+	 * @param tryb Tryb tzwracanych wartości
+	 * @return Zwraca losowe lotnisko w którym jest miejsce na pojazd; Jeśli
+	 * tryb==0 to lotniska są tylko cywilke
+	 * tryb==1 to lotniska zwracane są tylko wojskowe
+	 */
+	public synchronized static Lotnisko getRandomAirPort(int tryb){
+		List<Lotnisko> tmpList = new ArrayList<Lotnisko>();
+		for(Miasto miasto : Swiat.getCityList()){
+			if(tryb==0){
+				if( (miasto instanceof Lotnisko) && (miasto.getPojemosc()>0) && (miasto.getid()<9 ) ) tmpList.add((Lotnisko) miasto);
+			}
+			else{
+				if( (miasto instanceof Lotnisko) && (miasto.getPojemosc()>0) && (miasto.getid()>=9) ) tmpList.add((Lotnisko) miasto);	
+			}
+		}
+		Random generator = new Random();
+		if (!tmpList.isEmpty())
+			return tmpList.get(generator.nextInt(tmpList.size()));
+		else return null;
+	}
+	/**
+	 * 
+	 * @return Losowy lotniskowiec
+	 */
+	public synchronized static Lotniskowiec getRandomLotniskowiec(){
+		Random generator = new Random();
+		List<Lotniskowiec> lista= new ArrayList<Lotniskowiec>();
+		//Jest 4:02, nie chce mi się nazw wymyslać
+		for(Pojazd cos : Swiat.getListaPojazdow() ){
+			if(cos instanceof Lotniskowiec ) lista.add((Lotniskowiec)cos);
+		}
+		if(!lista.isEmpty()){
+			if(lista.size()==1) return lista.get(0);
+			else
+				return lista.get(generator.nextInt(lista.size()-1));
+		}
+		else
+			return null;
+	}
+	@Override
+	public void run() {
+		
+	}
+	public static boolean isCzyIstniejeLotniskowiec() {
+		return czyIstniejeLotniskowiec;
+	}
+	public static void setCzyIstniejeLotniskowiec(boolean czyIstniejeLotniskowiec) {
+		Swiat.czyIstniejeLotniskowiec = czyIstniejeLotniskowiec;
+	}
+	public static BufferedImage[] getPojazdyImages() {
+		return pojazdyImage;
+	}
+	public static void setPojazdyImages(BufferedImage[] pojazdy) {
+		Swiat.pojazdyImage = pojazdy;
+	}
+	public static List<TrasaMorska> getListaTrasMorskich() {
+		return listaTrasMorskich;
+	}
+	public static void setListaTrasMorskich(List<TrasaMorska> listaTrasMorskich) {
+		Swiat.listaTrasMorskich = listaTrasMorskich;
+	}
+	public static List<TrasaPowietrzna> getListaTrasPowietrznych() {
+		return listaTrasPowietrznych;
+	}
+	public static void setListaTrasPowietrznych(List<TrasaPowietrzna> listaTrasPowietrznych) {
+		Swiat.listaTrasPowietrznych = listaTrasPowietrznych;
+	}
+	public static Object getCanAddPojazdObject() {
+		return canAddPojazdObject;
+	}
+	public static void setCanAddPojazdObject(Object canAddPojazdObject) {
+		Swiat.canAddPojazdObject = canAddPojazdObject;
+	}
 	public static List<Droga> getListaTras() {
 		return listaTras;
 	}
@@ -392,82 +476,6 @@ public class Swiat implements Runnable {
 	public synchronized static int generateId(){
 		idGenerator++;
 		return idGenerator;
-	}
-	
-	public synchronized static Port getRandomPort(){
-		List<Port> tmpList = new ArrayList<Port>();
-		for(Miasto miasto : Swiat.getCityList()) 
-			if(miasto instanceof Port && miasto.getPojemosc()>0 ) tmpList.add((Port) miasto);
-		
-		Random generator = new Random();
-		if (!tmpList.isEmpty())
-			return tmpList.get(generator.nextInt(tmpList.size()));
-		else return null;
-	}
-	public synchronized static Lotnisko getRandomAirPort(int tryb){
-		List<Lotnisko> tmpList = new ArrayList<Lotnisko>();
-		for(Miasto miasto : Swiat.getCityList()){
-			if(tryb==0){
-				if( (miasto instanceof Lotnisko) && (miasto.getPojemosc()>0) && (miasto.getid()<9 ) ) tmpList.add((Lotnisko) miasto);
-			}
-			else{
-				if( (miasto instanceof Lotnisko) && (miasto.getPojemosc()>0) && (miasto.getid()>=9) ) tmpList.add((Lotnisko) miasto);	
-			}
-		}
-		Random generator = new Random();
-		if (!tmpList.isEmpty())
-			return tmpList.get(generator.nextInt(tmpList.size()));
-		else return null;
-	}
-	public synchronized static Lotniskowiec getRandomLotniskowiec(){
-		Random generator = new Random();
-		List<Lotniskowiec> lista= new ArrayList<Lotniskowiec>();
-		//Jest 4:02, nie chce mi się nazw wymyslać
-		for(Pojazd cos : Swiat.getListaPojazdow() ){
-			if(cos instanceof Lotniskowiec ) lista.add((Lotniskowiec)cos);
-		}
-		if(!lista.isEmpty()){
-			if(lista.size()==1) return lista.get(0);
-			else
-				return lista.get(generator.nextInt(lista.size()-1));
-		}
-		else
-			return null;
-	}
-	
-	public static boolean isCzyIstniejeLotniskowiec() {
-		return czyIstniejeLotniskowiec;
-	}
-	public static void setCzyIstniejeLotniskowiec(boolean czyIstniejeLotniskowiec) {
-		Swiat.czyIstniejeLotniskowiec = czyIstniejeLotniskowiec;
-	}
-	public static BufferedImage[] getPojazdyImages() {
-		return pojazdyImage;
-	}
-	public static void setPojazdyImages(BufferedImage[] pojazdy) {
-		Swiat.pojazdyImage = pojazdy;
-	}
-	@Override
-	public void run() {
-		
-	}
-	public static List<TrasaMorska> getListaTrasMorskich() {
-		return listaTrasMorskich;
-	}
-	public static void setListaTrasMorskich(List<TrasaMorska> listaTrasMorskich) {
-		Swiat.listaTrasMorskich = listaTrasMorskich;
-	}
-	public static List<TrasaPowietrzna> getListaTrasPowietrznych() {
-		return listaTrasPowietrznych;
-	}
-	public static void setListaTrasPowietrznych(List<TrasaPowietrzna> listaTrasPowietrznych) {
-		Swiat.listaTrasPowietrznych = listaTrasPowietrznych;
-	}
-	public static Object getCanAddPojazdObject() {
-		return canAddPojazdObject;
-	}
-	public static void setCanAddPojazdObject(Object canAddPojazdObject) {
-		Swiat.canAddPojazdObject = canAddPojazdObject;
 	}
 	
 }
