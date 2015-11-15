@@ -172,6 +172,7 @@ public class Pasazer implements Runnable{
 	            			 * Przeszukanie czy w obecnym miejscu znajduje się odpowiedni pojazd
 	            			 */
 	            			synchronized(this.getObecnyPunkt().getVeronica() ){
+	            			synchronized(Swiat.getCanAddPojazdObject()){ 
 		            			for(Pojazd pojazd : this.getObecnyPunkt().getListaPojazdow() ){
 		            				if(pojazd instanceof PojazdPasazerski){
 		            					if(((PojazdPasazerski) pojazd).getWolneMiejsca() > 0){
@@ -188,7 +189,7 @@ public class Pasazer implements Runnable{
 		            					}
 		            				}
 		            			}
-	            			}
+	            			}}
                   		}
             			else{
             				if( this.getObecnyPunkt()!=null ){

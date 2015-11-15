@@ -59,7 +59,7 @@ public class MapPanel extends JLayeredPane implements Runnable {
 	/**
 	 * Obecnny ZOOM
 	 */
-	private double mapZOOM=5.6;
+	volatile private double mapZOOM=5.6;
 	/**
 	 * Maksymalny zoom
 	 */
@@ -85,7 +85,7 @@ public class MapPanel extends JLayeredPane implements Runnable {
 	 */
 	private boolean cityRedrow=true;
 	/**
-	 * 
+	 * Informuje nas, czy należy przerysować wszystkie pojazdy (tworzymy od nowa odpowiednie buttony)
 	 */
 	private boolean redrowAllVehicles=false;
 	/**
@@ -263,7 +263,7 @@ public class MapPanel extends JLayeredPane implements Runnable {
 				koorY-=size/2;
 				
 				JButton punkt = new MapClickButton(koorX,koorY,size,size,city);
-				add(punkt,4);
+				add(punkt,JLayeredPane.DEFAULT_LAYER);
 				if(this.cityRedrow==true) this.cityRedrow=false;
 			}
 		}
@@ -293,7 +293,7 @@ public class MapPanel extends JLayeredPane implements Runnable {
 			}
 			MapClickVehicle tmp=pojazd.rysuj(mapZOOM, koorX, koorY);
 			this.wyswietlanePojazdy.add(tmp);
-			this.add(tmp, 2);
+			this.add(tmp, JLayeredPane.PALETTE_LAYER);
 		}
 		
 		MapPanel.doRysowania.clear();
@@ -325,7 +325,7 @@ public class MapPanel extends JLayeredPane implements Runnable {
 				button.setIcon(button.getPojazd().returnIcon(mapZOOM));
 				button.setBounds(koorX, koorY, (int)(70/mapZOOM), (int)(70/mapZOOM));
 				if(this.isRedrowAllVehicles())
-					this.add(button, 2);
+					this.add(button, JLayeredPane.PALETTE_LAYER);
 			}
 		}
 		this.wyswietlanePojazdy.removeAll(doUsuniecua);
@@ -363,7 +363,7 @@ public class MapPanel extends JLayeredPane implements Runnable {
 				koorY-=size/2;
 				
 				JButton punkt = new MapClickButton(koorX,koorY,size,size,city);
-				add(punkt,3);
+				add(punkt,JLayeredPane.DEFAULT_LAYER);
 				if(this.cityRedrow==true) this.cityRedrow=false;
 			}
 		}

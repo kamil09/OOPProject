@@ -95,7 +95,14 @@ public class Droga {
 			this.katProstej=360-this.katProstej;
 		}
 	}
-	
+	public double getDifferenceBPoints(){
+		double diffX=this.getB().getKoorX()-this.getA().getKoorX();
+		double diffY=this.getB().getKoorY()-this.getA().getKoorY();
+		diffX=Math.abs(diffX);
+		diffY=Math.abs(diffY);
+		double diffP=Math.pow(Math.pow(diffX, 2)+Math.pow(diffY, 2) , 0.5);
+		return diffP;
+	}
 	public PunktMapy getA() {
 		return this.A;
 	}

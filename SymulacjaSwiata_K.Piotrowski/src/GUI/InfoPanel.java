@@ -62,7 +62,6 @@ public class InfoPanel extends JPanel implements Runnable{
 	 * Obecnie wyświetlany punkt mapy (miasto lub sprzyzowanie)
 	 */
 	static PunktMapy punkt;
-
 	/**
 	 * Konstruktor panelu - ustawia wygląd i tworzy 4 przyciski akcji
 	 */
@@ -183,7 +182,6 @@ public class InfoPanel extends JPanel implements Runnable{
 	 */
 	public static void printInfo(Pasazer pasazer2){
 		
-		
 		pasazer=pasazer2;
 	
 		
@@ -260,96 +258,103 @@ public class InfoPanel extends JPanel implements Runnable{
 	 * @param pojazd2 - referencja na wyświetlany obiekt
 	 */
 	public static void printInfo(Pojazd pojazd2){
-	
-		pojazd=pojazd2;
-		panelInfo.removeAll();
 		
-		panelInfo.add( new InfoLabel( "Nazwa: "+pojazd.getName() ));
-		panelInfo.add(Box.createVerticalStrut(10));
-		if (pojazd instanceof StatekWycieczkowy ) {
-			panelInfo.add( new InfoLabel( "Firma: "+((StatekWycieczkowy) pojazd).getFirma() ));
+		synchronized(pojazd2){
+			pojazd=pojazd2;
+			panelInfo.removeAll();
+			
+			panelInfo.add( new InfoLabel( "Nazwa: "+pojazd.getName() ));
 			panelInfo.add(Box.createVerticalStrut(10));
-		}
-		panelInfo.add( new InfoLabel( "ID: "+pojazd.getid() ));
-		panelInfo.add(Box.createVerticalStrut(10));
-		panelInfo.add( new InfoLabel( "Współrzędna X: "+pojazd.getKoorX() ));
-		panelInfo.add(Box.createVerticalStrut(10));
-		panelInfo.add( new InfoLabel( "Współrzędna Y: "+pojazd.getKoorY() ));
-		panelInfo.add(Box.createVerticalStrut(10));
-		panelInfo.add( new InfoLabel( "Predkosc: "+ pojazd.getMaxSpeed()));
-		panelInfo.add(Box.createVerticalStrut(10));
-		panelInfo.add( new InfoLabel( "Paliwo:"+ pojazd.getPaliwo()));
-		panelInfo.add(Box.createVerticalStrut(10));
-		panelInfo.add( new InfoLabel( "Pojemność baku: "+ pojazd.getMaxPaliwo()));
-		panelInfo.add(Box.createVerticalStrut(10));
-		panelInfo.add( new InfoLabel( "Liczba personelu: "+ pojazd.getLiczbaZalogi()));
-		panelInfo.add(Box.createVerticalStrut(10));
-		JLabel label9;
-		if( pojazd.getObecneMiejsce() != null ) label9 = new InfoLabel( "Obecne miasto: "+ pojazd.getObecneMiejsce().getName());
-		else label9 = new InfoLabel( "Obecne miejsce: w trakcie podróży");
-		panelInfo.add( label9 );
-		panelInfo.add(Box.createVerticalStrut(10));
-		
-		
-		
-		
-		if(pojazd instanceof PojazdPasazerski ){
-			panelInfo.add( new InfoLabel( "Liczba wolnych miejsc: "+((PojazdPasazerski) pojazd).getWolneMiejsca() ));
+			if (pojazd instanceof StatekWycieczkowy ) {
+				panelInfo.add( new InfoLabel( "Firma: "+((StatekWycieczkowy) pojazd).getFirma() ));
+				panelInfo.add(Box.createVerticalStrut(10));
+			}
+			panelInfo.add( new InfoLabel( "ID: "+pojazd.getid() ));
 			panelInfo.add(Box.createVerticalStrut(10));
-			panelInfo.add( new InfoLabel( "Maksymalna liczba miejsc: "+((PojazdPasazerski) pojazd).getMaxMiejsc()));
+			panelInfo.add( new InfoLabel( "Współrzędna X: "+pojazd.getKoorX() ));
 			panelInfo.add(Box.createVerticalStrut(10));
-			panelInfo.add( new InfoLabel( "Lista pasażerów: "));
+			panelInfo.add( new InfoLabel( "Współrzędna Y: "+pojazd.getKoorY() ));
+			panelInfo.add(Box.createVerticalStrut(10));
+			panelInfo.add( new InfoLabel( "Predkosc: "+ pojazd.getMaxSpeed()));
+			panelInfo.add(Box.createVerticalStrut(10));
+			panelInfo.add( new InfoLabel( "Paliwo:"+ pojazd.getPaliwo()));
+			panelInfo.add(Box.createVerticalStrut(10));
+			panelInfo.add( new InfoLabel( "Pojemność baku: "+ pojazd.getMaxPaliwo()));
+			panelInfo.add(Box.createVerticalStrut(10));
+			panelInfo.add( new InfoLabel( "Liczba personelu: "+ pojazd.getLiczbaZalogi()));
+			panelInfo.add(Box.createVerticalStrut(10));
+			JLabel label9;
+			if( pojazd.getObecneMiejsce() != null ) label9 = new InfoLabel( "Obecne miasto: "+ pojazd.getObecneMiejsce().getName());
+			else label9 = new InfoLabel( "Obecne miejsce: w trakcie podróży");
+			panelInfo.add( label9 );
+			panelInfo.add(Box.createVerticalStrut(10));
+			
+			
+			
+			
+			if(pojazd instanceof PojazdPasazerski ){
+				panelInfo.add( new InfoLabel( "Liczba wolnych miejsc: "+((PojazdPasazerski) pojazd).getWolneMiejsca() ));
+				panelInfo.add(Box.createVerticalStrut(10));
+				panelInfo.add( new InfoLabel( "Maksymalna liczba miejsc: "+((PojazdPasazerski) pojazd).getMaxMiejsc()));
+				panelInfo.add(Box.createVerticalStrut(10));
+				panelInfo.add( new InfoLabel( "Lista pasażerów: "));
+				panelInfo.add(Box.createVerticalStrut(5));
+				for(Pasazer osoba : ((PojazdPasazerski) pojazd).getListaPasazerow()){
+					panelInfo.add( new InfoLabel( "   --->  "+osoba.getImie() + " "+osoba.getNazwisko() ));
+				}
+				panelInfo.add(Box.createVerticalStrut(10));
+			}
+			if(pojazd instanceof PojazdWojskowy){
+				panelInfo.add( new InfoLabel( "Uzbrojenie: "+((PojazdWojskowy) pojazd).getBron() ));
+				panelInfo.add(Box.createVerticalStrut(10));
+			}
+			panelInfo.add( new InfoLabel( "Trasa: "));
 			panelInfo.add(Box.createVerticalStrut(5));
-			for(Pasazer osoba : ((PojazdPasazerski) pojazd).getListaPasazerow()){
-				panelInfo.add( new InfoLabel( "   --->  "+osoba.getImie() + " "+osoba.getNazwisko() ));
+			for( Droga droga : pojazd.getTrasa() ){
+				panelInfo.add( new InfoLabel( "   --->  "+droga.getB().getName() ));
 			}
-			panelInfo.add(Box.createVerticalStrut(10));
-		}
-		if(pojazd instanceof PojazdWojskowy){
-			panelInfo.add( new InfoLabel( "Uzbrojenie: "+((PojazdWojskowy) pojazd).getBron() ));
-			panelInfo.add(Box.createVerticalStrut(10));
-		}
-		panelInfo.add( new InfoLabel( "Trasa: "));
-		panelInfo.add(Box.createVerticalStrut(5));
-		for( Droga droga : pojazd.getTrasa() ){
-			panelInfo.add( new InfoLabel( "   --->  "+droga.getB().getName() ));
-		}
-		panelInfo.add(Box.createVerticalStrut(30));
-		JButton but1 = new JButton("Usun pojazd");
-		but1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		but1.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				pojazd.removePojazd();
-			}
-		});
-		panelInfo.add(but1);
-		panelInfo.add(Box.createVerticalStrut(10));
-		JButton but2 = new JButton("Zmień trase");
-		but2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		but2.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				pojazd.zmienTrase();
-			}
-		});
-		panelInfo.add(but2);
-		panelInfo.add(Box.createVerticalStrut(10));
-		
-		if(pojazd instanceof Samolot){
-			panelInfo.add(Box.createVerticalStrut(10));
-			JButton but3 = new JButton("Zmień trase");
-			but3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			but3.addMouseListener(new MouseAdapter() {
+			panelInfo.add(Box.createVerticalStrut(30));
+			JButton but1 = new JButton("Usun pojazd");
+			but1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			but1.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
-					((Samolot)pojazd).awaryjneLadowanie();
+					pojazd.removePojazd();
 				}
 			});
-			panelInfo.add(but3);
+			panelInfo.add(but1);
+			panelInfo.add(Box.createVerticalStrut(10));
+			JButton but2 = new JButton("Zmień trase");
+			but2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			but2.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e) {
+					pojazd.zmienTrase();
+				}
+			});
+			panelInfo.add(but2);
+			
+			if(pojazd instanceof Samolot){
+				panelInfo.add(Box.createVerticalStrut(10));
+				JButton but3 = new JButton("Awaryjne lądowanie");
+				but3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				but3.addMouseListener(new MouseAdapter() {
+					public void mouseClicked(MouseEvent e) {
+						Thread t = new Thread(new Runnable() {
+					         public void run()
+					         {
+					        	 ((Samolot)pojazd).awaryjneLadowanie(pojazd);
+					         }
+						});
+						t.start();
+					}
+				});
+				panelInfo.add(but3);
+			}
+			
+			
+			panelInfo.revalidate();
+			panelInfo.repaint();
+			typ = 1;
 		}
-		
-		
-		panelInfo.revalidate();
-		panelInfo.repaint();
-		typ = 1;
 		
 	}
 	
@@ -358,9 +363,7 @@ public class InfoPanel extends JPanel implements Runnable{
 	 * @param punkt2 - referencja do wypisywanego obiektu
 	 */
 	public static void printInfo(PunktMapy punkt2){
-			
-		
-		
+
 		panelInfo.removeAll();
 		punkt=punkt2;
 		
@@ -395,8 +398,6 @@ public class InfoPanel extends JPanel implements Runnable{
 		punkt=null;
 		panelInfo.revalidate();
 		panelInfo.repaint();
-		
-		
 	}
 	
 

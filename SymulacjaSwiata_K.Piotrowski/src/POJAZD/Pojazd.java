@@ -28,7 +28,6 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	 * Obecne miejsce, jeśli w trakcje lotu/rejsu = null
 	 */
 	private PunktMapy obecneMiejsce=null;
-	
 	/**
 	 * Ilosc maksymalnego paliwa
 	 */
@@ -111,32 +110,35 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	public void removePojazd(){
 		//Usuwanie z mapy
 		//Zatrzymywanie wątku
+		
 		synchronized(Swiat.getCanAddPojazdObject()){
-			this.stop();
-			this.setKoorX(-1000);
-			this.setKoorY(-1000);
-			InfoPanel.infoClear();
-			//Usuwanie z parkingu / miasta
-			if((this.isCzyZaparkowano()) && (this.obecneMiejsce instanceof Miasto)){
-				((Miasto)this.getObecneMiejsce()).getParking()[this.getMiejsceParkingowe()]=0;
-				((Miasto)this.getObecneMiejsce()).getListaPojazdow().remove(this);
-				((Miasto)this.getObecneMiejsce()).zwiekszPojemnosc();
-			}
-			//Usuwanie z trasy
-			if(!this.getTrasa().isEmpty()) this.getTrasa().get(0).getPojazdyNaDrodze().remove(this);
-			//Czyszczenie pasażerów
-			if(this instanceof PojazdPasazerski){
-				System.out.println("Własnie zabiłeś: "+((PojazdPasazerski)this).getListaPasazerow().size() + " pasażerow");
-				for(Pasazer pas : ((PojazdPasazerski)this).getListaPasazerow() ){
-					pas.stop();
-					Swiat.getListaPasazerow().remove(pas);
-					pas=null;
+			synchronized(this){
+				this.stop();
+				this.setKoorX(-1000);
+				this.setKoorY(-1000);
+				InfoPanel.infoClear();
+				//Usuwanie z parkingu / miasta
+				if((this.isCzyZaparkowano()) && (this.obecneMiejsce instanceof Miasto)){
+					((Miasto)this.getObecneMiejsce()).getParking()[this.getMiejsceParkingowe()]=0;
+					((Miasto)this.getObecneMiejsce()).getListaPojazdow().remove(this);
+					((Miasto)this.getObecneMiejsce()).zwiekszPojemnosc();
 				}
-				((PojazdPasazerski)this).getListaPasazerow().clear();
+				//Usuwanie z trasy
+				if(!this.getTrasa().isEmpty()) this.getTrasa().get(0).getPojazdyNaDrodze().remove(this);
+				//Czyszczenie pasażerów
+				if(this instanceof PojazdPasazerski){
+					System.out.println("Własnie zabiłeś: "+((PojazdPasazerski)this).getListaPasazerow().size() + " pasażerow");
+					for(Pasazer pas : ((PojazdPasazerski)this).getListaPasazerow() ){
+						pas.stop();
+						Swiat.getListaPasazerow().remove(pas);
+						pas=null;
+					}
+					((PojazdPasazerski)this).getListaPasazerow().clear();
+				}
+		
+			//Usuwanie z Listy głównej
+				Swiat.getListaPojazdow().remove(this);
 			}
-	
-		//Usuwanie z Listy głównej
-			Swiat.getListaPojazdow().remove(this);
 		}
 	}
 	/**
@@ -187,27 +189,29 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	 * @param x - mnożnik przesunięcia
 	 */
 	public void move(int x){
-		double diffX=this.getTrasa().get(0).getB().getKoorX()-this.getKoorX();
-		double diffY=this.getTrasa().get(0).getB().getKoorY()-this.getKoorY();
-		double alfa=Math.atan(diffY/diffX);
-		double moveX= Math.cos(alfa)*this.getMaxSpeed()/3*x;
-		double moveY= Math.sin(alfa)*this.getMaxSpeed()/3*x;
-		double newKoorX=0;
-		double newKoorY=0;
-		if( diffX>0 ){
-			newKoorX=this.getKoorX()+moveX;
-			newKoorY=this.getKoorY()+moveY;
-		}
-		if( diffX<0 ){
-			newKoorX=this.getKoorX()-moveX;
-			newKoorY=this.getKoorY()-moveY;
-		}
-		while((this.isRunnable()) && (!this.canMove(newKoorX, newKoorY)) ) 	try { Thread.sleep(50); } 
-			catch (InterruptedException e) { e.printStackTrace(); }
-		if(this.isRunnable()){
-			this.setKoorX(newKoorX);
-			this.setKoorY(newKoorY);
-			this.setPaliwo(this.getPaliwo()-1);
+		synchronized (this.getVeronica()) {
+			double diffX=this.getTrasa().get(0).getB().getKoorX()-this.getKoorX();
+			double diffY=this.getTrasa().get(0).getB().getKoorY()-this.getKoorY();
+			double alfa=Math.atan(diffY/diffX);
+			double moveX= Math.cos(alfa)*this.getMaxSpeed()/3*x;
+			double moveY= Math.sin(alfa)*this.getMaxSpeed()/3*x;
+			double newKoorX=0;
+			double newKoorY=0;
+			if( diffX>0 ){
+				newKoorX=this.getKoorX()+moveX;
+				newKoorY=this.getKoorY()+moveY;
+			}
+			if( diffX<0 ){
+				newKoorX=this.getKoorX()-moveX;
+				newKoorY=this.getKoorY()-moveY;
+			}
+			while((this.isRunnable()) && (!this.canMove(newKoorX, newKoorY,null)) ) 	try { Thread.sleep(50); } 
+				catch (InterruptedException e) { e.printStackTrace(); }
+			if(this.isRunnable()){
+				this.setKoorX(newKoorX);
+				this.setKoorY(newKoorY);
+				this.setPaliwo(this.getPaliwo()-1);
+			}
 		}
 	}
 	/**
@@ -216,7 +220,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	 * @param koorY współrzędna punktu Y
 	 */
 	public void moveToPoint(double koorX,double koorY){
-		while((this.isRunnable()) && (!this.canMove(koorX, koorY)) ) 	try { Thread.sleep(50); } 
+		while((this.isRunnable()) && (!this.canMove(koorX, koorY,null)) ) 	try { Thread.sleep(50); } 
 			catch (InterruptedException e) { e.printStackTrace(); }
 		this.setKoorX(koorX);
 		this.setKoorY(koorY);
@@ -227,8 +231,11 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	 * @param Y współrzędna Y ppunktu
 	 * @return true / false
 	 */
-	public boolean canMove(double X, double Y ){
-		for(Pojazd pojazd : this.getTrasa().get(0).getPojazdyNaDrodze()){
+	public boolean canMove(double X, double Y, Droga droga ){
+		Droga doSprawdzenia;
+		if(droga != null ) doSprawdzenia=droga;
+		else doSprawdzenia = this.getTrasa().get(0);
+		for(Pojazd pojazd : doSprawdzenia.getPojazdyNaDrodze()){
 			if(pojazd.getid()!=this.getid()){
 				double diffX=0;
 				double diffY=0;
@@ -354,23 +361,25 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	 */
 	public void wejdzNaSkrzyzowanie(){
 		boolean out=false;
-		while(this.isRunnable()){
-			try {
-				move(1);
-				if( (this.isRunnable()) && (out==false) && (this.returnDifferenceThisB()<2)){
-					this.getTrasa().get(0).getPojazdyNaDrodze().remove(this);
-					this.getTrasa().remove(0);
-					this.setKoorX(this.getTrasa().get(0).getA().getKoorX());
-					this.setKoorY(this.getTrasa().get(0).getA().getKoorY());
-					this.getTrasa().get(0).getPojazdyNaDrodze().add(this);
-					out=true;
+		synchronized(this.getVeronica()){
+			while(this.isRunnable()){
+				try {
+					move(1);
+					if( (this.isRunnable()) && (out==false) && (this.returnDifferenceThisB()<2)){
+						this.getTrasa().get(0).getPojazdyNaDrodze().remove(this);
+						this.getTrasa().remove(0);
+						this.setKoorX(this.getTrasa().get(0).getA().getKoorX());
+						this.setKoorY(this.getTrasa().get(0).getA().getKoorY());
+						this.getTrasa().get(0).getPojazdyNaDrodze().add(this);
+						out=true;
+					}
+					if(out == true){
+						if(this.returnDifferenceThisA() > 100) break;
+					}
+					Thread.sleep(20);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
-				if(out == true){
-					if(this.returnDifferenceThisA() > 100) break;
-				}
-				Thread.sleep(20);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
 			}
 		}
 	}
@@ -414,6 +423,21 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 				statek.getTrasa().add(trasa);
 			}
 		statek.getTrasa().get(0).getPojazdyNaDrodze().add(statek);
+	}
+	/**
+	 * Zmienia trasę pojazdu, sprawdza, czy przy zawracaniu pojazd może zawrócić, jeśli nie to czeka
+	 * Używane przy awaryjnym lądowaniu samolotu
+	 * @param nowaTrasa - nowa trasa 
+	 */
+	public void setNewTrasa(ArrayList<Droga> nowaTrasa){
+		synchronized (this.getVeronica()) {
+			while((this.isRunnable()) && (!this.canMove(this.getKoorX(), this.getKoorY(), nowaTrasa.get(0))) ) 	try { Thread.sleep(50); } 
+			catch (InterruptedException e) { e.printStackTrace(); }
+			this.getTrasa().get(0).getPojazdyNaDrodze().remove(this);
+			this.getTrasa().clear();
+			this.setTrasa(nowaTrasa);
+			this.getTrasa().get(0).getPojazdyNaDrodze().add(this);
+		}
 	}
 	/**
 	 * Metoda zamieniająca trasy

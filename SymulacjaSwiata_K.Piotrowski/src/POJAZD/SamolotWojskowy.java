@@ -222,6 +222,16 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot{
 				}
 			}
 			if(czyPrzerwac==true){
+				List<Droga> usunac = new ArrayList<Droga>();
+				for (int i = 2; i<this.getTrasa().size();i++){
+					if(
+							(this.getTrasa().get(i).getA().getid() == this.getTrasa().get(i-1).getB().getid())
+						&&  (this.getTrasa().get(i).getB().getid() == this.getTrasa().get(i-1).getA().getid()) ){
+						usunac.add(this.getTrasa().get(i));
+						usunac.add(this.getTrasa().get(i-1));
+					}
+				}
+				this.getTrasa().removeAll(usunac);
 				break;
 			}
 			if(dostepneTrasy.size()>0){
@@ -230,7 +240,6 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot{
 			else break;
 		}
 	}
-
 	public PunktMapy getPierwszyPunkt() {
 		return pierwszyPunkt;
 	}
@@ -240,7 +249,6 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot{
 	public double getTime() {
 		return time;
 	}
-
 	public void setTime(double time) {
 		this.time = time;
 	}
