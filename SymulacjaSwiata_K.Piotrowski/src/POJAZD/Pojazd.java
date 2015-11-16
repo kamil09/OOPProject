@@ -49,7 +49,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	/**
 	 * Trasa po której porusza się pojazd
 	 */
-	private List<Droga> trasa = new ArrayList<Droga>();
+	volatile private List<Droga> trasa = new ArrayList<Droga>();
 	/**
 	 * Trasa powrotna - kopia trasy w odwrotnej kolejności
 	 */
@@ -77,7 +77,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	/**
 	 * Czy wykonywana pętla wątka
 	 */
-	private boolean runnable=true;
+	volatile private boolean runnable=true;
 	/**
 	 * Stan pojazdu
 	 * 0 - w mieście startowym, czeka na wylosowanie trasy
@@ -374,7 +374,9 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 						out=true;
 					}
 					if(out == true){
-						if(this.returnDifferenceThisA() > 100) break;
+						int diff=110;
+						if(this instanceof Samolot) diff=150;
+						if(this.returnDifferenceThisA() > diff) break;
 					}
 					Thread.sleep(20);
 				} catch (InterruptedException e) {

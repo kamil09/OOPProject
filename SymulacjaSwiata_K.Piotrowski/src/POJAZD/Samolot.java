@@ -82,6 +82,7 @@ public interface Samolot {
 		//Tylko gdy samolot jest w trasie
 		if(samolot.getObecneMiejsce()==null){
 			//Lista list możliwych tras
+			synchronized (samolot.getVeronica()) {
 			List<ArrayList<Droga>> trasy = new ArrayList<ArrayList<Droga>>();
 			//Level 1
 			trasy.add( new ArrayList<Droga>() );
@@ -213,6 +214,6 @@ public interface Samolot {
 				samolot.setNewTrasa(nowaTrasa);
 			}
 		}
-	}
+	}}
 
 }

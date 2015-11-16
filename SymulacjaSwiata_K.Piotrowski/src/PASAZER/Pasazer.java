@@ -82,8 +82,10 @@ public class Pasazer implements Runnable{
 	 * To samo co trasa tylko odwrotnie
 	 */
 	private List<PunktMapy> trasaPowrotna = new ArrayList<PunktMapy>();
-
-	
+	/**
+	 * Monitor
+	 */
+	private Object Thor = new Object();
 	/**
 	 * Status (określna stan pasazera w danej chwili):
 	 * 0- czeka na wylosowanie trasy
@@ -240,7 +242,7 @@ public class Pasazer implements Runnable{
             			this.setStatus(0);
             			break;
             	}
-                Thread.sleep(100);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -256,6 +258,7 @@ public class Pasazer implements Runnable{
 	 * Losuje także czas w miejsu docelowym oraz typ podrozy
 	 */
 	public void losujTrase(){
+		synchronized(this.getThor()){
 		Random generator = new Random();
 		int dlugoscTrasy= generator.nextInt(5)+2;
 		PunktMapy poprzedniPunkt = this.miastoRodzinne;
@@ -302,17 +305,20 @@ public class Pasazer implements Runnable{
 			this.trasaPowrotna.add(this.trasa.get(i));
 		}
 		this.trasaPowrotna.add(miastoRodzinne);
+		}
 	}
 	/**
 	 * Kopiuje trasę Powrotną do trasy
 	 * Robimy to dlatego, że podczas podróży operujemy na liscie trasa, z której usuwamy odwiedzone punkty
 	 */
 	public void zamienTrasy(){
-		this.trasa.clear();
-		this.trasa=this.trasaPowrotna;
-		if(!this.trasa.isEmpty()){
-			this.miastoDocelowe=(Miasto) this.trasa.get( this.trasa.size()-1 );
-			//System.out.println("Pasazer wraca");
+		synchronized (this.getThor()){
+			this.trasa.clear();
+			this.trasa=this.trasaPowrotna;
+			if(!this.trasa.isEmpty()){
+				this.miastoDocelowe=(Miasto) this.trasa.get( this.trasa.size()-1 );
+				//System.out.println("Pasazer wraca");
+			}
 		}
 	}
 	
@@ -320,30 +326,34 @@ public class Pasazer implements Runnable{
 	 * Metoda - pasażer wysiada z pojazdu
 	 */
 	public void wysiadzZPojazdu(){
-		//Ustawienie obecnego punktu
-		this.setObecnyPunkt( (Miasto)this.getTrasa().get(0) );
-		this.poprzednieMiasto=this.getObecnyPunkt();
-		this.trasa.remove(0);
-		//Zwiększamy liczbę wolnych miejsc w pojeździe
-		this.getObecnyPojazd().setWolneMiejsca(this.getObecnyPojazd().getWolneMiejsca()+1);
-		//Usuwamy pasażera z pojazdu i pojazd z pasażera
-		this.getObecnyPojazd().getListaPasazerow().remove(this);
-		this.setObecnyPojazd(null);
-		this.setStatus(1);
+		synchronized( this.getObecnyPojazd().getHulk() ){
+			//Ustawienie obecnego punktu
+			this.setObecnyPunkt( (Miasto)this.getTrasa().get(0) );
+			this.poprzednieMiasto=this.getObecnyPunkt();
+			this.trasa.remove(0);
+			//Zwiększamy liczbę wolnych miejsc w pojeździe
+			this.getObecnyPojazd().setWolneMiejsca(this.getObecnyPojazd().getWolneMiejsca()+1);
+			//Usuwamy pasażera z pojazdu i pojazd z pasażera
+			this.getObecnyPojazd().getListaPasazerow().remove(this);
+			this.setObecnyPojazd(null);
+			this.setStatus(1);
+		}
 	}
 	/**
 	 * Pasazer wysiada zdenerwowany
 	 * chciał dolecieć do jakiegoś punktu, ale zły człowiek zmienił trase.
 	 */
 	public void wysiadzZdenerwowany(){
-		this.setObecnyPunkt((Miasto) this.getObecnyPojazd().getObecneMiejsce());
-		this.poprzednieMiasto=this.getObecnyPunkt();
-		this.getObecnyPojazd().setWolneMiejsca(this.getObecnyPojazd().getWolneMiejsca()+1);
-		//Usuwamy pasażera z pojazdu i pojazd z pasażera
-		this.getObecnyPojazd().getListaPasazerow().remove(this);
-		this.getObecnyPojazd().getListaPasazerow().remove(this);
-		this.setObecnyPojazd(null);
-		this.setStatus(1);
+		synchronized( this.getObecnyPojazd().getHulk() ){
+			this.setObecnyPunkt((Miasto) this.getObecnyPojazd().getObecneMiejsce());
+			this.poprzednieMiasto=this.getObecnyPunkt();
+			this.getObecnyPojazd().setWolneMiejsca(this.getObecnyPojazd().getWolneMiejsca()+1);
+			//Usuwamy pasażera z pojazdu i pojazd z pasażera
+			this.getObecnyPojazd().getListaPasazerow().remove(this);
+			this.getObecnyPojazd().getListaPasazerow().remove(this);
+			this.setObecnyPojazd(null);
+			this.setStatus(1);
+		}
 	}
 	/**
 	 * Metoda - pasażer wsiada do pojazdu
@@ -441,6 +451,14 @@ public class Pasazer implements Runnable{
 	}
 	public void setObecnyPojazd(PojazdPasazerski obecnyPojazd) {
 		this.obecnyPojazd = obecnyPojazd;
+	}
+
+	public Object getThor() {
+		return Thor;
+	}
+
+	public void setThor(Object thor) {
+		Thor = thor;
 	};
 	
 	

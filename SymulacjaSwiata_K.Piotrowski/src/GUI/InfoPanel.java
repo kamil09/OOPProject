@@ -241,10 +241,11 @@ public class InfoPanel extends JPanel implements Runnable{
 		panelInfo.add(Box.createVerticalStrut(10));
 		panelInfo.add(label11);
 		panelInfo.add(Box.createVerticalStrut(5));
-		
-		for( PunktMapy punkt : pasazer.getTrasa() ){
-			JLabel label12 = new InfoLabel( "   --->  "+punkt.getName() );
-			panelInfo.add(label12);
+		synchronized(pasazer.getThor()){;
+			for( PunktMapy punkt : pasazer.getTrasa() ){
+				JLabel label12 = new InfoLabel( "   --->  "+punkt.getName() );
+				panelInfo.add(label12);
+			}
 		}
 		
 		panelInfo.revalidate();
@@ -299,8 +300,11 @@ public class InfoPanel extends JPanel implements Runnable{
 				panelInfo.add(Box.createVerticalStrut(10));
 				panelInfo.add( new InfoLabel( "Lista pasażerów: "));
 				panelInfo.add(Box.createVerticalStrut(5));
-				for(Pasazer osoba : ((PojazdPasazerski) pojazd).getListaPasazerow()){
-					panelInfo.add( new InfoLabel( "   --->  "+osoba.getImie() + " "+osoba.getNazwisko() ));
+				synchronized(pojazd.getHulk()){
+					for(Pasazer osoba : ((PojazdPasazerski) pojazd).getListaPasazerow()){
+						if(osoba!=null)
+							panelInfo.add( new InfoLabel( "   --->  "+osoba.getImie() + " "+osoba.getNazwisko() ));
+					}
 				}
 				panelInfo.add(Box.createVerticalStrut(10));
 			}
