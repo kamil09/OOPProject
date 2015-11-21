@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Point;
+import java.io.Serializable;
 
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
@@ -19,8 +20,12 @@ import javax.swing.UIManager;
  *  - panel z informacjami
  *  - panel z mapą
  */
-public class GlowneOkno {
+public class GlowneOkno implements Serializable {
 
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = -2719496847320954454L;
 	/**
 	 * Główna ramka okna
 	 */

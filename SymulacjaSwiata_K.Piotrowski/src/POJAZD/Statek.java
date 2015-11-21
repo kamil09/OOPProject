@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Random;
 
 import DROGA.Droga;
-import MAIN.Miasto;
-import MAIN.Swiat;
+import MAIN.Aplikacja;
+import PRZYSTANEK.Miasto;
 
 public interface Statek {
 	
@@ -23,7 +23,7 @@ public interface Statek {
 		while(dlugoscTrasy>0){
 			List<Droga> dostepneTrasy = new ArrayList<Droga>();
 			//Mozliwe trasy
-			for(Droga trasaMorska : Swiat.getListaTrasMorskich() ){
+			for(Droga trasaMorska : Aplikacja.getSwiat().getListaTrasMorskich() ){
 				if(!statek.getTrasa().isEmpty()){
 					if(trasaMorska.getA().equals(statek.getTrasa().get(statek.getTrasa().size()-1).getB()) 
 						&& 	!trasaMorska.getB().equals(statek.getTrasa().get(statek.getTrasa().size()-1).getA())
@@ -59,7 +59,7 @@ public interface Statek {
 	 */
 	public default void znajdzTrasePowrotna(Pojazd statek){
 		for(int i=statek.getTrasa().size()-1 ; i>=0 ; i-- ){
-			for(Droga drogaSw : Swiat.getListaTrasMorskich() ){
+			for(Droga drogaSw : Aplikacja.getSwiat().getListaTrasMorskich() ){
 				if( (statek.getTrasa().get(i).getB().getid()==drogaSw.getA().getid()) && (statek.getTrasa().get(i).getA().getid()==drogaSw.getB().getid()) ){
 					statek.getTrasaPowrotna().add(drogaSw);
 				}	
@@ -78,7 +78,7 @@ public interface Statek {
 		synchronized (statek){
 			statek.getTrasa().clear();
 			if( !(cpS.getA() instanceof Miasto) ){
-				for(Droga drogaNeed : Swiat.getListaTrasMorskich() ){
+				for(Droga drogaNeed : Aplikacja.getSwiat().getListaTrasMorskich() ){
 					if((drogaNeed.getB().getid() == cpS.getA().getid()) && (drogaNeed.getA() instanceof Miasto) && (drogaNeed.getA().getid()!=cpS.getB().getid())){
 						statek.getTrasa().add(drogaNeed);
 						additional=true;

@@ -1,4 +1,5 @@
 package PASAZER;
+import java.io.Serializable;
 import java.rmi.server.UID;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,12 +8,11 @@ import java.util.Random;
 import DROGA.Droga;
 import ENUM.ImieRandom;
 import ENUM.NazwiskoRandom;
-import MAIN.Miasto;
+import MAIN.Aplikacja;
 import MAIN.PunktMapy;
-import MAIN.Swiat;
 import POJAZD.Pojazd;
 import POJAZD.PojazdPasazerski;
-
+import PRZYSTANEK.Miasto;
 /**
  * 
  * @author Kamil Piotrowski
@@ -20,8 +20,12 @@ import POJAZD.PojazdPasazerski;
  * Jedna z wazniejszych w programie
  *
  */
-public class Pasazer implements Runnable{
+public class Pasazer implements Runnable, Serializable{
 	
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = -8863341394920046084L;
 	/**
 	 * Id pasażera
 	 */
@@ -117,7 +121,7 @@ public class Pasazer implements Runnable{
 		int miastoR = generator.nextInt(12);
 		//9 - 12 są lotniska wojskowe
 		if(miastoR >=9 && miastoR<=12) miastoR+=4; 
-		this.miastoRodzinne=Swiat.getCityList().get(miastoR);
+		this.miastoRodzinne=Aplikacja.getSwiat().getCityList().get(miastoR);
 		this.setObecnyPunkt(this.miastoRodzinne);
 		this.poprzednieMiasto=this.miastoRodzinne;
 	}
@@ -174,7 +178,7 @@ public class Pasazer implements Runnable{
 	            			 * Przeszukanie czy w obecnym miejscu znajduje się odpowiedni pojazd
 	            			 */
 	            			synchronized(this.getObecnyPunkt().getVeronica() ){
-	            			synchronized(Swiat.getCanAddPojazdObject()){ 
+	            			synchronized(Aplikacja.getSwiat().getCanAddPojazdObject()){ 
 		            			for(Pojazd pojazd : this.getObecnyPunkt().getListaPojazdow() ){
 		            				if(pojazd instanceof PojazdPasazerski){
 		            					if(((PojazdPasazerski) pojazd).getWolneMiejsca() > 0){
@@ -242,7 +246,7 @@ public class Pasazer implements Runnable{
             			this.setStatus(0);
             			break;
             	}
-                Thread.sleep(10);
+                Thread.sleep(400);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -273,7 +277,7 @@ public class Pasazer implements Runnable{
 			
 			
 			//Mozliwe trasy, zabezpieczenie przed skakaniem miastoA-portB-miastoA-portB, oraz cyklami
-			for(Droga trasa : Swiat.getListaTras() ){
+			for(Droga trasa : Aplikacja.getSwiat().getListaTras() ){
 				if(trasa.getA().equals(poprzedniPunkt) && trasa.getB().getid()!=poprzedniPunkt.getid() ) {
 					if(trasa.getB().getid() >=9 && trasa.getB().getid()<=12 ) continue;
 					boolean goodPoint = true;

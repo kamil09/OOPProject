@@ -1,12 +1,13 @@
 package POJAZD;
 
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.Random;
 
 import ENUM.Uzbrojenie;
-import MAIN.Miasto;
-import MAIN.Skrzyzowanie;
-import MAIN.Swiat;
+import MAIN.Aplikacja;
+import PRZYSTANEK.Miasto;
+import PRZYSTANEK.Skrzyzowanie;
 
 /**
  * 
@@ -14,8 +15,18 @@ import MAIN.Swiat;
  * Klasa określająca lotniskowiec
  *
  */
-public class Lotniskowiec extends PojazdWojskowy implements Statek{
+public class Lotniskowiec extends PojazdWojskowy implements Statek, Serializable{
 
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 5462167983486578028L;
+	
+	/**
+	 * Ostatnio dodany samolot wojskowy
+	 * Zapobiga utworzeniu kilku samolotów na raz
+	 * Przy tworzeniu sprawdzamy jak lotnikowiec jest daleko od ostatnio utworzonego pojazdu
+	 */
 	private SamolotWojskowy dodanySamolotW=null;
 	
 	/**
@@ -89,7 +100,7 @@ public class Lotniskowiec extends PojazdWojskowy implements Statek{
 		zmianaTrasyStatku(this);
 	}
 	public BufferedImage getImage() {
-		return Swiat.getPojazdyImages()[0];
+		return Aplikacja.getSwiat().getPojazdyImages()[0];
 	}
 	public SamolotWojskowy getDodanySamolotW() {
 		return dodanySamolotW;

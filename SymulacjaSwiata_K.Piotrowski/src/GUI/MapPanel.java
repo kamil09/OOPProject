@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JLayeredPane;
 import javax.swing.UIManager;
 
+import MAIN.Aplikacja;
 import MAIN.PunktMapy;
 import MAIN.Swiat;
 import POJAZD.Pojazd;
@@ -195,7 +196,7 @@ public class MapPanel extends JLayeredPane implements Runnable {
         displayMapHeight=(int)(y*mapZOOM);
         displayMapWidth=(int)(x*mapZOOM);   
         
-        g.drawImage(Swiat.getBufferImage(),
+        g.drawImage(Aplikacja.getSwiat().getBufferImage(),
         	       0, 0, x, y,
         	       mapStartX, mapStartY, displayMapWidth+mapStartX, displayMapHeight+mapStartY,
         	       null);
@@ -253,7 +254,7 @@ public class MapPanel extends JLayeredPane implements Runnable {
 		int koorX;
 		int koorY;
 		
-		for(PunktMapy city : Swiat.getCityList()){
+		for(PunktMapy city : Aplikacja.getSwiat().getCityList()){
 			koorX=(int)((city.getKoorX()-this.mapStartX)/this.mapZOOM);
 			koorY=(int)((city.getKoorY()-this.mapStartY)/this.mapZOOM);
 			
@@ -353,7 +354,7 @@ public class MapPanel extends JLayeredPane implements Runnable {
 		int koorX;
 		int koorY;
 		
-		for(PunktMapy city : Swiat.getSkrzyzowanieList()){
+		for(PunktMapy city : Aplikacja.getSwiat().getSkrzyzowanieList()){
 			koorX=(int)((city.getKoorX()-this.mapStartX)/this.mapZOOM);
 			koorY=(int)((city.getKoorY()-this.mapStartY)/this.mapZOOM);
 			

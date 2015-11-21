@@ -1,7 +1,9 @@
 package POJAZD;
 
+import java.io.Serializable;
+
 import ENUM.Uzbrojenie;
-import MAIN.Miasto;
+import PRZYSTANEK.Miasto;
 
 /**
  * 
@@ -9,8 +11,12 @@ import MAIN.Miasto;
  * Klasa charakteryzująca Pojazd wojskowy
  *
  */
-public abstract class PojazdWojskowy extends Pojazd{
+public abstract class PojazdWojskowy extends Pojazd implements Serializable{
 
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 619507747501080120L;
 	/**
 	 * Rodzaj uzbronjenia jakie posiada pojazd wojskowy
 	 */

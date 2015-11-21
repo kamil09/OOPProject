@@ -1,4 +1,6 @@
 package DROGA;
+import java.io.Serializable;
+
 import MAIN.PunktMapy;
 
 /**
@@ -7,7 +9,12 @@ import MAIN.PunktMapy;
  * Klasa określająca drogę pomiędzy portami, dziedziczy po Drodze
  *
  */
-public class TrasaMorska extends Droga{
+public class TrasaMorska extends Droga implements Serializable {
+
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = -8822549679088029277L;
 
 	/**
 	 * Konstruktor

@@ -1,17 +1,18 @@
 package POJAZD;
 
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import DROGA.Droga;
 import DROGA.TrasaPowietrzna;
-import MAIN.Miasto;
-import MAIN.Port;
+import MAIN.Aplikacja;
 import MAIN.PunktMapy;
-import MAIN.Skrzyzowanie;
-import MAIN.Swiat;
+import PRZYSTANEK.Miasto;
+import PRZYSTANEK.Port;
+import PRZYSTANEK.Skrzyzowanie;
 
 /**
  * 
@@ -19,7 +20,12 @@ import MAIN.Swiat;
  * Klasa określająca samolpot wojskowy
  *
  */
-public class SamolotWojskowy extends PojazdWojskowy implements Samolot{
+public class SamolotWojskowy extends PojazdWojskowy implements Samolot, Serializable{
+	
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 2242288946606773411L;
 	/**
 	 * Punkt do którego najpierw leci nasz mysliwiec (zaraz po stworzreniu)
 	 */
@@ -39,7 +45,7 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot{
 	 * Losuje także paliwo z przedziału 1000 - 1500
 	 */
 	public SamolotWojskowy(double d,double e, String name, int id, Lotniskowiec lotniskowiec){
-		super(d, e, name, id, null);
+		super(d, e, name, id, null); 
 		this.setSize(40);
 		this.setMaxSpeed(7);
 		this.znajdzNajblizszyPunkt();
@@ -106,7 +112,7 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot{
 		synchronized(this){
 			this.getTrasa().clear();
 			if( !(cpS.getA() instanceof Miasto) ){
-				for(Droga drogaNeed : Swiat.getListaTrasPowietrznych() ){
+				for(Droga drogaNeed : Aplikacja.getSwiat().getListaTrasPowietrznych() ){
 					if((drogaNeed.getB().getid() == cpS.getA().getid()) 
 					&& (drogaNeed.getA() instanceof Miasto) 
 					&& (drogaNeed.getA().getid()!=cpS.getB().getid())){
@@ -127,7 +133,7 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot{
 		}
 	}
 	public BufferedImage getImage() {
-		return Swiat.getPojazdyImages()[2];
+		return Aplikacja.getSwiat().getPojazdyImages()[2];
 	}
 	/**
 	 * Znajduje najbliższy punkt do którego samolot ma lecieć zaraz po stworzeniu, wyznacza tą drogę
@@ -135,7 +141,7 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot{
 	private void znajdzNajblizszyPunkt(){
 		double najS=9999;
 		PunktMapy punktTmp=null;
-		for (Droga trasa : Swiat.getListaTrasPowietrznych() ){
+		for (Droga trasa : Aplikacja.getSwiat().getListaTrasPowietrznych() ){
 			double odX=trasa.getA().getKoorX()-this.getKoorX();
 			double odY=trasa.getA().getKoorY()-this.getKoorY();
 			odX=Math.abs(odX);
@@ -157,7 +163,7 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot{
 			}
 		}
 		this.setPierwszyPunkt(punktTmp);
-		this.getTrasa().add( new TrasaPowietrzna( new Port((int)this.getKoorX(), (int)this.getKoorY() ,"none", Swiat.generateId() )  ,this.getPierwszyPunkt())  );
+		this.getTrasa().add( new TrasaPowietrzna( new Port((int)this.getKoorX(), (int)this.getKoorY() ,"none", Aplikacja.getSwiat().generateId() )  ,this.getPierwszyPunkt())  );
 		this.trasaDoLotniskaWojskowego();
 		this.losujTraseWojskowa();
 		this.setStan(2);
@@ -181,7 +187,7 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot{
 		
 		Random generator = new Random();
 		List<Droga> dostepneTrasy = new ArrayList<Droga>();
-		for(Droga trasaPowietrzna : Swiat.getListaTrasPowietrznych() ){
+		for(Droga trasaPowietrzna : Aplikacja.getSwiat().getListaTrasPowietrznych() ){
 			if( (trasaPowietrzna.getA().equals(trasaCopy.get(trasaCopy.size()-1).getB()) ))
 				dostepneTrasy.add(trasaPowietrzna);
 		}
@@ -210,7 +216,7 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot{
 			List<Droga> dostepneTrasy = new ArrayList<Droga>();
 			//Mozliwe trasy
 			boolean czyPrzerwac=false;
-			for(Droga trasaPowietrzna : Swiat.getListaTrasPowietrznych() ){
+			for(Droga trasaPowietrzna : Aplikacja.getSwiat().getListaTrasPowietrznych() ){
 				if((trasaPowietrzna.getA().equals(this.getTrasa().get(this.getTrasa().size()-1).getB()) 
 					&& (trasaPowietrzna.getB().getid()!=this.getTrasa().get(0).getA().getid()))){
 					dostepneTrasy.add(trasaPowietrzna);
@@ -222,22 +228,21 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot{
 				}
 			}
 			if(czyPrzerwac==true){
-				List<Droga> usunac = new ArrayList<Droga>();
-				for (int i = 2; i<this.getTrasa().size();i++){
-					if(
-							(this.getTrasa().get(i).getA().getid() == this.getTrasa().get(i-1).getB().getid())
-						&&  (this.getTrasa().get(i).getB().getid() == this.getTrasa().get(i-1).getA().getid()) ){
-						usunac.add(this.getTrasa().get(i));
-						usunac.add(this.getTrasa().get(i-1));
-					}
-				}
-				this.getTrasa().removeAll(usunac);
 				break;
 			}
 			if(dostepneTrasy.size()>0){
 				this.getTrasa().add(dostepneTrasy.get(generator.nextInt(dostepneTrasy.size() )));
 			}
 			else break;
+		}
+		
+		for (int i = 2; i<this.getTrasa().size()-1;i++){
+			if(		(this.getTrasa().get(i).getA().getid() == this.getTrasa().get(i-1).getB().getid())
+				&&  (this.getTrasa().get(i).getB().getid() == this.getTrasa().get(i-1).getA().getid()) ){
+				this.getTrasa().remove(i);
+				this.getTrasa().remove(i-1);
+				i+=1;
+			}
 		}
 	}
 	public PunktMapy getPierwszyPunkt() {

@@ -2,6 +2,7 @@ package POJAZD;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -12,18 +13,22 @@ import DROGA.Droga;
 import DROGA.TrasaMorska;
 import GUI.InfoPanel;
 import GUI.MapClickVehicle;
-import MAIN.Miasto;
+import MAIN.Aplikacja;
 import MAIN.PunktMapy;
-import MAIN.Swiat;
 import PASAZER.Pasazer;
+import PRZYSTANEK.Miasto;
 
 /**
  * Klasa grupująca wszystkie pojazdy
  * @author Kamil Piotrowski
  *
  */
-public abstract class Pojazd extends PunktMapy implements Runnable{
+public abstract class Pojazd extends PunktMapy implements Runnable,Serializable{
 	
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 7882034450016220755L;
 	/**
 	 * Obecne miejsce, jeśli w trakcje lotu/rejsu = null
 	 */
@@ -111,7 +116,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 		//Usuwanie z mapy
 		//Zatrzymywanie wątku
 		
-		synchronized(Swiat.getCanAddPojazdObject()){
+		synchronized(Aplikacja.getSwiat().getCanAddPojazdObject()){
 			synchronized(this){
 				this.stop();
 				this.setKoorX(-1000);
@@ -130,14 +135,14 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 					System.out.println("Własnie zabiłeś: "+((PojazdPasazerski)this).getListaPasazerow().size() + " pasażerow");
 					for(Pasazer pas : ((PojazdPasazerski)this).getListaPasazerow() ){
 						pas.stop();
-						Swiat.getListaPasazerow().remove(pas);
+						Aplikacja.getSwiat().getListaPasazerow().remove(pas);
 						pas=null;
 					}
 					((PojazdPasazerski)this).getListaPasazerow().clear();
 				}
 		
 			//Usuwanie z Listy głównej
-				Swiat.getListaPojazdow().remove(this);
+				Aplikacja.getSwiat().getListaPojazdow().remove(this);
 			}
 		}
 	}
@@ -236,7 +241,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 		if(droga != null ) doSprawdzenia=droga;
 		else doSprawdzenia = this.getTrasa().get(0);
 		for(Pojazd pojazd : doSprawdzenia.getPojazdyNaDrodze()){
-			if(pojazd.getid()!=this.getid()){
+			if( (pojazd != null) && (pojazd.getid()!=this.getid()) ){
 				double diffX=0;
 				double diffY=0;
 				diffX=pojazd.getKoorX()-X;
@@ -290,9 +295,9 @@ public abstract class Pojazd extends PunktMapy implements Runnable{
 	 * Wyparkowuje pojazd
 	 */
 	public void wyparkuj(){
+		double newKoorX=this.getTrasa().get(0).getA().getKoorX();
+		double newKoorY=this.getTrasa().get(0).getA().getKoorY();
 		synchronized (this.getObecneMiejsce().getVeronica() ){
-			double newKoorX=this.getTrasa().get(0).getA().getKoorX();
-			double newKoorY=this.getTrasa().get(0).getA().getKoorY();
 			this.moveToPoint(newKoorX, newKoorY);
 			if(this instanceof SamolotWojskowy )
 				this.move(60);

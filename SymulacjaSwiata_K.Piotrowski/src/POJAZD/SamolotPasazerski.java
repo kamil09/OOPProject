@@ -1,11 +1,12 @@
 package POJAZD;
 
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
 import DROGA.Droga;
-import MAIN.Miasto;
-import MAIN.Skrzyzowanie;
-import MAIN.Swiat;
+import MAIN.Aplikacja;
+import PRZYSTANEK.Miasto;
+import PRZYSTANEK.Skrzyzowanie;
 
 /**
  * 
@@ -13,8 +14,12 @@ import MAIN.Swiat;
  * Klasa określająca samolot pasażerski
  *
  */
-public class SamolotPasazerski extends PojazdPasazerski implements Samolot{
+public class SamolotPasazerski extends PojazdPasazerski implements Samolot, Serializable{
 
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 2754178323542913333L;
 	/**
 	 * Kostruktor
 	 * @param d - położenie X Pojazdu
@@ -91,7 +96,7 @@ public class SamolotPasazerski extends PojazdPasazerski implements Samolot{
 		synchronized (this){
 			this.getTrasa().clear();
 			if( !(cpS.getA() instanceof Miasto) ){
-				for(Droga drogaNeed : Swiat.getListaTrasPowietrznych() ){
+				for(Droga drogaNeed : Aplikacja.getSwiat().getListaTrasPowietrznych() ){
 					if((drogaNeed.getB().getid() == cpS.getA().getid()) 
 					&& (drogaNeed.getA() instanceof Miasto) 
 					&& (drogaNeed.getA().getid()!=cpS.getB().getid())
@@ -112,7 +117,7 @@ public class SamolotPasazerski extends PojazdPasazerski implements Samolot{
 	 * Zwraca obraz pojazdu
 	 */
 	public BufferedImage getImage() {
-		return Swiat.getPojazdyImages()[3];
+		return Aplikacja.getSwiat().getPojazdyImages()[3];
 	}
 
 	

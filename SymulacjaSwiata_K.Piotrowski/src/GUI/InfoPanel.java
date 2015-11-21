@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -20,6 +21,7 @@ import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
 
 import DROGA.Droga;
+import MAIN.Aplikacja;
 import MAIN.PunktMapy;
 import MAIN.Swiat;
 import PASAZER.Pasazer;
@@ -35,7 +37,7 @@ import POJAZD.StatekWycieczkowy;
  * @author Kamil Piotrowski
  * Panel z informacjami (po prawej stronie okna)
  */
-public class InfoPanel extends JPanel implements Runnable{
+public class InfoPanel extends JPanel implements Runnable, Serializable{
 	
 	/**
 	 * Scroll Panel z informacjami
@@ -80,7 +82,7 @@ public class InfoPanel extends JPanel implements Runnable{
 		but1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		but1.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				Swiat.addSamolotPasazerski();
+				Aplikacja.getSwiat().addSamolotPasazerski();
 			}
 		});
 		add(but1);
@@ -90,7 +92,7 @@ public class InfoPanel extends JPanel implements Runnable{
 		but2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		but2.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				Swiat.addSamolotWojskowy();
+				Aplikacja.getSwiat().addSamolotWojskowy();
 			}
 		});
 		add(but2);
@@ -100,7 +102,7 @@ public class InfoPanel extends JPanel implements Runnable{
 		but3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		but3.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				Swiat.addStatekPasazerski();
+				Aplikacja.getSwiat().addStatekPasazerski();
 			}
 		});
 		add(but3);
@@ -110,7 +112,7 @@ public class InfoPanel extends JPanel implements Runnable{
 		but4.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		but4.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				Swiat.addLotniskowiec();
+				Aplikacja.getSwiat().addLotniskowiec();
 			}
 		});
 		add(but4);

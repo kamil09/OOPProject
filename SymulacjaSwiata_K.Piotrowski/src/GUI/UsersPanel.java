@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
 
-import MAIN.Swiat;
+import MAIN.Aplikacja;
 import PASAZER.Pasazer;
 
 @SuppressWarnings("serial")
@@ -26,7 +27,7 @@ import PASAZER.Pasazer;
  * Zastosowano paginacje do zmiany listy :)
  *
  */
-public class UsersPanel extends JPanel implements Runnable{
+public class UsersPanel extends JPanel implements Runnable, Serializable{
 	/**
 	 * Numer obecniej strony (paginacja)
 	 */
@@ -129,8 +130,8 @@ public class UsersPanel extends JPanel implements Runnable{
 	 */
 	public void printUsers(){
 		
-		int ilosc=Swiat.getListaPasazerow().size();
-        List<Pasazer> lista = Swiat.getListaPasazerow();
+		int ilosc=Aplikacja.getSwiat().getListaPasazerow().size();
+        List<Pasazer> lista = Aplikacja.getSwiat().getListaPasazerow();
         
         for(int i=endNumber;i<ilosc;i++){
         	UserLabel label = new UserLabel("user");

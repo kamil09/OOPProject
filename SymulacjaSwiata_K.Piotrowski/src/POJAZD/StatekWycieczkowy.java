@@ -1,10 +1,11 @@
 package POJAZD;
 
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
-import MAIN.Miasto;
-import MAIN.Skrzyzowanie;
-import MAIN.Swiat;
+import MAIN.Aplikacja;
+import PRZYSTANEK.Miasto;
+import PRZYSTANEK.Skrzyzowanie;
 
 /**
  * 
@@ -12,8 +13,12 @@ import MAIN.Swiat;
  * Klasa określająca statek wycieczkowy
  *
  */
-public class StatekWycieczkowy extends PojazdPasazerski implements Statek{
+public class StatekWycieczkowy extends PojazdPasazerski implements Statek, Serializable{
 
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = -7665925032471972215L;
 	/**
 	 * Nazwa firmy do której należy statek
 	 */
@@ -97,7 +102,7 @@ public class StatekWycieczkowy extends PojazdPasazerski implements Statek{
 	 * Zwraca obraz statku
 	 */
 	public BufferedImage getImage() {
-		return Swiat.getPojazdyImages()[1];
+		return Aplikacja.getSwiat().getPojazdyImages()[1];
 	}
 	public String getFirma() {
 		return firma;

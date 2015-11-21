@@ -1,20 +1,25 @@
 package POJAZD;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import MAIN.Miasto;
-import MAIN.Swiat;
+import MAIN.Aplikacja;
 import PASAZER.Pasazer;
+import PRZYSTANEK.Miasto;
 
 /**
  * Grupuje wszystkie pojazdy pasażerskie
  * @author Kamil Piotrowski
  *
  */
-public abstract class PojazdPasazerski extends Pojazd{
+public abstract class PojazdPasazerski extends Pojazd implements Serializable{
 
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = -6885064753039399139L;
 	/**
 	 * Maksymalna ilosć miejsc w pojeździe
 	 */
@@ -46,7 +51,7 @@ public abstract class PojazdPasazerski extends Pojazd{
 		this.setCzasPostoju(700);
 		this.setMaxMiejsc(generator.nextInt(10)+5);
 		this.setWolneMiejsca(this.getMaxMiejsc());
-		for(int i=0;i<this.getMaxMiejsc();i++) Swiat.addPasazer();
+		for(int i=0;i<this.getMaxMiejsc();i++) Aplikacja.getSwiat().addPasazer();
 	}
 	
 	

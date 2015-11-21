@@ -1,13 +1,19 @@
 package MAIN;
 
+import java.io.Serializable;
+
 /**
  * 
  * @author Kamil Piotrowski
  * Klasa okreslająca punkt mapy, dziedziczy po niej wile innych klas
  *
  */
-public abstract class PunktMapy {
+public abstract class PunktMapy implements Serializable{
 	
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = -7305599167095344286L;
 	/**
 	 * ID punktu
 	 */
@@ -27,11 +33,11 @@ public abstract class PunktMapy {
 	/**
 	 * Objekt używany jako monitor
 	 */
-	private Object Hulk = new Object();
+	private Monitor Hulk = new Monitor();
 	/**
 	 * Obiekt używany jako monitor
 	 */
-	private Object Veronica = new Object();
+	private Monitor Veronica = new Monitor();
 	
 	
 	
@@ -48,16 +54,16 @@ public abstract class PunktMapy {
 		this.setName(name);
 		this.setId(id);
 	}
-	public Object getHulk() {
+	public Monitor getHulk() {
 		return Hulk;
 	}
-	public void setHulk(Object hulk) {
+	public void setHulk(Monitor hulk) {
 		Hulk = hulk;
 	}
-	public Object getVeronica() {
+	public Monitor getVeronica() {
 		return Veronica;
 	}
-	public void setVeronica(Object veronica) {
+	public void setVeronica(Monitor veronica) {
 		Veronica = veronica;
 	}
 	public int getid() {

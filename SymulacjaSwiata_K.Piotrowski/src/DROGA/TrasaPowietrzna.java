@@ -1,4 +1,6 @@
 package DROGA;
+import java.io.Serializable;
+
 import MAIN.PunktMapy;
 
 /**
@@ -7,8 +9,13 @@ import MAIN.PunktMapy;
  * Klasa określająca drogę pomiedzy lotniskami, dziedziczy po Drodze
  *
  */
-public class TrasaPowietrzna extends Droga{
+public class TrasaPowietrzna extends Droga implements Serializable{
 	
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 683003902990164388L;
+
 	/**
 	 * Konstruktor
 	 * @param A - punkt mapy A

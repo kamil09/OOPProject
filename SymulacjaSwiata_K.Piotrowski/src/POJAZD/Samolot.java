@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Random;
 
 import DROGA.Droga;
-import MAIN.Miasto;
+import MAIN.Aplikacja;
 import MAIN.PunktMapy;
-import MAIN.Swiat;
+import PRZYSTANEK.Miasto;
 
 /**
  * 
@@ -31,7 +31,7 @@ public interface Samolot {
 		while(dlugoscTrasy>0){
 			List<Droga> dostepneTrasy = new ArrayList<Droga>();
 			//Mozliwe trasy
-			for(Droga trasaPowietrzna : Swiat.getListaTrasPowietrznych() ){
+			for(Droga trasaPowietrzna : Aplikacja.getSwiat().getListaTrasPowietrznych() ){
 				if(!samolot.getTrasa().isEmpty()){
 					if((trasaPowietrzna.getA().equals(samolot.getTrasa().get(samolot.getTrasa().size()-1).getB()) )
 						&& 	(!trasaPowietrzna.getB().equals(samolot.getTrasa().get(samolot.getTrasa().size()-1).getA())
@@ -68,7 +68,7 @@ public interface Samolot {
 	 */
 	public default void znajdzTrasePowrotna(Pojazd samolot){
 		for(int i=samolot.getTrasa().size()-1 ; i>=0 ; i-- ){
-			for(Droga drogaSw : Swiat.getListaTrasPowietrznych() ){
+			for(Droga drogaSw : Aplikacja.getSwiat().getListaTrasPowietrznych() ){
 				if( (samolot.getTrasa().get(i).getB().getid()==drogaSw.getA().getid()) && (samolot.getTrasa().get(i).getA().getid()==drogaSw.getB().getid()) ){
 					samolot.getTrasaPowrotna().add(drogaSw);
 				}	
@@ -88,7 +88,7 @@ public interface Samolot {
 			trasy.add( new ArrayList<Droga>() );
 			trasy.add( new ArrayList<Droga>() );
 			trasy.get(0).add(samolot.getTrasa().get(0));
-			for(Droga trasaTmp : Swiat.getListaTrasPowietrznych()){
+			for(Droga trasaTmp : Aplikacja.getSwiat().getListaTrasPowietrznych()){
 				if( (trasaTmp.getA().getid() == samolot.getTrasa().get(0).getB().getid()) &&
 					(trasaTmp.getB().getid() == samolot.getTrasa().get(0).getA().getid())
 				){
@@ -97,8 +97,8 @@ public interface Samolot {
 				}
 			}
 			if(!trasy.get(1).isEmpty()){
-				//Wyznaczenie grafu najbliższych miast mozliwych do odwiedzenia.
 				
+				//Wyznaczenie grafu najbliższych miast mozliwych do odwiedzenia.
 				while(samolot.isRunnable()){
 					List<ArrayList<Droga>> doDodania = new ArrayList<ArrayList<Droga>>();
 					List<ArrayList<Droga>> doUsuniecia = new ArrayList<ArrayList<Droga>>();
@@ -107,7 +107,7 @@ public interface Samolot {
 						PunktMapy last = lista.get(lista.size()-1).getB();
 						PunktMapy lastPrev = lista.get(lista.size()-1).getA();
 						if( !(last instanceof Miasto) ){
-							for(Droga tmp : Swiat.getListaTrasPowietrznych() ){			
+							for(Droga tmp : Aplikacja.getSwiat().getListaTrasPowietrznych() ){			
 								if( (tmp.getA().getid()==last.getid()) && 
 									(tmp.getB().getid()!=lastPrev.getid())	){
 									ArrayList<Droga> nowaLista = new ArrayList<Droga>();
@@ -139,7 +139,6 @@ public interface Samolot {
 					}
 					trasy.removeAll(doUsuniecia);
 				}
-				
 				//Wybranie najkrótszej trasy
 				ArrayList<Droga> najkrotsza = new ArrayList<Droga>();
 				int minSum=2147483647;
@@ -167,7 +166,7 @@ public interface Samolot {
 					copy.addAll(samolot.getTrasa());
 					nowaTrasa.addAll(najkrotsza);
 					for( int i=najkrotsza.size()-1 ; i>=1 ; i-- ){
-						for(Droga tmp : Swiat.getListaTrasPowietrznych() ){			
+						for(Droga tmp : Aplikacja.getSwiat().getListaTrasPowietrznych() ){			
 							if( (tmp.getA().getid()== najkrotsza.get(i).getB().getid() ) && 
 								(tmp.getB().getid()== najkrotsza.get(i).getA().getid() )){
 								nowaTrasa.add(tmp);
@@ -176,6 +175,7 @@ public interface Samolot {
 					}
 					nowaTrasa.addAll(copy);
 				}
+				
 				//Gdy cześć trasy pokrywa się z normalną
 				else{
 					ArrayList<Droga> copy = new ArrayList<Droga>();
@@ -194,7 +194,7 @@ public interface Samolot {
 					if(copy.size()>0){
 						boolean czyBreak = false;
 						for( i=najkrotsza.size()-1 ; i>=1 ; i-- ){
-							for(Droga tmp : Swiat.getListaTrasPowietrznych() ){			
+							for(Droga tmp : Aplikacja.getSwiat().getListaTrasPowietrznych() ){			
 								if( (tmp.getA().getid()== najkrotsza.get(i).getB().getid() ) && 
 									(tmp.getB().getid()== najkrotsza.get(i).getA().getid() )){
 									if( tmp.getA().getid() == copy.get(0).getA().getid() ){

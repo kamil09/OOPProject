@@ -1,4 +1,5 @@
 package DROGA;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +15,12 @@ import POJAZD.Pojazd;
  * Jako drogę rozumie się najmniejszy możliwy odcinek trasy np miasto - skrzyżowanie
  *
  */
-public class Droga {
+public class Droga implements Serializable {
 
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = -7963927998936324555L;
 	/**
 	 * Punkt startowy naszej drogi
 	 */
