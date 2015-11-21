@@ -131,11 +131,16 @@ public class Pasazer implements Runnable, Serializable{
 		return miastoRodzinne;
 	}
 	
+	public void removePasazer(){
+		this.setRunning(false);
+		Aplikacja.getSwiat().getListaPasazerow().remove(this);
+	}
+	
 	/**
 	 * Metoda w której żyje pasażer
 	 */
 	public void run() {
-		while(running) {
+		while(this.running) {
             try {
             	/**
             	 * Akcje dla poszczególnych stanów pasazera
@@ -221,7 +226,6 @@ public class Pasazer implements Runnable, Serializable{
 	            				&& (tmp.getid() != this.getTrasa().get(0).getid() )
 	            				&& (this.poprzednieMiasto.getid()!=tmp.getid() ) ){
 	            					wysiadzZdenerwowany();
-	            					System.out.println("Pasażer jest zły!!!");
 	            				}
             				}
             			}
@@ -322,7 +326,6 @@ public class Pasazer implements Runnable, Serializable{
 			this.trasa=this.trasaPowrotna;
 			if(!this.trasa.isEmpty()){
 				this.miastoDocelowe=(Miasto) this.trasa.get( this.trasa.size()-1 );
-				//System.out.println("Pasazer wraca");
 			}
 		}
 	}

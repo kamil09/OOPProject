@@ -58,7 +58,7 @@ public class TopToolBar extends JToolBar implements Serializable {
 		btnNewButton_1.setForeground(Color.RED);
 		btnNewButton_1.setContentAreaFilled(false);
 		btnNewButton_1.setBorder(null);
-		btnNewButton_1.setToolTipText("Kliknij aby zapisać symulację");
+		btnNewButton_1.setToolTipText("Kliknij aby wczytać ostatnią symulację");
 		btnNewButton_1.setBounds(140, 2, 100, 20);
 		btnNewButton_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton_1.setFocusable(false);

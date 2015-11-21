@@ -1,6 +1,8 @@
 package MAIN;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -25,7 +27,9 @@ public abstract class Aplikacja implements Serializable {
 	 * Obiekt świata - w nim przechowywane są wszystkie dane
 	 */
 	static private Swiat swiat;
-	
+	/**
+	 * Nazwa pliku w którym zapisujemy symulację
+	 */
 	static private String nazwaPliku = "serializacjaData.boom";
 	
 	/**
@@ -53,22 +57,52 @@ public abstract class Aplikacja implements Serializable {
 		ObjectOutputStream out = new ObjectOutputStream( new FileOutputStream(nazwaPliku));
 	    out.writeObject(swiat);
 	    out.close();
+	    GlowneOkno.showDialog("Pomyslnie zapisano symulacje");
 	}
 	
 	/**
 	 * Wykonuje deserializację (wczytanie symulacji)
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 * @throws Exception
 	 */
-	public static void deserializacja() throws Exception{
-		ObjectInputStream in = new ObjectInputStream(new FileInputStream(nazwaPliku));
-	    Swiat newSwiat = (Swiat) in.readObject();
-	    newSwiat.loadImages();
-	    swiat=null;
-	    
-	    swiat = newSwiat;
-	    in.close();
-	    for(Pojazd p : swiat.getListaPojazdow() ){
-	    	MapPanel.addDoRysowania(p);
+	public static void deserializacja() throws IOException, ClassNotFoundException{
+		ObjectInputStream in = null;
+		boolean canLoad = true;
+		try {
+			in = new ObjectInputStream(new FileInputStream(nazwaPliku));
+		} catch (FileNotFoundException e) {
+			canLoad=false;
+			GlowneOkno.showDialog("Nie znaleziono pliku serializacji!");
+			//e.printStackTrace();
+		} catch (IOException e) {
+			canLoad=false;
+			//e.printStackTrace();
+		}
+	    if(canLoad==true){
+			Swiat newSwiat = (Swiat) in.readObject();
+		    newSwiat.loadImages();
+		    while(!swiat.getListaPojazdow().isEmpty()){
+		    	swiat.getListaPojazdow().get(0).removePojazd(0);
+		    }
+		    while(!swiat.getListaPasazerow().isEmpty()){
+		    	swiat.getListaPasazerow().get(0).removePasazer();
+		    }
+		    swiat = newSwiat;
+		    in.close();
+		    for(Object th : swiat.getListaPojazdow()){
+		    	Runnable runner = (Runnable) th;
+		    	SerializedThread thread = new SerializedThread(runner);
+		    	thread.start();
+		    	MapPanel.addDoRysowania((Pojazd)th);
+		    }
+		    for(Object th : swiat.getListaPasazerow() ){
+		    	Runnable runner = (Runnable) th;
+		    	SerializedThread thread = new SerializedThread(runner);
+		    	thread.start();
+		    }
+		    
+		    GlowneOkno.showDialog("Pomyslnie wczytano symulacje");
 	    }
 	}
 	

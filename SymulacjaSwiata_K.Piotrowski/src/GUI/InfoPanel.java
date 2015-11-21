@@ -323,7 +323,7 @@ public class InfoPanel extends JPanel implements Runnable, Serializable{
 			but1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			but1.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
-					pojazd.removePojazd();
+					pojazd.removePojazd(1);
 				}
 			});
 			panelInfo.add(but1);

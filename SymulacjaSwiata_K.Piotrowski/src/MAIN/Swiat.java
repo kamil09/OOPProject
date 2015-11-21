@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -57,11 +56,11 @@ public class Swiat implements Runnable, Serializable {
 	/**
 	 * Lista wszystkich pasażerów
 	 */
-	private List<Pasazer> listaPasazerow = new LinkedList<Pasazer>();
+	private List<Pasazer> listaPasazerow = new ArrayList<Pasazer>();
 	/**
 	 * Lista wszystkich pojazdów
 	 */
-	private List<Pojazd> listaPojazdow = new LinkedList<Pojazd>();
+	private List<Pojazd> listaPojazdow = new ArrayList<Pojazd>();
 	/**
 	 * Lista wszystkich tras
 	 */
@@ -210,7 +209,7 @@ public class Swiat implements Runnable, Serializable {
 			}
 			this.listaPojazdow.add(pojazd);
 			Runnable runner = pojazd;
-			Thread thread = new Thread(runner);
+			Thread thread = new SerializedThread(runner);
 			thread.start();
 			if(this.czyIstniejeLotniskowiec==false) this.setCzyIstniejeLotniskowiec(true);
 			MapPanel.addDoRysowania(pojazd);
@@ -491,6 +490,7 @@ public class Swiat implements Runnable, Serializable {
 		this.idGenerator++;
 		return this.idGenerator;
 	}
+
 	
 	
 	

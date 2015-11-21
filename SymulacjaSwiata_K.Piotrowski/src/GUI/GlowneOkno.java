@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.UIManager;
@@ -43,6 +44,9 @@ public class GlowneOkno implements Serializable {
 	 * Panel z mapą świata
 	 */
 	private JLayeredPane mapPanel;
+	/**
+	 * Pasek narzęci z przyciskami serializacji
+	 */
 	private JToolBar toolBar;
 
 	/**
@@ -100,5 +104,9 @@ public class GlowneOkno implements Serializable {
 
 		frmSymulacjaSwiataSamolotow.setVisible(true);
 
+	}
+	
+	public static void showDialog (String str){
+		JOptionPane.showMessageDialog(null, str);
 	}
 }

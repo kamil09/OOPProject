@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 
 import DROGA.Droga;
 import DROGA.TrasaMorska;
+import GUI.GlowneOkno;
 import GUI.InfoPanel;
 import GUI.MapClickVehicle;
 import MAIN.Aplikacja;
@@ -112,7 +113,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable,Serializable{
 	/**
 	 * Usuwa pojazd oraz wszystko co z nim związane
 	 */
-	public void removePojazd(){
+	public void removePojazd(int info){
 		//Usuwanie z mapy
 		//Zatrzymywanie wątku
 		
@@ -132,7 +133,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable,Serializable{
 				if(!this.getTrasa().isEmpty()) this.getTrasa().get(0).getPojazdyNaDrodze().remove(this);
 				//Czyszczenie pasażerów
 				if(this instanceof PojazdPasazerski){
-					System.out.println("Własnie zabiłeś: "+((PojazdPasazerski)this).getListaPasazerow().size() + " pasażerow");
+					if(info==1) GlowneOkno.showDialog("Właśnie zabiłeś "+ ((PojazdPasazerski)this).getListaPasazerow().size()+" pasażerów!!!" );
 					for(Pasazer pas : ((PojazdPasazerski)this).getListaPasazerow() ){
 						pas.stop();
 						Aplikacja.getSwiat().getListaPasazerow().remove(pas);
@@ -143,6 +144,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable,Serializable{
 		
 			//Usuwanie z Listy głównej
 				Aplikacja.getSwiat().getListaPojazdow().remove(this);
+				if(info==1) GlowneOkno.showDialog("Pojazd został usunięty!");
 			}
 		}
 	}
@@ -332,7 +334,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable,Serializable{
 		diffY=Math.abs(diffY);
 		double diffP=Math.pow(Math.pow(diffX, 2)+Math.pow(diffY, 2) , 0.5);
 		if(this.getTrasa().get(0) instanceof TrasaMorska ){
-			if( diffP < 110) return true;
+			if( diffP < 110) {return true; };
 		}
 		else if( diffP < 160) return true;
 		return false;

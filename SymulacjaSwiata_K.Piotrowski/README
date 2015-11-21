@@ -63,6 +63,14 @@ Krótka instrukcja obsługi:
 		
 		1.	Wszelkie zakleszczenia można naprawić poprzez usunięcie pojazdu który powoduje problem :)
 		
+	SERIALIZACJA:
+	
+		1.	Aby dokonać zapisu symulacji należy kliknąć w czerwony napis "zapisz" w lewym górnym rogu programu.
+		
+		2.	Wczytanie symulacji następuje po kliknięciu na przycisk "wczytaj"
+		
+		3.	Użytkownik nie ma mozliwości wyboru pliku, serializacja zawsze wczytywana jest z ostatniego zapisu!
+		
 	
 				
 				 	

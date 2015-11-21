@@ -55,7 +55,6 @@ public class Lotniskowiec extends PojazdWojskowy implements Statek, Serializable
 	public void run() {
 		while(this.isRunnable()){
 			try {
-				
 				if( !this.getTrasa().isEmpty() ){
 					switch(this.getStan()){
 						case 1:
