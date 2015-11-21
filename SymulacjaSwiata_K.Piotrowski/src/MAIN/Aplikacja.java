@@ -37,7 +37,7 @@ public abstract class Aplikacja implements Serializable {
 	 * @param args - argumenty podane z uruchomieniem programu - nie wykorzystywane
 	 * Metoda startowa programu - tworzy świat i odpala okno
 	 */
-	public static void main(String[] args) throws Exception{ 
+	public static void main(String[] args){ 
 		swiat = new Swiat();
 		GlowneOkno.launchWindow();
 	}
@@ -51,7 +51,7 @@ public abstract class Aplikacja implements Serializable {
 
 	/**
 	 * Wykonuje serializację (zapisanie serializacji)
-	 * @throws Exception
+	 * @throws Exception Wyjątek
 	 */
 	public static void serializacja() throws Exception{
 		ObjectOutputStream out = new ObjectOutputStream( new FileOutputStream(nazwaPliku));
@@ -62,9 +62,8 @@ public abstract class Aplikacja implements Serializable {
 	
 	/**
 	 * Wykonuje deserializację (wczytanie symulacji)
-	 * @throws IOException 
-	 * @throws ClassNotFoundException 
-	 * @throws Exception
+	 * @throws IOException 				Wyjątki
+	 * @throws ClassNotFoundException	Wyjątki
 	 */
 	public static void deserializacja() throws IOException, ClassNotFoundException{
 		ObjectInputStream in = null;

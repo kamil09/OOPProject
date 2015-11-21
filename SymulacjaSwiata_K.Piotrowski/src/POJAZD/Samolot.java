@@ -78,6 +78,7 @@ public interface Samolot extends Serializable{
 	}
 	/**
 	 * Metoda która odpowiada za awaryjne lądowanie samolotu
+	 * @param samolot Referencja do samolotu
 	 */
 	public default void awaryjneLadowanie(Pojazd samolot){
 		//Tylko gdy samolot jest w trasie

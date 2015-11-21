@@ -112,6 +112,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable,Serializable{
 	}
 	/**
 	 * Usuwa pojazd oraz wszystko co z nim związane
+	 * @param info - Czy wyświetlić okno dialogowe 1=tak 0=nie
 	 */
 	public void removePojazd(int info){
 		//Usuwanie z mapy
@@ -236,6 +237,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable,Serializable{
 	 * Zwraca true jeśli pojazd może pojechać w dane miejsce
 	 * @param X współrzędna X punktu
 	 * @param Y współrzędna Y ppunktu
+	 * @param droga Droga która jest sprawdzana, jeśli null droga = trasa[0]
 	 * @return true / false
 	 */
 	public boolean canMove(double X, double Y, Droga droga ){
