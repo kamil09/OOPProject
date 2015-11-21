@@ -1,5 +1,6 @@
 package POJAZD;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -8,7 +9,7 @@ import DROGA.Droga;
 import MAIN.Aplikacja;
 import PRZYSTANEK.Miasto;
 
-public interface Statek {
+public interface Statek extends Serializable{
 	
 	/**
 	 * Losuje trasę dla statku

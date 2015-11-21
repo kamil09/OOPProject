@@ -1,5 +1,6 @@
 package POJAZD;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -15,7 +16,7 @@ import PRZYSTANEK.Miasto;
  * Interfejs który grupuje samoloty
  * 
  */
-public interface Samolot {
+public interface Samolot extends Serializable{
 	
 	/**
 	 * Znajduje trasę dla samolotu

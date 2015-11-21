@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,6 @@ import javax.swing.UIManager;
 
 import MAIN.Aplikacja;
 import MAIN.PunktMapy;
-import MAIN.Swiat;
 import POJAZD.Pojazd;
 
 /**
@@ -23,7 +23,7 @@ import POJAZD.Pojazd;
  *
  */
 @SuppressWarnings("serial")
-public class MapPanel extends JLayeredPane implements Runnable {
+public class MapPanel extends JLayeredPane implements Runnable, Serializable{
 	
 	/**
 	 * Rozmiar mapy X

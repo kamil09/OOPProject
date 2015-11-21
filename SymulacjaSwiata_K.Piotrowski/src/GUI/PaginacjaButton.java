@@ -4,6 +4,7 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 
 import javax.swing.JButton;
 import javax.swing.UIManager;
@@ -15,7 +16,7 @@ import javax.swing.UIManager;
  * Klasa z przyciskiem paginacji
  *
  */
-public class PaginacjaButton extends JButton{
+public class PaginacjaButton extends JButton implements Serializable{
 	
 	/**
 	 * Typ przycisku

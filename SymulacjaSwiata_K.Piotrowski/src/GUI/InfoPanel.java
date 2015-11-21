@@ -23,7 +23,6 @@ import javax.swing.border.MatteBorder;
 import DROGA.Droga;
 import MAIN.Aplikacja;
 import MAIN.PunktMapy;
-import MAIN.Swiat;
 import PASAZER.Pasazer;
 import POJAZD.Pojazd;
 import POJAZD.PojazdPasazerski;

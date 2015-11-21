@@ -1,6 +1,7 @@
 package GUI;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.io.Serializable;
 
 import javax.swing.JLabel;
 
@@ -10,7 +11,7 @@ import javax.swing.JLabel;
  * @author Kamil Piotrowski
  * Napis z informacją - o określonym wyglądzie
  */
-public class InfoLabel extends JLabel{
+public class InfoLabel extends JLabel implements Serializable{
 
 	/**
 	 * Kontruktor

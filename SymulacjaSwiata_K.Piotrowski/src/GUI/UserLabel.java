@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -20,7 +21,7 @@ import PASAZER.Pasazer;
  * Po kliknięciu następuje wyświetlenie informacji o podróżniku
  *
  */
-public class UserLabel extends JLabel{
+public class UserLabel extends JLabel implements Serializable{
 
 	/**
 	 * Referencja do obiektu pasażer, do którego odnosi się ten Label

@@ -2,6 +2,7 @@ package GUI;
 import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 
 import javax.swing.JButton;
 
@@ -14,7 +15,7 @@ import MAIN.PunktMapy;
  * Przycisk na mapie w który mozna kliknąć
  *
  */
-public class MapClickButton extends JButton{
+public class MapClickButton extends JButton implements Serializable{
 
 	/**
 	 * Referencja do punktu na mapie w który można kliknać

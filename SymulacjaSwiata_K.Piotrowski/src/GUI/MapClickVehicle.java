@@ -3,6 +3,7 @@ package GUI;
 import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 
 import javax.swing.JButton;
 
@@ -14,7 +15,7 @@ import POJAZD.Pojazd;
  *	Ikona (statek / samolot w którą klikamy na mapie)
  */
 @SuppressWarnings("serial")
-public class MapClickVehicle extends JButton{
+public class MapClickVehicle extends JButton implements Serializable{
 
 	
 	/**

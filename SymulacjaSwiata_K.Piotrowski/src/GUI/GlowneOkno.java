@@ -9,6 +9,7 @@ import java.io.Serializable;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 import javax.swing.UIManager;
 
 
@@ -42,6 +43,7 @@ public class GlowneOkno implements Serializable {
 	 * Panel z mapą świata
 	 */
 	private JLayeredPane mapPanel;
+	private JToolBar toolBar;
 
 	/**
 	 * Launch the application.
@@ -75,6 +77,7 @@ public class GlowneOkno implements Serializable {
 		usersPanel = new UsersPanel();
 		infoPanel = new InfoPanel();
 		mapPanel = new MapPanel();
+		mapPanel.setBackground(UIManager.getColor("Button.foreground"));
 
 		//Każde z 3 części GUI to oddzielne wątki :)
 		Runnable[] runners = new Runnable[3];
@@ -90,6 +93,10 @@ public class GlowneOkno implements Serializable {
 		frmSymulacjaSwiataSamolotow.getContentPane().add(usersPanel, BorderLayout.WEST);
 		frmSymulacjaSwiataSamolotow.getContentPane().add(infoPanel, BorderLayout.EAST);
 		frmSymulacjaSwiataSamolotow.getContentPane().add(mapPanel, BorderLayout.CENTER);
+		
+		
+		toolBar = new TopToolBar();
+		frmSymulacjaSwiataSamolotow.getContentPane().add(toolBar, BorderLayout.NORTH);
 
 		frmSymulacjaSwiataSamolotow.setVisible(true);
 

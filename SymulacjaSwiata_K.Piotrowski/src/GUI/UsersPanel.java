@@ -19,7 +19,6 @@ import javax.swing.border.MatteBorder;
 import MAIN.Aplikacja;
 import PASAZER.Pasazer;
 
-@SuppressWarnings("serial")
 /**
  * 
  * @author Kamil Piotrowski
@@ -28,6 +27,10 @@ import PASAZER.Pasazer;
  *
  */
 public class UsersPanel extends JPanel implements Runnable, Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8918236566418890856L;
 	/**
 	 * Numer obecniej strony (paginacja)
 	 */

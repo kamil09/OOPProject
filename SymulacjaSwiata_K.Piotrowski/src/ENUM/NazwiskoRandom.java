@@ -1,11 +1,14 @@
 package ENUM;
+
+import java.io.Serializable;
+
 /**
  * 
  * @author Lista nazwisk uzywanych w programie
  * 160 sztuk
  *
  */
-public enum NazwiskoRandom {
+public enum NazwiskoRandom implements Serializable{
 	NOWAK,
 	KOWALSKA,
 	KOWALSKI,

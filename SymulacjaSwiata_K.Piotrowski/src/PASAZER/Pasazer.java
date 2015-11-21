@@ -9,6 +9,7 @@ import DROGA.Droga;
 import ENUM.ImieRandom;
 import ENUM.NazwiskoRandom;
 import MAIN.Aplikacja;
+import MAIN.Monitor;
 import MAIN.PunktMapy;
 import POJAZD.Pojazd;
 import POJAZD.PojazdPasazerski;
@@ -89,7 +90,7 @@ public class Pasazer implements Runnable, Serializable{
 	/**
 	 * Monitor
 	 */
-	private Object Thor = new Object();
+	private Monitor Thor = new Monitor();
 	/**
 	 * Status (określna stan pasazera w danej chwili):
 	 * 0- czeka na wylosowanie trasy
@@ -457,11 +458,11 @@ public class Pasazer implements Runnable, Serializable{
 		this.obecnyPojazd = obecnyPojazd;
 	}
 
-	public Object getThor() {
+	public Monitor getThor() {
 		return Thor;
 	}
 
-	public void setThor(Object thor) {
+	public void setThor(Monitor thor) {
 		Thor = thor;
 	};
 	

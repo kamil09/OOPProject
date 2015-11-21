@@ -83,14 +83,6 @@ public class Swiat implements Runnable, Serializable {
 	 */
 	private List<PunktMapy> skrzyzowanieList = new ArrayList<PunktMapy>();
 	/**
-	 * Lista do wątków
-	 */
-	private List<Runnable> runnerList = new ArrayList<Runnable>();
-	/**
-	 * Lista do wątków
-	 */
-	private List<Thread> threadsList = new ArrayList<Thread>();
-	/**
 	 * Czy istnieje lotniskowiec, lewsza jedna zmienna niż szukanie w liście pojazdów
 	 * Nie można stworzyć samolotu wojskowego bez lotniskowca!
 	 */
@@ -139,9 +131,9 @@ public class Swiat implements Runnable, Serializable {
 	public void addPasazer(){
 		Pasazer nowaOsoba= new Pasazer();
 		this.listaPasazerow.add(nowaOsoba);
-		this.runnerList.add( nowaOsoba );
-		this.threadsList.add(new Thread(this.runnerList.get(this.runnerList.size()-1)));
-		this.threadsList.get(this.threadsList.size()-1).start();;
+		Runnable runner = nowaOsoba ;
+		Thread thread = new Thread(runner);
+		thread.start();
 	}
 	/**
 	 * Dodawanie samolotu pasażerskiego
@@ -217,9 +209,9 @@ public class Swiat implements Runnable, Serializable {
 				miasto.getListaPojazdow().add(pojazd);
 			}
 			this.listaPojazdow.add(pojazd);
-			this.runnerList.add(pojazd);
-			this.threadsList.add(new Thread(this.runnerList.get(this.runnerList.size()-1)));
-			this.threadsList.get(this.threadsList.size()-1).start();
+			Runnable runner = pojazd;
+			Thread thread = new Thread(runner);
+			thread.start();
 			if(this.czyIstniejeLotniskowiec==false) this.setCzyIstniejeLotniskowiec(true);
 			MapPanel.addDoRysowania(pojazd);
 		}
@@ -499,5 +491,7 @@ public class Swiat implements Runnable, Serializable {
 		this.idGenerator++;
 		return this.idGenerator;
 	}
+	
+	
 	
 }

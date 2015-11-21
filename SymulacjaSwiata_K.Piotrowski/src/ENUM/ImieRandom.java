@@ -1,4 +1,7 @@
 package ENUM;
+
+import java.io.Serializable;
+
 /**
  * 
  * @author Kamil Piotrowski
@@ -6,7 +9,7 @@ package ENUM;
  * zawiera 144 imiona (tak wyszło, że tylko żeńskie)
  *
  */
-public enum ImieRandom {
+public enum ImieRandom implements Serializable{
 	Martyna,
 	Maruta,
 	Maryla,

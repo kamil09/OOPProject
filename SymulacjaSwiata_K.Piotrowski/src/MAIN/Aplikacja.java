@@ -6,6 +6,8 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import GUI.GlowneOkno;
+import GUI.MapPanel;
+import POJAZD.Pojazd;
 
 /**
  * 
@@ -22,7 +24,9 @@ public abstract class Aplikacja implements Serializable {
 	/**
 	 * Obiekt świata - w nim przechowywane są wszystkie dane
 	 */
-	static Swiat swiat;
+	static private Swiat swiat;
+	
+	static private String nazwaPliku = "serializacjaData.boom";
 	
 	/**
 	 * 
@@ -31,29 +35,42 @@ public abstract class Aplikacja implements Serializable {
 	 */
 	public static void main(String[] args) throws Exception{ 
 		swiat = new Swiat();
-		Runnable runner = swiat;
-		Thread thread = new Thread(runner);
-		thread.start();
 		GlowneOkno.launchWindow();
-		
-		String nazwaPliku = "/tmp/serializacjaData.cos";
-		
-	    ObjectOutputStream out = new ObjectOutputStream( new FileOutputStream(nazwaPliku));
-	    out.writeObject(swiat);
-	    out.close();
-	    
-	    ObjectInputStream in = new ObjectInputStream(new FileInputStream(nazwaPliku));
-	    Swiat newSwiat = (Swiat) in.readObject();
-	    newSwiat.loadImages();
-	    swiat = newSwiat;
-	    in.close();
 	}
-	
+	/**
+	 * Zwraca obiekt świata
+	 * @return obiekt świata
+	 */
 	public static Swiat getSwiat(){
 		return swiat;
 	}
 
-
+	/**
+	 * Wykonuje serializację (zapisanie serializacji)
+	 * @throws Exception
+	 */
+	public static void serializacja() throws Exception{
+		ObjectOutputStream out = new ObjectOutputStream( new FileOutputStream(nazwaPliku));
+	    out.writeObject(swiat);
+	    out.close();
+	}
+	
+	/**
+	 * Wykonuje deserializację (wczytanie symulacji)
+	 * @throws Exception
+	 */
+	public static void deserializacja() throws Exception{
+		ObjectInputStream in = new ObjectInputStream(new FileInputStream(nazwaPliku));
+	    Swiat newSwiat = (Swiat) in.readObject();
+	    newSwiat.loadImages();
+	    swiat=null;
+	    
+	    swiat = newSwiat;
+	    in.close();
+	    for(Pojazd p : swiat.getListaPojazdow() ){
+	    	MapPanel.addDoRysowania(p);
+	    }
+	}
 	
 	
 	
