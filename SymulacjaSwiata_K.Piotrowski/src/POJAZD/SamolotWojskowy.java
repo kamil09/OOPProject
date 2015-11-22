@@ -34,6 +34,11 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot, Serializ
 	 * Czas postoju na lotnisku wojskowym
 	 */
 	private double time=1000;
+	/**
+	 * Informuje czy pojazd znajduje się już na glównej trase
+	 * Uzywane przy wykrywaniu kolizji zanim mysliwiec znajdzie się na głównej trasie
+	 */
+	volatile private boolean naTrasie=false;
 	
 	/**
 	 * Kostruktor
@@ -256,5 +261,11 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot, Serializ
 	}
 	public void setTime(double time) {
 		this.time = time;
+	}
+	public boolean isNaTrasie() {
+		return naTrasie;
+	}
+	public void setNaTrasie(boolean naTrasie) {
+		this.naTrasie = naTrasie;
 	}
 }

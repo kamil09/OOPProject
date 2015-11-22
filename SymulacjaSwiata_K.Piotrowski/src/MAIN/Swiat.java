@@ -87,6 +87,11 @@ public class Swiat implements Runnable, Serializable {
 	 */
 	volatile private boolean czyIstniejeLotniskowiec=false;
 	/**
+	 * Tymczasowa lista myśliwców które nie trafiły jesczze na główną trasę
+	 * Służy wykrywaniu kolizji
+	 */
+	private List<Pojazd> mysliwiecTempList = new ArrayList<Pojazd>();
+	/**
 	 * Nie można dodawać nowego pojazdu podczas przechodzenia po pętli i wyświetlania na ekranie!!!
 	 */
 	private Monitor canAddPojazdObject = new Monitor();
@@ -155,7 +160,8 @@ public class Swiat implements Runnable, Serializable {
 					if(lotniskowiec.getDodanySamolotW()==null){
 						SamolotWojskowy samolotW = new SamolotWojskowy(lotniskowiec.getKoorX(), lotniskowiec.getKoorY(), "Samolot wojskowy_"+this.generateId(), this.idGenerator, lotniskowiec);
 						lotniskowiec.setDodanySamolotW(samolotW);
-						addPojazd(null, samolotW);
+						if(samolotW.canMove(samolotW.getKoorX(), samolotW.getKoorY(), null)) addPojazd(null, samolotW);
+						
 					}
 					else{
 						double diffX=lotniskowiec.getKoorX()-lotniskowiec.getDodanySamolotW().getKoorX();
@@ -163,10 +169,12 @@ public class Swiat implements Runnable, Serializable {
 						diffX=Math.abs(diffX);
 						diffY=Math.abs(diffY);
 						double diffP=Math.pow(Math.pow(diffX, 2)+Math.pow(diffY, 2) , 0.5);
-						if(diffP>70){
+						if(diffP>100){
 							SamolotWojskowy samolotW = new SamolotWojskowy(lotniskowiec.getKoorX(), lotniskowiec.getKoorY(), "Samolot wojskowy_"+this.generateId(), this.idGenerator, lotniskowiec);
 							lotniskowiec.setDodanySamolotW(samolotW);
-							addPojazd(null, samolotW);
+							if(samolotW.canMove(samolotW.getKoorX(), samolotW.getKoorY(), null)) addPojazd(null, samolotW);
+								
+							
 						}
 					}
 				}
@@ -203,13 +211,14 @@ public class Swiat implements Runnable, Serializable {
 	 */
 	private void addPojazd(Miasto miasto, Pojazd pojazd){
 		synchronized (this.canAddPojazdObject){
+			if(pojazd instanceof SamolotWojskowy) this.getMysliwiecTempList().add(pojazd);
 			if(miasto!=null){
 				miasto.setPojemosc(miasto.getPojemosc()-1);
 				miasto.getListaPojazdow().add(pojazd);
 			}
 			this.listaPojazdow.add(pojazd);
 			Runnable runner = pojazd;
-			Thread thread = new SerializedThread(runner);
+			Thread thread = new Thread(runner);
 			thread.start();
 			if(this.czyIstniejeLotniskowiec==false) this.setCzyIstniejeLotniskowiec(true);
 			MapPanel.addDoRysowania(pojazd);
@@ -489,6 +498,12 @@ public class Swiat implements Runnable, Serializable {
 	public synchronized int generateId(){
 		this.idGenerator++;
 		return this.idGenerator;
+	}
+	public List<Pojazd> getMysliwiecTempList() {
+		return mysliwiecTempList;
+	}
+	public void setMysliwiecTempList(List<Pojazd> mysliwiecTempList) {
+		this.mysliwiecTempList = mysliwiecTempList;
 	}
 
 	

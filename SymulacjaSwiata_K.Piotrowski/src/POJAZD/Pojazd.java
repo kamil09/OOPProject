@@ -145,6 +145,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable,Serializable{
 		
 			//Usuwanie z Listy głównej
 				Aplikacja.getSwiat().getListaPojazdow().remove(this);
+				if(this instanceof SamolotWojskowy ) Aplikacja.getSwiat().getMysliwiecTempList().remove(this);
 				if(info==1) GlowneOkno.showDialog("Pojazd został usunięty!");
 			}
 		}
@@ -255,7 +256,22 @@ public abstract class Pojazd extends PunktMapy implements Runnable,Serializable{
 				double diffP=Math.pow(Math.pow(diffX, 2)+Math.pow(diffY, 2) , 0.5);
 				if( diffP < 72 && !pojazd.isCzyZaparkowano() ) return false;
 			}
-			
+		}
+		if((this instanceof SamolotWojskowy) && (!((SamolotWojskowy)this).isNaTrasie() ) ){
+			synchronized(Aplikacja.getSwiat().getCanAddPojazdObject() ){
+				for(Pojazd pojazd : Aplikacja.getSwiat().getMysliwiecTempList() ){
+					if( (pojazd != null) && (pojazd.getid()!=this.getid()) ){
+						double diffX=0;
+						double diffY=0;
+						diffX=pojazd.getKoorX()-X;
+						diffY=pojazd.getKoorY()-Y;
+						diffX=Math.abs(diffX);
+						diffY=Math.abs(diffY);
+						double diffP=Math.pow(Math.pow(diffX, 2)+Math.pow(diffY, 2) , 0.5);
+						if( diffP < 40 && !pojazd.isCzyZaparkowano() ) return false;
+					}	
+				}
+			}
 		}
 		return true;
 	}
@@ -338,7 +354,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable,Serializable{
 		if(this.getTrasa().get(0) instanceof TrasaMorska ){
 			if( diffP < 110) {return true; };
 		}
-		else if( diffP < 160) return true;
+		else if( diffP < 140) return true;
 		return false;
 	}
 	/**
@@ -371,6 +387,12 @@ public abstract class Pojazd extends PunktMapy implements Runnable,Serializable{
 	public void wejdzNaSkrzyzowanie(){
 		boolean out=false;
 		synchronized(this.getVeronica()){
+			if( (this instanceof SamolotWojskowy) && (!((SamolotWojskowy)this).isNaTrasie()) ) {
+				synchronized(Aplikacja.getSwiat().getCanAddPojazdObject() ){
+					Aplikacja.getSwiat().getMysliwiecTempList().remove(this);
+					((SamolotWojskowy) this).setNaTrasie(true);
+				}
+			}
 			while(this.isRunnable()){
 				try {
 					move(1);
@@ -417,6 +439,13 @@ public abstract class Pojazd extends PunktMapy implements Runnable,Serializable{
 			this.setStan(1);
 			if(!(this instanceof SamolotWojskowy))
 				this.setPaliwo(this.getMaxPaliwo());
+			if( (this instanceof SamolotWojskowy) && (!((SamolotWojskowy)this).isNaTrasie()) ) {
+				synchronized(Aplikacja.getSwiat().getCanAddPojazdObject() ){
+					((SamolotWojskowy) this).setNaTrasie(true);
+					Aplikacja.getSwiat().getMysliwiecTempList().remove(this);
+					
+				}
+			}
 		}
 	}
 	/**

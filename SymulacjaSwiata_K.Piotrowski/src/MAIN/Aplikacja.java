@@ -91,13 +91,13 @@ public abstract class Aplikacja implements Serializable {
 		    in.close();
 		    for(Object th : swiat.getListaPojazdow()){
 		    	Runnable runner = (Runnable) th;
-		    	SerializedThread thread = new SerializedThread(runner);
+		    	Thread thread = new Thread(runner);
 		    	thread.start();
 		    	MapPanel.addDoRysowania((Pojazd)th);
 		    }
 		    for(Object th : swiat.getListaPasazerow() ){
 		    	Runnable runner = (Runnable) th;
-		    	SerializedThread thread = new SerializedThread(runner);
+		    	Thread thread = new Thread(runner);
 		    	thread.start();
 		    }
 		    

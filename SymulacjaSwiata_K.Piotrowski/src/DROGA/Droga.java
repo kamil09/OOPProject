@@ -1,6 +1,6 @@
 package DROGA;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import MAIN.PunktMapy;
@@ -33,7 +33,7 @@ public class Droga implements Serializable {
 	 * Lista pojazdów znajdujących się na drodze
 	 * Używane podaczas wykrywania kolizji
 	 */
-	private List<Pojazd> pojazdyNaDrodze = new ArrayList<Pojazd>();
+	private List<Pojazd> pojazdyNaDrodze = new LinkedList<Pojazd>();
 	/**
 	 * Współczynnik kierunkowy prostej zawierającej naszą drogę
 	 */
