@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import GUI.GlowneOkno;
 import GUI.MapPanel;
@@ -31,6 +33,10 @@ public abstract class Aplikacja implements Serializable {
 	 * Nazwa pliku w którym zapisujemy symulację
 	 */
 	static private String nazwaPliku = "serializacjaData.boom";
+	/**
+	 * Monitor serializacji
+	 */
+	static private Monitor serializacjaMonitor = new Monitor();
 	
 	/**
 	 * 
@@ -51,13 +57,27 @@ public abstract class Aplikacja implements Serializable {
 
 	/**
 	 * Wykonuje serializację (zapisanie serializacji)
+	 * @throws InterruptedException 
 	 * @throws Exception Wyjątek
 	 */
-	public static void serializacja() throws Exception{
-		ObjectOutputStream out = new ObjectOutputStream( new FileOutputStream(nazwaPliku));
-	    out.writeObject(swiat);
-	    out.close();
-	    GlowneOkno.showDialog("Pomyslnie zapisano symulacje");
+	@SuppressWarnings("deprecation")
+	public static void serializacja() throws InterruptedException{
+			ObjectOutputStream out;
+			
+			for(Thread th : Aplikacja.getSwiat().getThreadList()) th.suspend();
+			try {
+				out = new ObjectOutputStream( new FileOutputStream(nazwaPliku));
+				out.writeObject(swiat);
+			    out.close();
+			    GlowneOkno.showDialog("Pomyslnie zapisano symulacje");
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+				GlowneOkno.showDialog("Niepowodzenie podczas zapisu symulacji");
+			}
+			for(Thread th : Aplikacja.getSwiat().getThreadList()) th.resume();	
+	    
 	}
 	
 	/**
@@ -76,10 +96,12 @@ public abstract class Aplikacja implements Serializable {
 			//e.printStackTrace();
 		} catch (IOException e) {
 			canLoad=false;
+			GlowneOkno.showDialog("Niepowodzenie podczas odczytu symulacji");
 			//e.printStackTrace();
 		}
 	    if(canLoad==true){
 			Swiat newSwiat = (Swiat) in.readObject();
+			in.close();
 		    newSwiat.loadImages();
 		    while(!swiat.getListaPojazdow().isEmpty()){
 		    	swiat.getListaPojazdow().get(0).removePojazd(0);
@@ -87,22 +109,35 @@ public abstract class Aplikacja implements Serializable {
 		    while(!swiat.getListaPasazerow().isEmpty()){
 		    	swiat.getListaPasazerow().get(0).removePasazer();
 		    }
+		    
 		    swiat = newSwiat;
-		    in.close();
+		    swiat.setThreadList(null);
+		    List<Thread> thList = new ArrayList<Thread>();
+		    
 		    for(Object th : swiat.getListaPojazdow()){
 		    	Runnable runner = (Runnable) th;
 		    	Thread thread = new Thread(runner);
+		    	thList.add(thread);
 		    	thread.start();
-		    	MapPanel.addDoRysowania((Pojazd)th);
 		    }
 		    for(Object th : swiat.getListaPasazerow() ){
 		    	Runnable runner = (Runnable) th;
 		    	Thread thread = new Thread(runner);
+		    	thList.add(thread);
 		    	thread.start();
 		    }
-		    
+		    swiat.setThreadList(thList);
+		    synchronized (swiat.getCanAddPojazdObject()){
+		    	for(Pojazd p : swiat.getListaPojazdow()) MapPanel.addDoRysowania((Pojazd)p);
+	    	}
 		    GlowneOkno.showDialog("Pomyslnie wczytano symulacje");
 	    }
+	}
+	public static Monitor getSerializacjaMonitor() {
+		return serializacjaMonitor;
+	}
+	public static void setSerializacjaMonitor(Monitor serializacjaMonitor) {
+		Aplikacja.serializacjaMonitor = serializacjaMonitor;
 	}
 	
 	

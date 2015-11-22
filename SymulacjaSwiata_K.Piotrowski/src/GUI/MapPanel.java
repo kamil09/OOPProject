@@ -271,30 +271,32 @@ public class MapPanel extends JLayeredPane implements Runnable, Serializable{
 	}
 	/**
 	 * Rysuje wszystkie pojazdy na mapie
+	 * @throws InterruptedException 
 	 */
-	public void drowVehicles(){
+	public void drowVehicles() throws InterruptedException{
 		int koorX;
 		int koorY;
 		//RYSOWANIE NOWYCH POJAZDÓW (KTÓRYCH JESZCZE NIE MA NA MAPIE)
-		
-		for(Pojazd pojazd : MapPanel.doRysowania ){
-			if(pojazd.getTrasa().isEmpty() ){
-				koorX=(int)((pojazd.getKoorX()-this.mapStartX)/this.mapZOOM);
-				koorY=(int)((pojazd.getKoorY()-this.mapStartY)/this.mapZOOM);
-			}
-			else{
-				koorX=(int)((pojazd.getKoorX()-this.mapStartX));
-				koorY=(int)((pojazd.getKoorY()-this.mapStartY));
-				if( !pojazd.isCzyZaparkowano() ){
-					koorX+=pojazd.getTrasa().get(0).getOdX();
-					koorY+=pojazd.getTrasa().get(0).getOdY();
+		synchronized(Aplikacja.getSwiat().getCanAddPojazdObject() ){
+			for(Pojazd pojazd : MapPanel.doRysowania ){
+				if(pojazd.getTrasa().isEmpty() ){
+					koorX=(int)((pojazd.getKoorX()-this.mapStartX)/this.mapZOOM);
+					koorY=(int)((pojazd.getKoorY()-this.mapStartY)/this.mapZOOM);
 				}
-				koorX/=this.mapZOOM;
-				koorY/=this.mapZOOM;
+				else{
+					koorX=(int)((pojazd.getKoorX()-this.mapStartX));
+					koorY=(int)((pojazd.getKoorY()-this.mapStartY));
+					if( !pojazd.isCzyZaparkowano() ){
+						koorX+=pojazd.getTrasa().get(0).getOdX();
+						koorY+=pojazd.getTrasa().get(0).getOdY();
+					}
+					koorX/=this.mapZOOM;
+					koorY/=this.mapZOOM;
+				}
+				MapClickVehicle tmp=pojazd.rysuj(mapZOOM, koorX, koorY);
+				this.wyswietlanePojazdy.add(tmp);
+				this.add(tmp, JLayeredPane.PALETTE_LAYER);
 			}
-			MapClickVehicle tmp=pojazd.rysuj(mapZOOM, koorX, koorY);
-			this.wyswietlanePojazdy.add(tmp);
-			this.add(tmp, JLayeredPane.PALETTE_LAYER);
 		}
 		
 		MapPanel.doRysowania.clear();
@@ -323,8 +325,8 @@ public class MapPanel extends JLayeredPane implements Runnable, Serializable{
 				}
 				koorX-=(button.getPojazd().getSize()/(2*mapZOOM));
 				koorY-=(button.getPojazd().getSize()/(2*mapZOOM));
-				button.setIcon(button.getPojazd().returnIcon(mapZOOM));
 				button.setBounds(koorX, koorY, (int)(70/mapZOOM), (int)(70/mapZOOM));
+				button.setIcon(button.getPojazd().returnIcon(mapZOOM));
 				if(this.isRedrowAllVehicles())
 					this.add(button, JLayeredPane.PALETTE_LAYER);
 			}

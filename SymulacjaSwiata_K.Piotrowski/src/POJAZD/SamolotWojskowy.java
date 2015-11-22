@@ -89,7 +89,7 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot, Serializ
 								}
 								else{
 									synchronized(this.getTrasa().get(0).getB().getHulk() ){
-										this.wejdzDoMiasta();
+										this.wejdzDoMiasta();	
 									}
 								}
 							}

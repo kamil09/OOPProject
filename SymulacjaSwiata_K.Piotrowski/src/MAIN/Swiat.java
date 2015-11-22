@@ -95,6 +95,8 @@ public class Swiat implements Runnable, Serializable {
 	 * Nie można dodawać nowego pojazdu podczas przechodzenia po pętli i wyświetlania na ekranie!!!
 	 */
 	private Monitor canAddPojazdObject = new Monitor();
+	
+	transient private List<Thread> threadList = new ArrayList<Thread>();
 	/**
 	 * Konstruktor świata
 	 * Wczytuje obraz tła
@@ -137,6 +139,7 @@ public class Swiat implements Runnable, Serializable {
 		this.listaPasazerow.add(nowaOsoba);
 		Runnable runner = nowaOsoba ;
 		Thread thread = new Thread(runner);
+		threadList.add(thread);
 		thread.start();
 	}
 	/**
@@ -219,6 +222,7 @@ public class Swiat implements Runnable, Serializable {
 			this.listaPojazdow.add(pojazd);
 			Runnable runner = pojazd;
 			Thread thread = new Thread(runner);
+			threadList.add(thread);
 			thread.start();
 			if(this.czyIstniejeLotniskowiec==false) this.setCzyIstniejeLotniskowiec(true);
 			MapPanel.addDoRysowania(pojazd);
@@ -504,6 +508,12 @@ public class Swiat implements Runnable, Serializable {
 	}
 	public void setMysliwiecTempList(List<Pojazd> mysliwiecTempList) {
 		this.mysliwiecTempList = mysliwiecTempList;
+	}
+	public List<Thread> getThreadList() {
+		return threadList;
+	}
+	public void setThreadList(List<Thread> threadList) {
+		this.threadList = threadList;
 	}
 
 	

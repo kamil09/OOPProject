@@ -61,14 +61,15 @@ public class SamolotPasazerski extends PojazdPasazerski implements Samolot, Seri
 							}
 							else{
 								//Synchronizacja wejscia na skrzyzowanie lub do miasta!
+								
 								if(this.getTrasa().get(0).getB() instanceof Skrzyzowanie ){
-									synchronized(this.getTrasa().get(0).getB().getHulk() ){
-										this.wejdzNaSkrzyzowanie();
+									synchronized(this.getTrasa().get(0).getB().getHulk() ){															
+										this.wejdzNaSkrzyzowanie();									
 									}
 								}
 								else{
-									synchronized(this.getTrasa().get(0).getB().getHulk() ){
-										this.wejdzDoMiasta();
+									synchronized(this.getTrasa().get(0).getB().getHulk() ){								
+										this.wejdzDoMiasta();							
 									}
 								}
 							}

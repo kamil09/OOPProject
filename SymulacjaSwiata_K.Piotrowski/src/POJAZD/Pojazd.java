@@ -178,10 +178,10 @@ public abstract class Pojazd extends PunktMapy implements Runnable,Serializable{
 		BufferedImage gr = new BufferedImage(size,size,BufferedImage.TYPE_INT_ARGB);
 		Graphics2D bg = gr.createGraphics();
 		
-		bg.setColor(null);
-		bg.setBackground(null);
 		bg.rotate(Math.toRadians(katObrotu), size/2, size/2);
 		bg.drawImage(this.getImage(),0,0,size, size,0,0,this.getSize(), this.getSize(), null);
+		bg.setColor(null);
+		bg.setBackground(null);
 	    bg.dispose();
 		ImageIcon ikona = new ImageIcon(gr);
 		
@@ -214,7 +214,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable,Serializable{
 				newKoorX=this.getKoorX()-moveX;
 				newKoorY=this.getKoorY()-moveY;
 			}
-			while((this.isRunnable()) && (!this.canMove(newKoorX, newKoorY,null)) ) 	try { Thread.sleep(50); } 
+			while((this.isRunnable()) && (!this.canMove(newKoorX, newKoorY,null)) ) 	try { Thread.sleep(100); } 
 				catch (InterruptedException e) { e.printStackTrace(); }
 			if(this.isRunnable()){
 				this.setKoorX(newKoorX);
@@ -229,13 +229,14 @@ public abstract class Pojazd extends PunktMapy implements Runnable,Serializable{
 	 * @param koorY współrzędna punktu Y
 	 */
 	public void moveToPoint(double koorX,double koorY){
-		while((this.isRunnable()) && (!this.canMove(koorX, koorY,null)) ) 	try { Thread.sleep(50); } 
+		while((this.isRunnable()) && (!this.canMove(koorX, koorY,null)) ) 	try { Thread.sleep(100); } 
 			catch (InterruptedException e) { e.printStackTrace(); }
 		this.setKoorX(koorX);
 		this.setKoorY(koorY);
 	}
 	/**
 	 * Zwraca true jeśli pojazd może pojechać w dane miejsce
+	 * Rozwiązuje również problem z kolizją myśliwców które nie znajdują się jescze na normalnych trasach.
 	 * @param X współrzędna X punktu
 	 * @param Y współrzędna Y ppunktu
 	 * @param droga Droga która jest sprawdzana, jeśli null droga = trasa[0]
@@ -443,7 +444,6 @@ public abstract class Pojazd extends PunktMapy implements Runnable,Serializable{
 				synchronized(Aplikacja.getSwiat().getCanAddPojazdObject() ){
 					((SamolotWojskowy) this).setNaTrasie(true);
 					Aplikacja.getSwiat().getMysliwiecTempList().remove(this);
-					
 				}
 			}
 		}
@@ -471,7 +471,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable,Serializable{
 	 */
 	public void setNewTrasa(ArrayList<Droga> nowaTrasa){
 		synchronized (this.getVeronica()) {
-			while((this.isRunnable()) && (!this.canMove(this.getKoorX(), this.getKoorY(), nowaTrasa.get(0))) ) 	try { Thread.sleep(50); } 
+			while((this.isRunnable()) && (!this.canMove(this.getKoorX(), this.getKoorY(), nowaTrasa.get(0))) ) 	try { Thread.sleep(100); } 
 			catch (InterruptedException e) { e.printStackTrace(); }
 			this.getTrasa().get(0).getPojazdyNaDrodze().remove(this);
 			this.getTrasa().clear();
