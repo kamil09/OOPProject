@@ -88,7 +88,8 @@ public class StatekWycieczkowy extends PojazdPasazerski implements Statek, Seria
 				
 				Thread.sleep(20);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				this.removePojazd(0);
+				//e.printStackTrace();
 			}
 		}
 	}

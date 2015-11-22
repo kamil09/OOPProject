@@ -83,7 +83,8 @@ public class SamolotPasazerski extends PojazdPasazerski implements Samolot, Seri
 			
 				Thread.sleep(20);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				this.removePojazd(0);
+				//e.printStackTrace();
 			}
 		}
 	}

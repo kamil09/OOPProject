@@ -103,7 +103,8 @@ public class SamolotWojskowy extends PojazdWojskowy implements Samolot, Serializ
 				
 				Thread.sleep(20);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				this.removePojazd(0);
+				//e.printStackTrace();
 			}
 		}
 	}

@@ -89,7 +89,8 @@ public class Lotniskowiec extends PojazdWojskowy implements Statek, Serializable
 				}
 				Thread.sleep(20);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				this.removePojazd(0);
+				//e.printStackTrace();
 			}
 		}
 		

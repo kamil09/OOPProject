@@ -234,7 +234,7 @@ public class Pasazer implements Runnable, Serializable{
             			/**
             			 * odliczanie
             			 */
-            			this.czasPostoju-=0.02;
+            			this.czasPostoju-=0.1;
             			if(this.czasPostoju<0) this.setStatus(1);
             			break;
             		case 4:
@@ -253,7 +253,8 @@ public class Pasazer implements Runnable, Serializable{
             	}
                 Thread.sleep(400);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+            	this.removePasazer();
+                //e.printStackTrace();
             }
         }
 	}
@@ -335,15 +336,15 @@ public class Pasazer implements Runnable, Serializable{
 	 */
 	public void wysiadzZPojazdu(){
 		synchronized( this.getObecnyPojazd().getHulk() ){
-			//Ustawienie obecnego punktu
-			this.setObecnyPunkt( (Miasto)this.getTrasa().get(0) );
-			this.poprzednieMiasto=this.getObecnyPunkt();
-			this.trasa.remove(0);
 			//Zwiększamy liczbę wolnych miejsc w pojeździe
 			this.getObecnyPojazd().setWolneMiejsca(this.getObecnyPojazd().getWolneMiejsca()+1);
 			//Usuwamy pasażera z pojazdu i pojazd z pasażera
 			this.getObecnyPojazd().getListaPasazerow().remove(this);
 			this.setObecnyPojazd(null);
+			//Ustawienie obecnego punktu
+			this.setObecnyPunkt( (Miasto)this.getTrasa().get(0) );
+			this.poprzednieMiasto=this.getObecnyPunkt();
+			this.trasa.remove(0);
 			this.setStatus(1);
 		}
 	}
@@ -357,7 +358,6 @@ public class Pasazer implements Runnable, Serializable{
 			this.poprzednieMiasto=this.getObecnyPunkt();
 			this.getObecnyPojazd().setWolneMiejsca(this.getObecnyPojazd().getWolneMiejsca()+1);
 			//Usuwamy pasażera z pojazdu i pojazd z pasażera
-			this.getObecnyPojazd().getListaPasazerow().remove(this);
 			this.getObecnyPojazd().getListaPasazerow().remove(this);
 			this.setObecnyPojazd(null);
 			this.setStatus(1);
