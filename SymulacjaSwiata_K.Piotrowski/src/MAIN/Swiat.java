@@ -1,6 +1,5 @@
 package MAIN;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -113,11 +112,11 @@ public class Swiat implements Runnable, Serializable {
 		try {
 			//WCZYTYWANIE OBRAZÓW
 			pojazdyImage = new BufferedImage[4];
-			this.bufferImage = ImageIO.read(new File("src/mapa2.png"));
-			this.pojazdyImage[0]=ImageIO.read(new File("src/lotniskowiec.png"));
-			this.pojazdyImage[1]=ImageIO.read(new File("src/statek.png"));
-			this.pojazdyImage[2]=ImageIO.read(new File("src/mysliwiec.png"));
-			this.pojazdyImage[3]=ImageIO.read(new File("src/samolot.png"));
+			this.bufferImage = ImageIO.read( Thread.currentThread().getContextClassLoader().getResourceAsStream("mapa2.png" ) );			
+			this.pojazdyImage[0]=ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("lotniskowiec.png"  ));
+			this.pojazdyImage[1]=ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("statek.png"  ));
+			this.pojazdyImage[2]=ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("mysliwiec.png"  ));
+			this.pojazdyImage[3]=ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("samolot.png"  ));
 		} catch (IOException ex) { 
 			System.out.println("Nie można wczytać obrazów");
 			System.exit(2);
