@@ -300,8 +300,11 @@ public class Pasazer implements Runnable, Serializable{
 				if(poprzedniPunkt.getid()<20) dlugoscTrasy--;
 			}
 			else{
-				this.trasa.remove(this.trasa.size()-1);
-				poprzedniPunkt=this.trasa.get(this.trasa.size()-1);
+				if(!this.trasa.isEmpty()){
+					this.trasa.remove(this.trasa.size()-1);
+					if(this.trasa.size()>0) poprzedniPunkt=this.trasa.get(this.trasa.size()-1);
+					else poprzedniPunkt = null;
+				}
 			}	
 		}
 		//usuwanie skrzyżowań z listy

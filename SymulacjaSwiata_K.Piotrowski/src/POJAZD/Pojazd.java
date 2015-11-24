@@ -18,6 +18,7 @@ import MAIN.Aplikacja;
 import MAIN.PunktMapy;
 import PASAZER.Pasazer;
 import PRZYSTANEK.Miasto;
+import PRZYSTANEK.Skrzyzowanie;
 
 /**
  * Klasa grupująca wszystkie pojazdy
@@ -387,7 +388,10 @@ public abstract class Pojazd extends PunktMapy implements Runnable,Serializable{
 	 */
 	public void wejdzNaSkrzyzowanie(){
 		boolean out=false;
+		Skrzyzowanie sk = (Skrzyzowanie) this.getTrasa().get(0).getB();
 		synchronized(this.getVeronica()){
+			sk.setIdObiektu(this.getid());
+			sk.setZajete(true);
 			if( (this instanceof SamolotWojskowy) && (!((SamolotWojskowy)this).isNaTrasie()) ) {
 				synchronized(Aplikacja.getSwiat().getCanAddPojazdObject() ){
 					Aplikacja.getSwiat().getMysliwiecTempList().remove(this);
@@ -415,6 +419,7 @@ public abstract class Pojazd extends PunktMapy implements Runnable,Serializable{
 					e.printStackTrace();
 				}
 			}
+			sk.setZajete(false);
 		}
 	}
 	/**
